@@ -63,8 +63,8 @@ else
     print_message "✅ Poppler-utils already installed"
 fi
 
-# Step 2: Create necessary directories
-print_step "📁 Step 2/6: Setting Up Directories"
+# Step 2: Create necessary directories and set permissions
+print_step "📁 Step 2/6: Setting Up Directories & Permissions"
 
 print_message "Creating /app/files directory..."
 mkdir -p /app/files
@@ -73,6 +73,15 @@ print_message "✅ Files directory ready"
 print_message "Creating ChromaDB directory..."
 mkdir -p /app/backend/chroma_db
 print_message "✅ ChromaDB directory ready"
+
+print_message "Setting permissions for all project files..."
+chmod -R 777 /app/backend
+chmod -R 777 /app/frontend
+chmod -R 777 /app/files
+chmod 777 /app/run.sh
+chmod 777 /app/README.md
+chmod 777 /app/QUICKSTART.md
+print_message "✅ Permissions set to 777 for all project files"
 
 # Step 3: Install backend dependencies
 print_step "🐍 Step 3/6: Installing Python Backend Dependencies"
