@@ -70,21 +70,21 @@ fi
 # Step 2: Create necessary directories and set permissions
 print_step "📁 Step 2/6: Setting Up Directories & Permissions"
 
-print_message "Creating /app/files directory..."
-mkdir -p /app/files
+print_message "Creating files directory..."
+mkdir -p files
 print_message "✅ Files directory ready"
 
 print_message "Creating ChromaDB directory..."
-mkdir -p /app/backend/chroma_db
+mkdir -p backend/chroma_db
 print_message "✅ ChromaDB directory ready"
 
 print_message "Setting permissions for all project files..."
-chmod -R 777 /app/backend
-chmod -R 777 /app/frontend
-chmod -R 777 /app/files
-chmod 777 /app/run.sh
-chmod 777 /app/README.md
-chmod 777 /app/QUICKSTART.md
+chmod -R 777 backend
+chmod -R 777 frontend
+chmod -R 777 files
+chmod 777 run.sh
+chmod 777 README.md 2>/dev/null || true
+chmod 777 QUICKSTART.md 2>/dev/null || true
 print_message "✅ Permissions set to 777 for all project files"
 
 # Step 3: Install backend dependencies
