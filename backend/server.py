@@ -99,9 +99,10 @@ async def check_reindex_pending():
 
 # Background task to process documents
 async def process_documents():
-    """Process all documents in /app/files and update vector store"""
+    """Process all documents in files directory and update vector store"""
     try:
-        files_dir = Path("/app/files")
+        # Use relative path from backend directory
+        files_dir = Path(__file__).parent.parent / "files"
         if not files_dir.exists():
             logger.warning("Files directory does not exist")
             return
