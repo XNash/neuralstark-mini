@@ -227,7 +227,7 @@ echo ""
 echo -e "${GREEN}Happy chatting with your documents! 🚀${NC}"
 echo ""
 
-# Return to original directory
-cd /app
+# Return to script directory
+cd "$SCRIPT_DIR"
 
 exit 0
