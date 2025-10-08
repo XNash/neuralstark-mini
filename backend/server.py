@@ -74,30 +74,18 @@ class DocumentStatus(BaseModel):
 
 # File watcher for monitoring /app/files
 class DocumentFileHandler(FileSystemEventHandler):
-    def __init__(self, processor, vector_service):
-        self.processor = processor
-        self.vector_service = vector_service
-        self.processing = False
+    def __init__(self):
+        self.pending_reindex = False
         
     def on_created(self, event):
         if not event.is_directory:
-            asyncio.create_task(self._process_file(event.src_path))
+            logger.info(f"File created: {event.src_path}")
+            self.pending_reindex = True
     
     def on_modified(self, event):
         if not event.is_directory:
-            asyncio.create_task(self._process_file(event.src_path))
-    
-    async def _process_file(self, file_path):
-        if self.processing:
-            return
-        self.processing = True
-        try:
-            logger.info(f"Processing file: {file_path}")
-            await process_documents()
-        except Exception as e:
-            logger.error(f"Error processing file {file_path}: {e}")
-        finally:
-            self.processing = False
+            logger.info(f"File modified: {event.src_path}")
+            self.pending_reindex = True
 
 # Background task to process documents
 async def process_documents():
