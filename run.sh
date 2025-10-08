@@ -111,7 +111,7 @@ cd "$SCRIPT_DIR"
 # Step 4: Install frontend dependencies
 print_step "⚛️  Step 4/6: Installing Frontend Dependencies"
 
-cd /app/frontend
+cd "$SCRIPT_DIR/frontend"
 
 if [ ! -d "node_modules" ]; then
     print_message "Installing frontend packages with yarn..."
@@ -120,6 +120,8 @@ if [ ! -d "node_modules" ]; then
 else
     print_message "✅ Frontend dependencies already installed"
 fi
+
+cd "$SCRIPT_DIR"
 
 # Step 5: Verify environment configuration
 print_step "⚙️  Step 5/6: Verifying Configuration"
