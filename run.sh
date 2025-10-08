@@ -126,7 +126,7 @@ cd "$SCRIPT_DIR"
 # Step 5: Verify environment configuration
 print_step "⚙️  Step 5/6: Verifying Configuration"
 
-cd /app
+cd "$SCRIPT_DIR"
 
 print_message "Checking backend .env file..."
 if [ -f "backend/.env" ]; then
@@ -144,11 +144,11 @@ fi
 
 # Check if sample documents exist
 print_message "Checking sample documents..."
-DOC_COUNT=$(find /app/files -type f | wc -l)
+DOC_COUNT=$(find files -type f 2>/dev/null | wc -l)
 if [ "$DOC_COUNT" -gt 0 ]; then
-    print_message "✅ Found $DOC_COUNT document(s) in /app/files"
+    print_message "✅ Found $DOC_COUNT document(s) in files directory"
 else
-    print_warning "No documents found in /app/files - Add documents to get started"
+    print_warning "No documents found in files directory - Add documents to get started"
 fi
 
 # Step 6: Start services
