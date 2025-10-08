@@ -90,7 +90,7 @@ print_message "✅ Permissions set to 777 for all project files"
 # Step 3: Install backend dependencies
 print_step "🐍 Step 3/6: Installing Python Backend Dependencies"
 
-cd /app/backend
+cd "$SCRIPT_DIR/backend"
 
 print_message "Installing emergentintegrations library..."
 pip install -q emergentintegrations --extra-index-url https://d33sy5i8bnduwe.cloudfront.net/simple/
@@ -105,6 +105,8 @@ print_message "Updating requirements.txt..."
 pip freeze > requirements.txt
 
 print_message "✅ All Python dependencies installed"
+
+cd "$SCRIPT_DIR"
 
 # Step 4: Install frontend dependencies
 print_step "⚛️  Step 4/6: Installing Frontend Dependencies"
