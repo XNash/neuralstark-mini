@@ -147,7 +147,7 @@ sudo supervisorctl status
 
 # Wait for services to be fully ready
 print_message "Waiting for services to initialize..."
-sleep 5
+sleep 8
 
 # Check backend health
 print_message "Checking backend health..."
