@@ -287,11 +287,12 @@ logger = logging.getLogger(__name__)
 
 # File watcher setup
 observer = None
+file_handler = None
 
 @app.on_event("startup")
 async def startup_event():
     """Initialize services and start file watcher"""
-    global observer
+    global observer, file_handler
     
     logger.info("Starting RAG Platform API")
     
@@ -301,11 +302,14 @@ async def startup_event():
     # Start file watcher
     files_dir = Path("/app/files")
     if files_dir.exists():
-        event_handler = DocumentFileHandler(doc_processor, vector_service)
+        file_handler = DocumentFileHandler()
         observer = Observer()
-        observer.schedule(event_handler, str(files_dir), recursive=True)
+        observer.schedule(file_handler, str(files_dir), recursive=True)
         observer.start()
         logger.info(f"File watcher started for {files_dir}")
+        
+        # Start background task to check for pending reindexing
+        asyncio.create_task(check_reindex_pending())
 
 @app.on_event("shutdown")
 async def shutdown_event():
