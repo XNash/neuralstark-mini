@@ -311,7 +311,7 @@ async def startup_event():
     await process_documents()
     
     # Start file watcher
-    files_dir = Path("/app/files")
+    files_dir = Path(__file__).parent.parent / "files"
     if files_dir.exists():
         file_handler = DocumentFileHandler()
         observer = Observer()
