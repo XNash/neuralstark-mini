@@ -87,6 +87,16 @@ class DocumentFileHandler(FileSystemEventHandler):
             logger.info(f"File modified: {event.src_path}")
             self.pending_reindex = True
 
+async def check_reindex_pending():
+    """Background task to check if reindexing is needed"""
+    global file_handler
+    while True:
+        await asyncio.sleep(5)  # Check every 5 seconds
+        if file_handler and file_handler.pending_reindex:
+            logger.info("Pending reindex detected, processing documents...")
+            file_handler.pending_reindex = False
+            await process_documents()
+
 # Background task to process documents
 async def process_documents():
     """Process all documents in /app/files and update vector store"""
