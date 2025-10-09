@@ -25,11 +25,15 @@ logger = logging.getLogger(__name__)
 
 
 class DocumentProcessor:
-    """Process various document formats and extract text"""
+    """Process various document formats and extract text with optimized chunking"""
     
-    def __init__(self, chunk_size: int = 1000, chunk_overlap: int = 200):
+    def __init__(self, chunk_size: int = 800, chunk_overlap: int = 150):
+        # Optimized chunk size for better context and retrieval
+        # Smaller chunks = more precise retrieval
+        # Larger overlap = better context preservation
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
+        self.min_chunk_size = 100  # Minimum viable chunk size
     
     def process_document(self, file_path: str) -> List[str]:
         """Process a document and return text chunks"""
