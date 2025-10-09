@@ -48,13 +48,46 @@ A full-stack Retrieval-Augmented Generation (RAG) platform that allows users to 
 
 ## 🚀 Getting Started
 
+### Quick Installation
+
+The platform includes an automated setup script that works on any clean Linux environment:
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd rag-platform
+
+# Run the one-click setup script
+chmod +x run.sh
+./run.sh
+```
+
+The script automatically:
+- ✅ Detects your Linux distribution (Ubuntu, Debian, CentOS, RHEL, Fedora)
+- ✅ Installs all system dependencies (Python, Node.js, MongoDB, etc.)
+- ✅ Sets up Python virtual environment
+- ✅ Installs backend and frontend dependencies
+- ✅ Configures and starts MongoDB
+- ✅ Creates sample documents
+- ✅ Starts all services with Supervisor
+
+**Platform will be ready at**: `http://localhost:3000`
+
+For detailed installation instructions and troubleshooting, see **[INSTALL.md](INSTALL.md)**
+
 ### Configuration
 
 **Backend `.env` file** (`/app/backend/.env`):
-```
+```bash
 MONGO_URL="mongodb://localhost:27017"
-DB_NAME="test_database"
+DB_NAME="rag_platform"
 CORS_ORIGINS="*"
+```
+
+**Frontend `.env` file** (`/app/frontend/.env`):
+```bash
+REACT_APP_BACKEND_URL="http://localhost:8001"
+WDS_SOCKET_PORT=443
 ```
 
 **Gemini API Key:**
@@ -63,7 +96,7 @@ CORS_ORIGINS="*"
 
 ### Using the Platform
 
-1. **Access the application** at your deployment URL
+1. **Access the application** at `http://localhost:3000`
 2. **Configure API Key**: Go to Settings page and add your Gemini API key
 3. **Add Documents**: Place files in `/app/files` directory
 4. **Wait for Indexing**: Documents are automatically indexed (5-second check interval)
