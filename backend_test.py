@@ -113,8 +113,8 @@ class RAGPlatformTester:
             response = self.session.get(f"{self.base_url}/settings")
             if response.status_code == 200:
                 data = response.json()
-                if data.get("gemini_api_key") == "test-gemini-key-12345-for-rag-platform":
-                    self.log_test("Settings GET (After Save)", True, "Saved API key retrieved successfully")
+                if data.get("gemini_api_key") == "AIzaSyD273RLpkzyDyU59NKxTERC3jm0xVhH7N4":
+                    self.log_test("Settings GET (After Save)", True, "Real Gemini API key retrieved successfully")
                     return True
                 else:
                     self.log_test("Settings GET (After Save)", False, "API key not persisted", data)
