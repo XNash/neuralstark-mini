@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Test the RAG Platform backend thoroughly with comprehensive API testing including Settings, Document Status, Reindexing, Chat API, and Chat History endpoints"
+user_problem_statement: "Test the redesigned RAG Platform frontend with professional sidebar system comprehensively including sidebar navigation, chat page with welcome screen and feature cards, new Documents page, redesigned Settings page, header functionality, visual design, and all interactive elements"
 
 backend:
   - task: "Settings API Implementation"
