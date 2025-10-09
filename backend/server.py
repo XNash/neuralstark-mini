@@ -187,39 +187,75 @@ async def update_settings(settings_update: SettingsUpdate):
 
 @api_router.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
-    """Chat with RAG agent"""
+    """Chat with RAG agent with comprehensive error handling"""
     try:
+        # Validate input
+        if not request.message or not request.message.strip():
+            raise HTTPException(status_code=400, detail="Message cannot be empty")
+        
+        if len(request.message) > 10000:
+            raise HTTPException(status_code=400, detail="Message too long (max 10,000 characters)")
+        
         # Get API key from settings
         settings = await db.settings.find_one({"id": "main"})
         if not settings or not settings.get('gemini_api_key'):
-            raise HTTPException(status_code=400, detail="Gemini API key not configured. Please add it in Settings.")
+            raise HTTPException(
+                status_code=400, 
+                detail="Gemini API key not configured. Please add your API key in the Settings page. "
+                       "Get one from: https://aistudio.google.com/app/apikey"
+            )
         
         # Generate session_id if not provided
         session_id = request.session_id or str(uuid.uuid4())
         
-        # Get chat history for this session
+        # Get chat history for this session (last 10 messages for context)
         chat_history = await db.chat_messages.find(
             {"session_id": session_id},
             {"_id": 0}
-        ).sort("timestamp", 1).to_list(50)
+        ).sort("timestamp", 1).to_list(10)
         
         # Save user message
         user_message = ChatMessage(
             session_id=session_id,
             role="user",
-            content=request.message
+            content=request.message.strip()
         )
         user_doc = user_message.model_dump()
         user_doc['timestamp'] = user_doc['timestamp'].isoformat()
         await db.chat_messages.insert_one(user_doc)
         
         # Get response from RAG service
-        response_text, sources = await rag_service.get_response(
-            query=request.message,
-            session_id=session_id,
-            api_key=settings['gemini_api_key'],
-            chat_history=chat_history
-        )
+        try:
+            response_text, sources = await rag_service.get_response(
+                query=request.message.strip(),
+                session_id=session_id,
+                api_key=settings['gemini_api_key'],
+                chat_history=chat_history
+            )
+        except Exception as rag_error:
+            # Log the error and provide user-friendly message
+            error_msg = str(rag_error)
+            logger.error(f"RAG service error for session {session_id}: {error_msg}")
+            
+            # Check for specific error types and provide helpful messages
+            if "quota" in error_msg.lower() or "exceeded" in error_msg.lower():
+                raise HTTPException(
+                    status_code=429,
+                    detail="API quota exceeded. The free tier allows 250 requests per day. "
+                           "Please check your API key's billing details at https://aistudio.google.com/app/apikey "
+                           "or try again later."
+                )
+            elif "unauthorized" in error_msg.lower() or "invalid" in error_msg.lower():
+                raise HTTPException(
+                    status_code=401,
+                    detail="Invalid API key. Please check your Gemini API key in Settings. "
+                           "Get a valid key from: https://aistudio.google.com/app/apikey"
+                )
+            else:
+                raise HTTPException(
+                    status_code=500,
+                    detail=f"Failed to generate response: {error_msg}"
+                )
         
         # Save assistant message
         assistant_message = ChatMessage(
@@ -232,6 +268,8 @@ async def chat(request: ChatRequest):
         assistant_doc['timestamp'] = assistant_doc['timestamp'].isoformat()
         await db.chat_messages.insert_one(assistant_doc)
         
+        logger.info(f"Successfully processed chat for session {session_id}, found {len(sources)} sources")
+        
         return ChatResponse(
             response=response_text,
             session_id=session_id,
@@ -240,8 +278,8 @@ async def chat(request: ChatRequest):
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Chat error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Unexpected chat error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 @api_router.get("/chat/history/{session_id}", response_model=List[ChatMessage])
 async def get_chat_history(session_id: str):
