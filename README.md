@@ -197,6 +197,35 @@ GET /api/chat/history/{session_id}
 - **Session-based Chat**: Each conversation has unique session
 - **Source Attribution**: Responses include source documents with relevance scores
 
+## 🐳 Deployment Options
+
+### Native Linux Installation
+Use the automated `run.sh` script that works on any clean Linux environment:
+- See [INSTALL.md](INSTALL.md) for detailed instructions
+- See [QUICKSTART.md](QUICKSTART.md) for quick setup
+
+### Docker Deployment
+Use Docker Compose for containerized deployment:
+- See [DOCKER.md](DOCKER.md) for complete Docker guide
+- Simple command: `docker compose up -d`
+
+### Manual Setup
+For custom deployments, see the manual installation section in [INSTALL.md](INSTALL.md)
+
+## 🔧 Verification
+
+After installation, verify your setup:
+```bash
+chmod +x verify-setup.sh
+./verify-setup.sh
+```
+
+This script checks:
+- System dependencies (Python, Node.js, MongoDB, etc.)
+- Project structure and configuration
+- Python and frontend dependencies
+- Service status and API connectivity
+
 ## 🔍 Troubleshooting
 
 ### Documents Not Indexing
@@ -208,6 +237,11 @@ GET /api/chat/history/{session_id}
 1. Verify Gemini API key is set in Settings
 2. Check if documents are indexed (status should show >0)
 3. Check backend logs for errors
+
+### Need More Help?
+- Run `./verify-setup.sh` to diagnose issues
+- Check [INSTALL.md](INSTALL.md) for detailed troubleshooting
+- Check [DOCKER.md](DOCKER.md) for Docker-specific issues
 
 ## 📊 Example Documents
 
