@@ -1,5 +1,6 @@
 import logging
 from typing import List, Dict, Tuple
+import asyncio
 from vector_store import VectorStoreService
 from emergentintegrations.llm.chat import LlmChat, UserMessage
 
@@ -7,12 +8,16 @@ logger = logging.getLogger(__name__)
 
 
 class RAGService:
-    """RAG service for answering queries using indexed documents"""
+    """RAG service for answering queries using indexed documents with robust error handling"""
     
     def __init__(self, vector_service: VectorStoreService, db):
         self.vector_service = vector_service
         self.db = db
         self.api_key = None
+        # Configuration for robustness
+        self.max_retries = 3
+        self.relevance_threshold = 0.3  # Filter out low-relevance chunks
+        self.max_context_tokens = 8000  # Conservative estimate for context size
     
     def update_api_key(self, api_key: str):
         """Update the API key for Gemini"""
