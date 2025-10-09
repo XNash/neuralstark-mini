@@ -328,6 +328,9 @@ frontend:
         - working: true
           agent: "testing"
           comment: "Header system working perfectly - Menu toggle (hamburger) button functional for sidebar control, dynamic page titles change correctly (💬 Chat, 📚 Documents, ⚙️ Settings), header subtitle shows '3 documents • 5 indexed chunks' on Chat page, API status badge displays '✓ API Configured' with proper success styling. All header functionality confirmed working."
+        - working: true
+          agent: "testing"
+          comment: "RETESTED AFTER BACKEND IMPROVEMENTS: Header system working excellently with enhanced backend. Menu toggle (hamburger) button functional for sidebar control, dynamic page titles change correctly (💬 Chat, 📚 Documents, ⚙️ Settings), header subtitle now shows improved '3 documents • 6 indexed chunks' (up from 5) on Chat page, API status badge displays '✓ API Configured' with proper success styling. All header functionality confirmed working with enhanced backend integration."
 
   - task: "Professional Visual Design & UX"
     implemented: true
