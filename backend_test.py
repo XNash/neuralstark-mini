@@ -283,11 +283,90 @@ class RAGPlatformTester:
             self.log_test("Chat History", False, f"Request error: {str(e)}")
             return False
     
-    def test_chat_with_french_query(self):
-        """Test chat with French query to test multilingual support"""
+    def test_rag_accuracy_products(self):
+        """Test RAG accuracy with product-related query"""
         try:
             payload = {
-                "message": "Quels sont les services offerts par TechCorp?",
+                "message": "What products does TechCorp offer and what are their prices?",
+                "session_id": self.session_id + "-products"
+            }
+            
+            response = self.session.post(
+                f"{self.base_url}/chat",
+                json=payload,
+                headers={"Content-Type": "application/json"}
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                response_text = data["response"].lower()
+                sources = data["sources"]
+                
+                # Check if response contains product information
+                product_keywords = ["ai assistant pro", "datavision", "smartpredict", "cloudsync", "$999", "$1,499", "$2,499", "$499"]
+                found_keywords = [kw for kw in product_keywords if kw in response_text]
+                
+                if found_keywords and sources:
+                    self.log_test("RAG Accuracy (Products)", True, 
+                                f"Product query answered accurately with {len(found_keywords)} relevant details and {len(sources)} sources")
+                    print(f"   Found keywords: {found_keywords[:3]}...")
+                    print(f"   Response preview: {data['response'][:150]}...")
+                    return True
+                else:
+                    self.log_test("RAG Accuracy (Products)", False, 
+                                f"Product information not found in response. Keywords: {len(found_keywords)}, Sources: {len(sources)}")
+                    return False
+            else:
+                self.log_test("RAG Accuracy (Products)", False, f"HTTP {response.status_code}", response.text)
+                return False
+        except Exception as e:
+            self.log_test("RAG Accuracy (Products)", False, f"Request error: {str(e)}")
+            return False
+    
+    def test_rag_accuracy_office_hours(self):
+        """Test RAG accuracy with office hours query"""
+        try:
+            payload = {
+                "message": "What are TechCorp's office hours?",
+                "session_id": self.session_id + "-hours"
+            }
+            
+            response = self.session.post(
+                f"{self.base_url}/chat",
+                json=payload,
+                headers={"Content-Type": "application/json"}
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                response_text = data["response"].lower()
+                sources = data["sources"]
+                
+                # Check if response contains office hours information
+                hours_keywords = ["9:00 am", "6:00 pm", "monday", "friday", "saturday", "10:00 am", "2:00 pm", "sunday", "closed"]
+                found_keywords = [kw for kw in hours_keywords if kw in response_text]
+                
+                if found_keywords and sources:
+                    self.log_test("RAG Accuracy (Office Hours)", True, 
+                                f"Office hours query answered accurately with {len(found_keywords)} time details and {len(sources)} sources")
+                    print(f"   Response preview: {data['response'][:150]}...")
+                    return True
+                else:
+                    self.log_test("RAG Accuracy (Office Hours)", False, 
+                                f"Office hours not found in response. Keywords: {len(found_keywords)}, Sources: {len(sources)}")
+                    return False
+            else:
+                self.log_test("RAG Accuracy (Office Hours)", False, f"HTTP {response.status_code}", response.text)
+                return False
+        except Exception as e:
+            self.log_test("RAG Accuracy (Office Hours)", False, f"Request error: {str(e)}")
+            return False
+    
+    def test_multilingual_french_query(self):
+        """Test multilingual support with French query"""
+        try:
+            payload = {
+                "message": "Quelles sont les valeurs de TechCorp?",
                 "session_id": self.session_id + "-french"
             }
             
@@ -299,19 +378,211 @@ class RAGPlatformTester:
             
             if response.status_code == 200:
                 data = response.json()
-                self.log_test("Chat API (French)", True, 
-                            "French query processed successfully")
-                return True
-            elif response.status_code == 400:
-                # Expected with test API key
-                self.log_test("Chat API (French)", True, 
-                            "French query handled correctly (API key validation)")
-                return True
+                response_text = data["response"].lower()
+                sources = data["sources"]
+                
+                # Check if response contains French company values
+                french_keywords = ["innovation", "excellence", "collaboration", "intégrité", "valeurs"]
+                found_keywords = [kw for kw in french_keywords if kw in response_text]
+                
+                if found_keywords and sources:
+                    self.log_test("Multilingual Support (French)", True, 
+                                f"French query processed successfully with {len(found_keywords)} relevant terms and {len(sources)} sources")
+                    print(f"   Response preview: {data['response'][:150]}...")
+                    return True
+                else:
+                    self.log_test("Multilingual Support (French)", False, 
+                                f"French content not found in response. Keywords: {len(found_keywords)}, Sources: {len(sources)}")
+                    return False
             else:
-                self.log_test("Chat API (French)", False, f"HTTP {response.status_code}", response.text)
+                self.log_test("Multilingual Support (French)", False, f"HTTP {response.status_code}", response.text)
                 return False
         except Exception as e:
-            self.log_test("Chat API (French)", False, f"Request error: {str(e)}")
+            self.log_test("Multilingual Support (French)", False, f"Request error: {str(e)}")
+            return False
+    
+    def test_rag_accuracy_refund_policy(self):
+        """Test RAG accuracy with FAQ query"""
+        try:
+            payload = {
+                "message": "What is the refund policy?",
+                "session_id": self.session_id + "-refund"
+            }
+            
+            response = self.session.post(
+                f"{self.base_url}/chat",
+                json=payload,
+                headers={"Content-Type": "application/json"}
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                response_text = data["response"].lower()
+                sources = data["sources"]
+                
+                # Check if response contains refund policy information
+                refund_keywords = ["30-day", "money-back", "guarantee", "refund", "satisfied", "support team"]
+                found_keywords = [kw for kw in refund_keywords if kw in response_text]
+                
+                if found_keywords and sources:
+                    self.log_test("RAG Accuracy (Refund Policy)", True, 
+                                f"Refund policy query answered accurately with {len(found_keywords)} policy details and {len(sources)} sources")
+                    print(f"   Response preview: {data['response'][:150]}...")
+                    return True
+                else:
+                    self.log_test("RAG Accuracy (Refund Policy)", False, 
+                                f"Refund policy not found in response. Keywords: {len(found_keywords)}, Sources: {len(sources)}")
+                    return False
+            else:
+                self.log_test("RAG Accuracy (Refund Policy)", False, f"HTTP {response.status_code}", response.text)
+                return False
+        except Exception as e:
+            self.log_test("RAG Accuracy (Refund Policy)", False, f"Request error: {str(e)}")
+            return False
+    
+    def test_rag_out_of_scope_query(self):
+        """Test RAG with query about information not in documents"""
+        try:
+            payload = {
+                "message": "What is the weather like today in New York?",
+                "session_id": self.session_id + "-weather"
+            }
+            
+            response = self.session.post(
+                f"{self.base_url}/chat",
+                json=payload,
+                headers={"Content-Type": "application/json"}
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                response_text = data["response"].lower()
+                sources = data["sources"]
+                
+                # Response should indicate it doesn't have this information
+                out_of_scope_indicators = ["don't have", "not available", "cannot provide", "not found", "no information", "documents don't contain"]
+                found_indicators = [ind for ind in out_of_scope_indicators if ind in response_text]
+                
+                if found_indicators or len(sources) == 0:
+                    self.log_test("RAG Out-of-Scope Handling", True, 
+                                f"Out-of-scope query handled appropriately with {len(sources)} sources")
+                    print(f"   Response preview: {data['response'][:150]}...")
+                    return True
+                else:
+                    self.log_test("RAG Out-of-Scope Handling", False, 
+                                f"Out-of-scope query not handled properly. Sources: {len(sources)}")
+                    return False
+            else:
+                self.log_test("RAG Out-of-Scope Handling", False, f"HTTP {response.status_code}", response.text)
+                return False
+        except Exception as e:
+            self.log_test("RAG Out-of-Scope Handling", False, f"Request error: {str(e)}")
+            return False
+    
+    def test_session_continuity(self):
+        """Test session continuity across multiple messages"""
+        try:
+            session_id = self.session_id + "-continuity"
+            
+            # First message
+            payload1 = {
+                "message": "What products does TechCorp offer?",
+                "session_id": session_id
+            }
+            
+            response1 = self.session.post(
+                f"{self.base_url}/chat",
+                json=payload1,
+                headers={"Content-Type": "application/json"}
+            )
+            
+            if response1.status_code != 200:
+                self.log_test("Session Continuity", False, f"First message failed: HTTP {response1.status_code}")
+                return False
+            
+            # Second message referring to previous context
+            payload2 = {
+                "message": "What are the prices for those products?",
+                "session_id": session_id
+            }
+            
+            response2 = self.session.post(
+                f"{self.base_url}/chat",
+                json=payload2,
+                headers={"Content-Type": "application/json"}
+            )
+            
+            if response2.status_code == 200:
+                data2 = response2.json()
+                response_text = data2["response"].lower()
+                
+                # Check if response contains pricing information
+                price_keywords = ["$999", "$1,499", "$2,499", "$499", "price", "cost", "month"]
+                found_prices = [kw for kw in price_keywords if kw in response_text]
+                
+                if found_prices:
+                    self.log_test("Session Continuity", True, 
+                                f"Session continuity working - follow-up question answered with {len(found_prices)} price references")
+                    print(f"   Response preview: {data2['response'][:150]}...")
+                    return True
+                else:
+                    self.log_test("Session Continuity", False, 
+                                f"Follow-up question not answered properly. Price keywords: {len(found_prices)}")
+                    return False
+            else:
+                self.log_test("Session Continuity", False, f"Second message failed: HTTP {response2.status_code}")
+                return False
+        except Exception as e:
+            self.log_test("Session Continuity", False, f"Request error: {str(e)}")
+            return False
+    
+    def test_source_attribution(self):
+        """Test that sources are correctly attributed"""
+        try:
+            payload = {
+                "message": "Tell me about TechCorp's AI Assistant Pro product",
+                "session_id": self.session_id + "-sources"
+            }
+            
+            response = self.session.post(
+                f"{self.base_url}/chat",
+                json=payload,
+                headers={"Content-Type": "application/json"}
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                sources = data["sources"]
+                
+                if sources:
+                    # Check if sources have proper structure
+                    first_source = sources[0]
+                    expected_source_fields = ["source", "chunk_index"]
+                    
+                    if all(field in first_source for field in expected_source_fields):
+                        # Check if source mentions products.txt (where AI Assistant Pro is defined)
+                        source_files = [s.get("source", "") for s in sources]
+                        if "products.txt" in str(source_files):
+                            self.log_test("Source Attribution", True, 
+                                        f"Sources correctly attributed - {len(sources)} sources including products.txt")
+                            print(f"   Source files: {source_files}")
+                            return True
+                        else:
+                            self.log_test("Source Attribution", True, 
+                                        f"Sources attributed but may not include expected file - {len(sources)} sources: {source_files}")
+                            return True
+                    else:
+                        self.log_test("Source Attribution", False, 
+                                    f"Source structure incomplete: {first_source}")
+                        return False
+                else:
+                    self.log_test("Source Attribution", False, "No sources provided in response")
+                    return False
+            else:
+                self.log_test("Source Attribution", False, f"HTTP {response.status_code}", response.text)
+                return False
+        except Exception as e:
+            self.log_test("Source Attribution", False, f"Request error: {str(e)}")
             return False
     
     def run_all_tests(self):
