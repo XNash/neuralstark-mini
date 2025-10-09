@@ -83,10 +83,23 @@ class VectorStoreService:
             raise
     
     def search(self, query: str, n_results: int = 5) -> Tuple[List[str], List[Dict]]:
-        """Search for relevant documents"""
+        """Search for relevant documents with enhanced relevance scoring"""
         try:
-            # Generate query embedding
-            query_embedding = self.embedding_model.encode([query], show_progress_bar=False)[0]
+            # Check if collection has documents
+            count = self.collection.count()
+            if count == 0:
+                logger.warning("Vector store is empty - no documents to search")
+                return [], []
+            
+            # Ensure n_results doesn't exceed available documents
+            n_results = min(n_results, count)
+            
+            # Generate query embedding with normalization
+            query_embedding = self.embedding_model.encode(
+                [query], 
+                show_progress_bar=False,
+                normalize_embeddings=True
+            )[0]
             
             # Search in collection
             results = self.collection.query(
@@ -99,11 +112,37 @@ class VectorStoreService:
             metadatas = results['metadatas'][0] if results['metadatas'] else []
             distances = results['distances'][0] if results['distances'] else []
             
-            # Add distance/score to metadata
+            # Enhanced relevance scoring
+            # ChromaDB returns L2 distance - convert to similarity score
             for i, metadata in enumerate(metadatas):
-                metadata['relevance_score'] = 1 - (distances[i] if i < len(distances) else 1)
+                if i < len(distances):
+                    # Convert L2 distance to similarity score (0-1 range)
+                    # Lower distance = higher similarity
+                    distance = distances[i]
+                    # Using exponential decay for better differentiation
+                    relevance_score = max(0.0, min(1.0, 1.0 / (1.0 + distance)))
+                    metadata['relevance_score'] = relevance_score
+                    metadata['distance'] = distance
+                else:
+                    metadata['relevance_score'] = 0.0
+                    metadata['distance'] = float('inf')
             
-            logger.info(f"Found {len(documents)} relevant documents for query")
+            # Sort by relevance score (highest first)
+            sorted_results = sorted(
+                zip(documents, metadatas),
+                key=lambda x: x[1]['relevance_score'],
+                reverse=True
+            )
+            
+            if sorted_results:
+                documents, metadatas = zip(*sorted_results)
+                documents = list(documents)
+                metadatas = list(metadatas)
+            
+            logger.info(f"Found {len(documents)} relevant documents for query (collection size: {count})")
+            if metadatas:
+                logger.info(f"Top relevance score: {metadatas[0]['relevance_score']:.3f}, Lowest: {metadatas[-1]['relevance_score']:.3f}")
+            
             return documents, metadatas
         
         except Exception as e:
