@@ -175,7 +175,10 @@ function App() {
       });
       if (response.ok) {
         alert('Document reindexing started. This may take a few moments.');
-        setTimeout(loadDocumentStatus, 2000);
+        setTimeout(() => {
+          loadDocumentStatus();
+          loadDocumentsList();
+        }, 2000);
       }
     } catch (error) {
       console.error('Error reindexing:', error);
