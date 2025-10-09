@@ -364,9 +364,10 @@ async def get_document_status():
 
 @api_router.post("/documents/reindex")
 async def reindex_documents(background_tasks: BackgroundTasks):
-    """Trigger document reindexing"""
-    background_tasks.add_task(process_documents)
-    return {"message": "Document reindexing started"}
+    """Trigger full document reindexing (clears existing index and rebuilds)"""
+    logger.info("Reindex requested - will clear existing index and rebuild")
+    background_tasks.add_task(process_documents, clear_existing=True)
+    return {"message": "Document reindexing started (clearing existing index and rebuilding)"}
 
 # Include the router in the main app
 app.include_router(api_router)
