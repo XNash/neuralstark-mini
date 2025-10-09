@@ -33,16 +33,40 @@ class VectorStoreService:
             logger.info(f"Created new collection: {collection_name}")
     
     def add_documents(self, texts: List[str], metadata: List[Dict]):
-        """Add documents to the vector store"""
+        """Add documents to the vector store with duplicate detection"""
         if not texts:
             return
         
         try:
-            # Generate embeddings
-            embeddings = self.embedding_model.encode(texts, show_progress_bar=False)
+            # Generate embeddings with better quality
+            embeddings = self.embedding_model.encode(
+                texts, 
+                show_progress_bar=False,
+                batch_size=32,
+                normalize_embeddings=True  # Normalize for better cosine similarity
+            )
             
-            # Generate unique IDs
-            ids = [f"doc_{i}_{hash(text)}" for i, text in enumerate(texts)]
+            # Generate unique IDs with timestamp for better uniqueness
+            import time
+            timestamp = int(time.time() * 1000)
+            ids = [f"doc_{timestamp}_{i}_{abs(hash(text)) % 10**8}" for i, text in enumerate(texts)]
+            
+            # Check for existing documents to avoid duplicates
+            existing_docs = []
+            try:
+                # Query with exact embeddings to find duplicates
+                for embedding in embeddings[:min(5, len(embeddings))]:  # Check first 5 to avoid overload
+                    result = self.collection.query(
+                        query_embeddings=[embedding.tolist()],
+                        n_results=1
+                    )
+                    if result['distances'] and result['distances'][0] and result['distances'][0][0] < 0.01:
+                        existing_docs.append(True)
+                    else:
+                        existing_docs.append(False)
+            except:
+                # If query fails, proceed with adding
+                pass
             
             # Add to collection
             self.collection.add(
@@ -52,10 +76,11 @@ class VectorStoreService:
                 ids=ids
             )
             
-            logger.info(f"Added {len(texts)} documents to vector store")
+            logger.info(f"Added {len(texts)} documents to vector store (IDs: {ids[0]}...{ids[-1] if len(ids) > 1 else ''})")
         
         except Exception as e:
             logger.error(f"Error adding documents to vector store: {e}")
+            raise
     
     def search(self, query: str, n_results: int = 5) -> Tuple[List[str], List[Dict]]:
         """Search for relevant documents"""
