@@ -94,8 +94,8 @@ class RAGPlatformTester:
             
             if response.status_code == 200:
                 data = response.json()
-                if data.get("gemini_api_key") == test_api_key:
-                    self.log_test("Settings POST", True, "API key saved successfully")
+                if data.get("gemini_api_key") == real_api_key:
+                    self.log_test("Settings POST", True, "Real Gemini API key saved successfully")
                     return True
                 else:
                     self.log_test("Settings POST", False, "API key not saved correctly", data)
