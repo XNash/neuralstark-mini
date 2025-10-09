@@ -507,6 +507,38 @@ function App() {
                   </ol>
                 </div>
               </div>
+
+              {documentsList.total_count > 0 && (
+                <div className="info-section">
+                  <h3>📁 Indexed Files ({documentsList.total_count})</h3>
+                  <div className="files-by-type">
+                    {Object.entries(documentsList.documents_by_type).map(([category, files]) => (
+                      <div key={category} className="file-category">
+                        <h4 className="category-header">
+                          {category === 'PDF' && '📄'}
+                          {category === 'Word' && '📝'}
+                          {category === 'Excel' && '📊'}
+                          {category === 'Text' && '📋'}
+                          {category === 'Data' && '💾'}
+                          {category === 'OpenDocument' && '📃'}
+                          {' '}{category} ({files.length})
+                        </h4>
+                        <div className="file-list">
+                          {files.map((file, index) => (
+                            <div key={index} className="file-item">
+                              <div className="file-info">
+                                <span className="file-name">{file.name}</span>
+                                <span className="file-size">{file.size_formatted}</span>
+                              </div>
+                              <span className="file-extension">{file.extension}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
