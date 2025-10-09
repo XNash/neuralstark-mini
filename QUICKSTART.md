@@ -1,24 +1,34 @@
 # 🚀 RAG Platform - Quick Start Guide
 
-## One-Command Setup & Launch
+## One-Command Setup & Launch for Clean Linux
 
 ### Step 1: Run the Setup Script
 
 From the `/app` directory, run:
 
 ```bash
+chmod +x run.sh
 ./run.sh
 ```
 
 This script will automatically:
-- ✅ Install all system dependencies (Tesseract OCR, Poppler-utils)
-- ✅ Install Python backend dependencies
-- ✅ Install frontend dependencies
-- ✅ Create necessary directories
-- ✅ Start all services (Backend, Frontend, MongoDB)
-- ✅ Verify everything is running
+- ✅ **Detect your Linux distribution** (Ubuntu, Debian, CentOS, RHEL, Fedora)
+- ✅ **Install system dependencies** (Python, Node.js, MongoDB, Supervisor)
+- ✅ **Install OCR tools** (Tesseract OCR, Poppler-utils)
+- ✅ **Set up Python virtual environment**
+- ✅ **Install Python backend dependencies**
+- ✅ **Install frontend dependencies** (with Yarn)
+- ✅ **Configure MongoDB** and start service
+- ✅ **Create necessary directories and sample documents**
+- ✅ **Configure and start all services** (Backend, Frontend)
+- ✅ **Verify everything is running**
 
-**Time required:** ~2-3 minutes (depending on your system)
+**Time required:** ~5-10 minutes on clean system (depending on internet speed)
+
+**Works on:**
+- Ubuntu 18.04+ / Debian 10+
+- CentOS 7+ / RHEL 7+ / Fedora 30+
+- Pop!_OS, Linux Mint, and other Debian/Ubuntu derivatives
 
 ### Step 2: Configure Your API Key
 
