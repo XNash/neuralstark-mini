@@ -191,10 +191,40 @@ class DocumentProcessor:
         
         return text
     
+    def _preprocess_text(self, text: str) -> str:
+        """Preprocess text for better chunking and indexing"""
+        if not text:
+            return ""
+        
+        # Remove excessive whitespace while preserving structure
+        lines = text.split('\n')
+        processed_lines = []
+        
+        for line in lines:
+            # Remove excessive spaces within lines
+            cleaned_line = ' '.join(line.split())
+            if cleaned_line:  # Only keep non-empty lines
+                processed_lines.append(cleaned_line)
+        
+        # Join lines with single newlines
+        processed_text = '\n'.join(processed_lines)
+        
+        # Remove excessive consecutive newlines (keep max 2)
+        while '\n\n\n' in processed_text:
+            processed_text = processed_text.replace('\n\n\n', '\n\n')
+        
+        return processed_text.strip()
+    
     def _split_into_chunks(self, text: str) -> List[str]:
-        """Split text into overlapping chunks"""
+        """Split text into overlapping chunks with intelligent boundary detection"""
         if not text.strip():
             return []
+        
+        # Preprocess text
+        text = self._preprocess_text(text)
+        
+        if len(text) < self.min_chunk_size:
+            return [text] if text.strip() else []
         
         chunks = []
         start = 0
@@ -203,24 +233,57 @@ class DocumentProcessor:
         while start < text_length:
             end = start + self.chunk_size
             
-            # If not at the end, try to break at a sentence or word boundary
+            # If not at the end, try to break at natural boundaries
             if end < text_length:
-                # Look for sentence boundary
-                for delimiter in ['. ', '.\n', '! ', '!\n', '? ', '?\n']:
-                    last_delim = text.rfind(delimiter, start, end)
-                    if last_delim != -1:
-                        end = last_delim + len(delimiter)
-                        break
+                # Priority 1: Paragraph boundary (double newline)
+                para_break = text.rfind('\n\n', start, end)
+                if para_break != -1 and para_break > start + self.chunk_size // 2:
+                    end = para_break + 2
                 else:
-                    # Look for word boundary
-                    last_space = text.rfind(' ', start, end)
-                    if last_space != -1:
-                        end = last_space
+                    # Priority 2: Sentence boundary
+                    sentence_delimiters = ['. ', '.\n', '! ', '!\n', '? ', '?\n', '.\t']
+                    best_delim_pos = -1
+                    
+                    for delimiter in sentence_delimiters:
+                        # Look for delimiter in the latter half of the chunk
+                        search_start = start + self.chunk_size // 2
+                        delim_pos = text.rfind(delimiter, search_start, end)
+                        if delim_pos > best_delim_pos:
+                            best_delim_pos = delim_pos
+                    
+                    if best_delim_pos != -1:
+                        # Find the actual delimiter length
+                        for delimiter in sentence_delimiters:
+                            if text[best_delim_pos:best_delim_pos+len(delimiter)] == delimiter:
+                                end = best_delim_pos + len(delimiter)
+                                break
+                    else:
+                        # Priority 3: Line boundary
+                        line_break = text.rfind('\n', start + self.chunk_size // 2, end)
+                        if line_break != -1:
+                            end = line_break + 1
+                        else:
+                            # Priority 4: Word boundary
+                            last_space = text.rfind(' ', start + self.chunk_size // 2, end)
+                            if last_space != -1:
+                                end = last_space + 1
             
+            # Extract chunk
             chunk = text[start:end].strip()
-            if chunk:
+            
+            # Only add chunks that meet minimum size
+            if len(chunk) >= self.min_chunk_size:
+                chunks.append(chunk)
+            elif len(chunk) > 0 and start + self.chunk_size >= text_length:
+                # Add remaining text even if below minimum (last chunk)
                 chunks.append(chunk)
             
-            start = end - self.chunk_overlap if end < text_length else text_length
+            # Move to next chunk with overlap
+            if end >= text_length:
+                break
+            
+            # Calculate next start position with overlap
+            start = max(start + 1, end - self.chunk_overlap)
         
+        logger.info(f"Split text into {len(chunks)} chunks (avg size: {sum(len(c) for c in chunks) // len(chunks) if chunks else 0} chars)")
         return chunks
