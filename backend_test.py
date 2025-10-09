@@ -594,7 +594,7 @@ class RAGPlatformTester:
         print(f"Test Session ID: {self.session_id}")
         print()
         
-        # Test sequence
+        # Test sequence - Comprehensive RAG Platform Testing
         tests = [
             ("API Root", self.test_api_root),
             ("Settings GET (Initial)", self.test_settings_get_initial),
@@ -603,9 +603,14 @@ class RAGPlatformTester:
             ("Document Status", self.test_document_status),
             ("Document Reindex", self.test_document_reindex),
             ("Document Status (After Reindex)", self.test_document_status_after_reindex),
-            ("Chat API", self.test_chat_api),
+            ("RAG Accuracy (Products)", self.test_rag_accuracy_products),
+            ("RAG Accuracy (Office Hours)", self.test_rag_accuracy_office_hours),
+            ("Multilingual Support (French)", self.test_multilingual_french_query),
+            ("RAG Accuracy (Refund Policy)", self.test_rag_accuracy_refund_policy),
+            ("RAG Out-of-Scope Handling", self.test_rag_out_of_scope_query),
+            ("Session Continuity", self.test_session_continuity),
+            ("Source Attribution", self.test_source_attribution),
             ("Chat History", self.test_chat_history),
-            ("Chat API (French)", self.test_chat_with_french_query),
         ]
         
         passed = 0
