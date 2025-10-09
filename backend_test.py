@@ -80,10 +80,11 @@ class RAGPlatformTester:
             return False
     
     def test_settings_post(self):
-        """Test POST /api/settings - save API key"""
+        """Test POST /api/settings - save real API key"""
         try:
-            test_api_key = "test-gemini-key-12345-for-rag-platform"
-            payload = {"gemini_api_key": test_api_key}
+            # Use the real Gemini API key for comprehensive testing
+            real_api_key = "AIzaSyD273RLpkzyDyU59NKxTERC3jm0xVhH7N4"
+            payload = {"gemini_api_key": real_api_key}
             
             response = self.session.post(
                 f"{self.base_url}/settings",
