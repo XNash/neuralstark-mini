@@ -98,36 +98,83 @@ async def check_reindex_pending():
             await process_documents()
 
 # Background task to process documents
-async def process_documents():
-    """Process all documents in files directory and update vector store"""
+async def process_documents(clear_existing: bool = False):
+    """Process all documents in files directory and update vector store
+    
+    Args:
+        clear_existing: If True, clears existing vector store before reindexing
+    """
     try:
         # Use relative path from backend directory
         files_dir = Path(__file__).parent.parent / "files"
         if not files_dir.exists():
-            logger.warning("Files directory does not exist")
+            logger.warning("Files directory does not exist, creating it...")
+            files_dir.mkdir(parents=True, exist_ok=True)
             return
         
         supported_extensions = ['.pdf', '.docx', '.doc', '.xlsx', '.xls', '.odt', '.txt', '.md', '.json', '.csv']
         files = [f for f in files_dir.rglob('*') if f.suffix.lower() in supported_extensions]
         
-        logger.info(f"Found {len(files)} documents to process")
+        logger.info(f"Found {len(files)} documents to process (clear_existing={clear_existing})")
+        
+        if not files:
+            logger.warning("No documents found in files directory")
+            await db.document_status.update_one(
+                {"id": "status"},
+                {
+                    "$set": {
+                        "last_updated": datetime.now(timezone.utc).isoformat(),
+                        "total_documents": 0
+                    }
+                },
+                upsert=True
+            )
+            return
+        
+        # Clear vector store if requested (for full reindex)
+        if clear_existing:
+            logger.info("Clearing existing vector store for full reindex...")
+            vector_service.clear_collection()
+        
+        total_chunks = 0
+        successful_files = 0
+        failed_files = []
         
         for file_path in files:
             try:
+                logger.info(f"Processing document: {file_path.name}")
+                
                 # Extract text from document
                 text_chunks = doc_processor.process_document(str(file_path))
                 
                 if text_chunks:
-                    # Add to vector store
+                    # Add to vector store with enhanced metadata
+                    file_metadata = [
+                        {
+                            "source": file_path.name,
+                            "chunk_index": i,
+                            "total_chunks": len(text_chunks),
+                            "file_type": file_path.suffix.lower(),
+                            "file_size": file_path.stat().st_size,
+                            "processed_at": datetime.now(timezone.utc).isoformat()
+                        }
+                        for i in range(len(text_chunks))
+                    ]
+                    
                     vector_service.add_documents(
                         texts=text_chunks,
-                        metadata=[{"source": file_path.name, "chunk_index": i} for i in range(len(text_chunks))]
+                        metadata=file_metadata
                     )
-                    logger.info(f"Processed {file_path.name}: {len(text_chunks)} chunks")
+                    
+                    total_chunks += len(text_chunks)
+                    successful_files += 1
+                    logger.info(f"✓ Processed {file_path.name}: {len(text_chunks)} chunks")
                 else:
-                    logger.warning(f"No text extracted from {file_path.name}")
+                    logger.warning(f"✗ No text extracted from {file_path.name}")
+                    failed_files.append(file_path.name)
             except Exception as e:
-                logger.error(f"Error processing {file_path.name}: {e}")
+                logger.error(f"✗ Error processing {file_path.name}: {e}", exc_info=True)
+                failed_files.append(file_path.name)
         
         # Save updated timestamp to database
         await db.document_status.update_one(
@@ -135,15 +182,20 @@ async def process_documents():
             {
                 "$set": {
                     "last_updated": datetime.now(timezone.utc).isoformat(),
-                    "total_documents": len(files)
+                    "total_documents": len(files),
+                    "successful_files": successful_files,
+                    "failed_files": failed_files,
+                    "total_chunks": total_chunks
                 }
             },
             upsert=True
         )
         
-        logger.info("Document processing completed")
+        logger.info(f"Document processing completed: {successful_files}/{len(files)} files successful, {total_chunks} total chunks")
+        if failed_files:
+            logger.warning(f"Failed to process: {', '.join(failed_files)}")
     except Exception as e:
-        logger.error(f"Error in process_documents: {e}")
+        logger.error(f"Error in process_documents: {e}", exc_info=True)
 
 # API Routes
 @api_router.get("/")
