@@ -23,6 +23,7 @@ function App() {
     setSessionId(newSessionId);
     loadSettings();
     loadDocumentStatus();
+    loadDocumentsList();
     
     // Add initial session to history
     setChatHistory([{
