@@ -611,4 +611,44 @@ EOF
 # Run main installation
 main
 
-exit 0
+# Keep script running until user presses Ctrl+C
+print_step "🎯 RAG Platform is Running"
+echo ""
+echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${GREEN}  RAG Platform is now running and ready to use!${NC}"
+echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo ""
+echo -e "${BLUE}📍 Access Your Platform:${NC}"
+echo -e "   🌐 Frontend: ${GREEN}http://localhost:3000${NC}"
+echo -e "   🔌 Backend API: ${GREEN}http://localhost:8001/api/${NC}"
+echo ""
+echo -e "${YELLOW}⚠️  Press Ctrl+C to stop all services and exit${NC}"
+echo ""
+echo -e "${BLUE}📊 Service Status:${NC}"
+sudo supervisorctl status
+echo ""
+echo -e "${BLUE}📝 Monitoring Logs (Ctrl+C to stop):${NC}"
+echo ""
+
+# Trap Ctrl+C to gracefully shutdown
+cleanup() {
+    echo ""
+    echo ""
+    print_step "🛑 Shutting Down RAG Platform"
+    echo ""
+    print_message "Stopping all services..."
+    sudo supervisorctl stop all
+    echo ""
+    print_message "✅ All services stopped successfully"
+    echo ""
+    echo -e "${GREEN}Thank you for using RAG Platform! 👋${NC}"
+    echo ""
+    exit 0
+}
+
+trap cleanup SIGINT SIGTERM
+
+# Follow logs and keep script running
+echo -e "${BLUE}Following backend logs (press Ctrl+C to stop):${NC}"
+echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+tail -f /var/log/supervisor/backend.err.log /var/log/supervisor/backend.out.log 2>/dev/null
