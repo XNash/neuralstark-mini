@@ -587,11 +587,14 @@ class RAGPlatformTester:
     
     def run_all_tests(self):
         """Run all backend tests"""
-        print("=" * 60)
-        print("RAG PLATFORM BACKEND API TESTING")
-        print("=" * 60)
+        print("=" * 70)
+        print("RAG PLATFORM COMPREHENSIVE BACKEND TESTING")
+        print("Testing with Real Gemini API Key: AIzaSyD273RLpkzyDyU59NKxTERC3jm0xVhH7N4")
+        print("=" * 70)
         print(f"Backend URL: {self.base_url}")
         print(f"Test Session ID: {self.session_id}")
+        print(f"Documents: company_info.md, products.txt, faq.json")
+        print(f"Expected Chunks: 5 total from 3 documents")
         print()
         
         # Test sequence - Comprehensive RAG Platform Testing
