@@ -65,6 +65,16 @@ function App() {
     }
   };
 
+  const loadDocumentsList = async () => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/documents/list`);
+      const data = await response.json();
+      setDocumentsList(data);
+    } catch (error) {
+      console.error('Error loading documents list:', error);
+    }
+  };
+
   const saveSettings = async () => {
     try {
       const response = await fetch(`${BACKEND_URL}/api/settings`, {
