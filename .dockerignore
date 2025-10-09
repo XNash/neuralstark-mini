@@ -1,0 +1,16 @@
+.git
+.gitignore
+*.md
+.env
+.venv
+venv
+node_modules
+__pycache__
+*.pyc
+*.log
+.DS_Store
+backend/chroma_db
+frontend/build
+test_result.md
+backend_test.py
+*.backup
