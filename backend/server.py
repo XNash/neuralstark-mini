@@ -362,6 +362,65 @@ async def get_document_status():
         last_updated=status.get('last_updated') if status else None
     )
 
+@api_router.get("/documents/list")
+async def list_documents():
+    """Get list of all documents categorized by type"""
+    try:
+        files_dir = Path(__file__).parent.parent / "files"
+        
+        if not files_dir.exists():
+            return {"documents_by_type": {}, "total_count": 0}
+        
+        # Define file categories
+        categories = {
+            "PDF": ['.pdf'],
+            "Word": ['.docx', '.doc'],
+            "Excel": ['.xlsx', '.xls'],
+            "Text": ['.txt', '.md'],
+            "Data": ['.json', '.csv'],
+            "OpenDocument": ['.odt']
+        }
+        
+        # Collect files by category
+        documents_by_type = {}
+        total_count = 0
+        
+        for category, extensions in categories.items():
+            files = []
+            for ext in extensions:
+                found_files = list(files_dir.rglob(f'*{ext}'))
+                for file_path in found_files:
+                    files.append({
+                        "name": file_path.name,
+                        "size": file_path.stat().st_size,
+                        "size_formatted": format_file_size(file_path.stat().st_size),
+                        "modified": file_path.stat().st_mtime,
+                        "extension": file_path.suffix.lower()
+                    })
+            
+            if files:
+                # Sort by name
+                files.sort(key=lambda x: x['name'])
+                documents_by_type[category] = files
+                total_count += len(files)
+        
+        return {
+            "documents_by_type": documents_by_type,
+            "total_count": total_count
+        }
+    
+    except Exception as e:
+        logger.error(f"Error listing documents: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+def format_file_size(size_bytes: int) -> str:
+    """Format file size in human-readable format"""
+    for unit in ['B', 'KB', 'MB', 'GB']:
+        if size_bytes < 1024.0:
+            return f"{size_bytes:.1f} {unit}"
+        size_bytes /= 1024.0
+    return f"{size_bytes:.1f} TB"
+
 @api_router.post("/documents/reindex")
 async def reindex_documents(background_tasks: BackgroundTasks):
     """Trigger full document reindexing (clears existing index and rebuilds)"""
