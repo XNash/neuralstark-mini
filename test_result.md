@@ -310,6 +310,9 @@ frontend:
         - working: true
           agent: "testing"
           comment: "Settings page working perfectly - Page title '⚙️ Settings' correct, API Configuration section with password input field and Save button functional (saves API key and shows success message), Model Information section displays 4 items (Gemini 2.5 Flash, BAAI/bge-base-en-v1.5, ChromaDB, English/French), System Information section shows 4 items (Version 2.0.0, Backend URL, Document Directory, Auto-indexing), external link to Google AI Studio working with proper target='_blank'."
+        - working: true
+          agent: "testing"
+          comment: "RETESTED AFTER BACKEND IMPROVEMENTS: Settings page working excellently with enhanced backend. Page title '⚙️ Settings' correct, API Configuration section with password input field functional - successfully saved real API key AIzaSyD273RLpkzyDyU59NKxTERC3jm0xVhH7N4 and displays '✓ API key is configured and working'. Model Information section displays all 8 items correctly, System Information section shows all 4 items, external link to Google AI Studio working with proper target='_blank'. Backend integration perfect - API key persistence working flawlessly."
 
   - task: "Header System & Navigation"
     implemented: true
