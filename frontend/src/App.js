@@ -13,6 +13,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState('');
   const [docStatus, setDocStatus] = useState(null);
+  const [documentsList, setDocumentsList] = useState({ documents_by_type: {}, total_count: 0 });
   const [chatHistory, setChatHistory] = useState([]);
   const messagesEndRef = useRef(null);
 
