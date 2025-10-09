@@ -241,6 +241,9 @@ frontend:
         - working: true
           agent: "testing"
           comment: "Sidebar navigation system working perfectly - Brand logo '🤖 RAG Platform' displays correctly, New Chat button functional, 3 navigation items (Chat, Documents, Settings) with proper active states, document status mini-widget shows '5 chunks', sidebar toggle functionality working smoothly. Professional layout confirmed."
+        - working: true
+          agent: "testing"
+          comment: "RETESTED AFTER BACKEND IMPROVEMENTS: Sidebar navigation system working excellently with enhanced backend. Brand logo '🤖 RAG Platform' displays correctly, New Chat button functional, 3 navigation items with proper active states, document status mini-widget now shows improved '6 chunks' (up from 5), sidebar toggle functionality smooth. Professional layout and responsive behavior confirmed across all screen sizes."
 
   - task: "Chat Page Welcome Screen & Feature Cards"
     implemented: true
