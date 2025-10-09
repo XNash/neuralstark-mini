@@ -289,6 +289,9 @@ frontend:
         - working: true
           agent: "testing"
           comment: "Documents page working excellently - Page title '📚 Documents' displays correctly, stats grid shows 3 cards (Total Documents: 3, Indexed Chunks: 5, Last Updated: 10/9/2025), Reindex Documents button functional, 6 supported format items (PDF, Word, Excel, Text, Data, ODT) with proper icons and descriptions, instructions section with 4 clear steps, hover effects working on all cards."
+        - working: true
+          agent: "testing"
+          comment: "RETESTED AFTER BACKEND IMPROVEMENTS: Documents page working perfectly with enhanced backend. Page title '📚 Documents' correct, stats grid shows improved data (Total Documents: 3, Indexed Chunks: 6 - improved from 5, Last Updated: 10/9/2025), Reindex Documents button functional and triggers backend reindexing, all 6 supported format items with proper icons and descriptions, instructions section with 4 clear steps, hover effects working on all cards. Backend integration excellent."
 
   - task: "Settings Page (REDESIGNED)"
     implemented: true
