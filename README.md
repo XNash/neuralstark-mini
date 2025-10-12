@@ -253,6 +253,23 @@ This script checks:
 - Python and frontend dependencies
 - Service status and API connectivity
 
+### Configuration Verification
+
+To verify that all files are properly organized within `/app`:
+```bash
+chmod +x verify-configuration.sh
+./verify-configuration.sh
+```
+
+This checks:
+- Virtual environment location (`/app/.venv`)
+- Model cache directories (`/app/.cache/`)
+- ChromaDB location (`/app/backend/chroma_db`)
+- Environment variable configuration
+- Service status and health
+
+**📚 For detailed configuration documentation, see:** [PERMANENT_CONFIGURATION.md](PERMANENT_CONFIGURATION.md)
+
 ## 🔍 Troubleshooting
 
 ### Documents Not Indexing
