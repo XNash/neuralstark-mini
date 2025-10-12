@@ -424,33 +424,54 @@ setup_python_env() {
 
 # Install backend dependencies
 install_backend_deps() {
-    print_step "📚 Step 5/9: Installing Backend Dependencies"
+    print_step "📚 Step 6/10: Installing Backend Dependencies"
     
     cd "$SCRIPT_DIR/backend"
     
     # Activate virtual environment
-    source "$SCRIPT_DIR/.venv/bin/activate"
+    if [ -f "$VENV_PATH/bin/activate" ]; then
+        source "$VENV_PATH/bin/activate"
+    else
+        print_error "Virtual environment not found at $VENV_PATH"
+        return 1
+    fi
     
-    print_message "Installing emergentintegrations library..."
-    pip install --quiet emergentintegrations --extra-index-url https://d33sy5i8bnduwe.cloudfront.net/simple/
-    
-    print_message "Installing FastAPI and web server..."
-    pip install --quiet fastapi uvicorn[standard] motor python-dotenv python-multipart
-    
-    print_message "Installing RAG and vector store libraries..."
-    pip install --quiet chromadb sentence-transformers langchain langchain-community
-    
-    print_message "Installing document processing libraries..."
-    pip install --quiet pypdf pdfplumber python-docx openpyxl odfpy pytesseract pillow pdf2image
-    
-    print_message "Installing file monitoring..."
-    pip install --quiet watchdog
-    
-    # Update requirements.txt
-    print_message "Updating requirements.txt..."
-    pip freeze > requirements.txt
-    
-    print_message "✅ Backend dependencies installed"
+    # Check if requirements.txt exists
+    if [ ! -f "requirements.txt" ]; then
+        print_warning "requirements.txt not found, creating from scratch..."
+        
+        print_message "Installing emergentintegrations library..."
+        pip install --quiet emergentintegrations --extra-index-url https://d33sy5i8bnduwe.cloudfront.net/simple/ 2>/dev/null || print_warning "Failed to install emergentintegrations"
+        
+        print_message "Installing FastAPI and web server..."
+        pip install --quiet fastapi uvicorn[standard] motor python-dotenv python-multipart 2>/dev/null || print_warning "Some packages failed to install"
+        
+        print_message "Installing RAG and vector store libraries..."
+        pip install --quiet chromadb sentence-transformers langchain langchain-community 2>/dev/null || print_warning "Some packages failed to install"
+        
+        print_message "Installing document processing libraries..."
+        pip install --quiet pypdf pdfplumber python-docx openpyxl odfpy pytesseract pillow pdf2image 2>/dev/null || print_warning "Some packages failed to install"
+        
+        print_message "Installing file monitoring..."
+        pip install --quiet watchdog 2>/dev/null || print_warning "Failed to install watchdog"
+        
+        # Create requirements.txt
+        pip freeze > requirements.txt
+        print_message "✅ Created requirements.txt"
+    else
+        print_message "Installing from requirements.txt..."
+        if pip install --quiet -r requirements.txt 2>/dev/null; then
+            print_message "✅ Backend dependencies installed"
+        else
+            print_error "Failed to install some dependencies from requirements.txt"
+            print_message "Trying to install critical packages individually..."
+            
+            pip install --quiet fastapi uvicorn motor python-dotenv 2>/dev/null || true
+            pip install --quiet emergentintegrations --extra-index-url https://d33sy5i8bnduwe.cloudfront.net/simple/ 2>/dev/null || true
+            
+            print_warning "Some packages may be missing - check logs if backend fails to start"
+        fi
+    fi
     
     cd "$SCRIPT_DIR"
 }
