@@ -43,4 +43,16 @@ module.exports = {
       return webpackConfig;
     },
   },
+  devServer: {
+    allowedHosts: 'all',
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': '*',
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Allow-Credentials': 'true',
+    },
+    client: {
+      webSocketURL: 'auto://0.0.0.0:0/ws',
+    },
+  },
 };
