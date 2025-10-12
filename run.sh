@@ -161,13 +161,22 @@ check_sudo() {
 
 # Install system packages based on distro
 install_system_packages() {
-    print_step "📦 Step 1/9: Installing System Dependencies"
+    print_step "📦 Step 2/10: Installing System Dependencies"
+    
+    if $SKIP_SYSTEM_INSTALL; then
+        print_message "✓ System dependencies already installed - skipping"
+        return 0
+    fi
     
     case $OS in
         ubuntu|debian|pop)
             print_message "Using apt package manager..."
             export DEBIAN_FRONTEND=noninteractive
-            sudo apt-get update -qq
+            
+            if ! sudo apt-get update -qq 2>/dev/null; then
+                print_error "Failed to update package list"
+                return 1
+            fi
             
             # Install build essentials
             print_message "Installing build essentials..."
