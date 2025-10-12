@@ -290,16 +290,16 @@ This script checks:
 
 ### Configuration Verification
 
-To verify that all files are properly organized within `/app`:
+To verify that all files are properly organized:
 ```bash
 chmod +x verify-configuration.sh
 ./verify-configuration.sh
 ```
 
 This checks:
-- Virtual environment location (`/app/.venv`)
-- Model cache directories (`/app/.cache/`)
-- ChromaDB location (`/app/backend/chroma_db`)
+- Virtual environment location (`.venv/`)
+- Model cache directories (`.cache/`)
+- ChromaDB location (`backend/chroma_db/`)
 - Environment variable configuration
 - Service status and health
 
