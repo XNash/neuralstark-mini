@@ -130,14 +130,19 @@ This will check:
 
 ### Configuration
 
-**Backend `.env` file** (`/app/backend/.env`):
+**Environment Files:**
+
+The `run.sh` script automatically creates environment files with correct paths for your system. You can also manually configure:
+
+**Backend `.env` file** (`backend/.env`):
 ```bash
 MONGO_URL="mongodb://localhost:27017"
 DB_NAME="rag_platform"
 CORS_ORIGINS="*"
+# Cache directories are auto-configured by run.sh
 ```
 
-**Frontend `.env` file** (`/app/frontend/.env`):
+**Frontend `.env` file** (`frontend/.env`):
 ```bash
 REACT_APP_BACKEND_URL="http://localhost:8001"
 WDS_SOCKET_PORT=443
@@ -151,7 +156,7 @@ WDS_SOCKET_PORT=443
 
 1. **Access the application** at `http://localhost:3000`
 2. **Configure API Key**: Go to Settings page and add your Gemini API key
-3. **Add Documents**: Place files in `/app/files` directory
+3. **Add Documents**: Place files in `files/` directory (in project root)
 4. **Wait for Indexing**: Documents are automatically indexed (5-second check interval)
 5. **Start Chatting**: Ask questions about your documents in the Chat page
 
