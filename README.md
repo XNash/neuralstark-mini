@@ -50,26 +50,37 @@ A full-stack Retrieval-Augmented Generation (RAG) platform that allows users to 
 
 ### For New Machines (Cloning from GitHub)
 
-**Quick Start - Just 2 Commands:**
+**Quick Start - ONE Command:**
 
 ```bash
 # 1. Clone the repository
 git clone <repository-url> rag-platform
 cd rag-platform
 
-# 2. Run the automated setup
-./post-clone-setup.sh
-./run.sh
+# 2. Run the complete automated setup
+chmod +x complete-setup.sh
+./complete-setup.sh
 ```
 
-That's it! The scripts will:
-- Create environment files from templates
-- Install all dependencies
-- Set up the correct directory structure
-- Configure services automatically
-- Start the application
+**OR** use the standard method:
 
-**📖 For detailed instructions, see: [FIRST_TIME_SETUP.md](FIRST_TIME_SETUP.md)**
+```bash
+./post-clone-setup.sh  # Initial setup
+./run.sh               # Full installation
+```
+
+The setup scripts will:
+- ✅ Check Python 3.9+ compatibility (supports 3.9-3.13)
+- ✅ Create virtual environment in project directory
+- ✅ Install ALL dependencies (FastAPI, Gemini, ChromaDB, etc.)
+- ✅ Verify every package import
+- ✅ Configure environment files automatically
+- ✅ Start all services (MongoDB, Backend, Frontend)
+- ✅ Test that everything works
+
+**Time:** 3-5 minutes
+
+**📖 For detailed instructions, see: [USER_GUIDE.md](USER_GUIDE.md)**
 
 ---
 
