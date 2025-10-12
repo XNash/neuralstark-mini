@@ -478,14 +478,29 @@ install_backend_deps() {
 
 # Install frontend dependencies
 install_frontend_deps() {
-    print_step "⚛️  Step 6/9: Installing Frontend Dependencies"
+    print_step "⚛️  Step 7/10: Installing Frontend Dependencies"
     
     cd "$SCRIPT_DIR/frontend"
     
+    # Check if package.json exists
+    if [ ! -f "package.json" ]; then
+        print_error "package.json not found in frontend directory"
+        return 1
+    fi
+    
     if [ ! -d "node_modules" ] || [ ! -f "node_modules/.yarn-integrity" ]; then
         print_message "Installing frontend packages with yarn..."
-        yarn install --silent
-        print_message "✅ Frontend dependencies installed"
+        if yarn install --silent 2>/dev/null; then
+            print_message "✅ Frontend dependencies installed"
+        else
+            print_error "Yarn installation failed, trying npm..."
+            if npm install --silent 2>/dev/null; then
+                print_message "✅ Frontend dependencies installed with npm"
+            else
+                print_error "Failed to install frontend dependencies"
+                return 1
+            fi
+        fi
     else
         print_message "✅ Frontend dependencies already installed"
     fi
