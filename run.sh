@@ -1,12 +1,23 @@
 #!/bin/bash
 
 ###############################################################################
-# RAG Platform - Universal Setup and Run Script for Clean Linux Environments
-# This script works on Ubuntu/Debian, CentOS/RHEL, and other major distros
-# It installs all dependencies from scratch and starts the platform
+# RAG Platform - Universal Setup and Run Script
+# 
+# This script works in two modes:
+# 1. FRESH INSTALL: On clean Linux systems (Ubuntu/Debian, CentOS/RHEL, etc.)
+# 2. EXISTING SETUP: On systems where dependencies are already installed
+#
+# Features:
+# - Automatic detection of existing setup
+# - Smart dependency management
+# - Better error handling and diagnostics
+# - Port conflict detection
+# - Comprehensive logging
+# - Works in containers and VMs
 ###############################################################################
 
-set -e  # Exit on any error
+# Don't exit on error immediately - we'll handle errors gracefully
+set +e
 
 # Get the directory where the script is located
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
