@@ -358,6 +358,8 @@ create_directories() {
     mkdir -p "$SCRIPT_DIR/backend/chroma_db"
     mkdir -p "$SCRIPT_DIR/frontend/build"
     mkdir -p "$SCRIPT_DIR/tests"
+    mkdir -p "$SCRIPT_DIR/.cache/huggingface"
+    mkdir -p "$SCRIPT_DIR/.cache/sentence_transformers"
     
     print_message "✅ All directories created"
 }
