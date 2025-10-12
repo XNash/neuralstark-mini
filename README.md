@@ -48,13 +48,37 @@ A full-stack Retrieval-Augmented Generation (RAG) platform that allows users to 
 
 ## 🚀 Getting Started
 
+### For New Machines (Cloning from GitHub)
+
+**Quick Start - Just 2 Commands:**
+
+```bash
+# 1. Clone the repository
+git clone <repository-url> rag-platform
+cd rag-platform
+
+# 2. Run the automated setup
+./post-clone-setup.sh
+./run.sh
+```
+
+That's it! The scripts will:
+- Create environment files from templates
+- Install all dependencies
+- Set up the correct directory structure
+- Configure services automatically
+- Start the application
+
+**📖 For detailed instructions, see: [FIRST_TIME_SETUP.md](FIRST_TIME_SETUP.md)**
+
+---
+
 ### Quick Installation
 
 The platform includes an **intelligent automated setup script** that works in both fresh installations and existing setups:
 
 ```bash
-# Clone the repository
-git clone <repository-url>
+# If you already have the repository
 cd rag-platform
 
 # Run the intelligent setup script
@@ -67,6 +91,8 @@ chmod +x run.sh
 The script automatically:
 - ✅ **Detects existing setup** and skips unnecessary steps
 - ✅ **Auto-discovers virtual environments** (no hardcoded paths)
+- ✅ **Creates .venv in project directory** (not in /root)
+- ✅ **Sets up cache directories** within project
 - ✅ Detects your Linux distribution (Ubuntu, Debian, CentOS, RHEL, Fedora)
 - ✅ Installs system dependencies only if missing
 - ✅ **Checks for port conflicts** before starting services
