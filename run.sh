@@ -847,7 +847,7 @@ autorestart=true
 redirect_stderr=true
 stdout_logfile=/var/log/supervisor/backend.out.log
 stderr_logfile=/var/log/supervisor/backend.err.log
-environment=PATH="$VENV_PATH/bin:%(ENV_PATH)s"
+environment=PATH="$VENV_PATH/bin:%(ENV_PATH)s",HF_HOME="$SCRIPT_DIR/.cache/huggingface",TRANSFORMERS_CACHE="$SCRIPT_DIR/.cache/huggingface",SENTENCE_TRANSFORMERS_HOME="$SCRIPT_DIR/.cache/sentence_transformers"
 stopsignal=TERM
 stopwaitsecs=10
 stopasgroup=true
