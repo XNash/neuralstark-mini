@@ -1,0 +1,58 @@
+# RAG Platform Backend Dependencies - Python 3.13+ Compatible
+# Core FastAPI and Server
+fastapi>=0.110.0
+uvicorn[standard]>=0.25.0
+python-multipart>=0.0.9
+python-dotenv>=1.0.0
+
+# Database
+motor>=3.3.0
+pymongo>=4.5.0
+dnspython>=2.6.0
+
+# AI/ML - LLM Integration
+google-generativeai>=0.8.0
+
+# Vector Store and Embeddings
+chromadb>=0.4.0
+sentence-transformers>=2.5.0
+
+# RAG Framework
+langchain>=0.1.0
+langchain-community>=0.0.20
+langchain-core>=0.1.0
+langchain-text-splitters>=0.0.1
+
+# Document Processing
+pypdf>=4.0.0
+pdfplumber>=0.10.0
+pdf2image>=1.17.0
+python-docx>=1.1.0
+openpyxl>=3.1.0
+odfpy>=1.4.1
+
+# OCR
+pytesseract>=0.3.10
+pillow>=10.0.0
+
+# File System Monitoring
+watchdog>=4.0.0
+
+# HTTP and Async
+httpx>=0.27.0
+aiohttp>=3.9.0
+anyio>=4.0.0
+
+# Utilities
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+tenacity>=8.2.0
+tqdm>=4.66.0
+
+# Data Processing
+numpy>=1.26.0
+pandas>=2.1.0
+
+# Testing (optional but recommended)
+pytest>=8.0.0
+httpx>=0.27.0
