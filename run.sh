@@ -30,6 +30,11 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# Global flags
+SKIP_SYSTEM_INSTALL=false
+EXISTING_SETUP=false
+VENV_PATH=""
+
 # Function to print colored messages
 print_message() {
     echo -e "${GREEN}[RAG Platform]${NC} $1"
