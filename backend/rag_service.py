@@ -176,7 +176,7 @@ Now answer the user's question based solely on the above context."""
             "3. No documents have been added to the system\n\n"
             "Please try:\n"
             "- Rephrasing your question with different keywords\n"
-            "- Adding relevant documents to the /app/files directory\n"
+            "- Adding relevant documents to the files directory\n"
             "- Using the 'Reindex Documents' button to update the knowledge base"
         )
     
@@ -188,5 +188,5 @@ Now answer the user's question based solely on the above context."""
             "Please try:\n"
             "- Rephrasing your question with different keywords\n"
             "- Being more specific or more general in your query\n"
-            "- Adding more relevant documents to the /app/files directory"
+            "- Adding more relevant documents to the files directory"
         )
