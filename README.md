@@ -50,30 +50,56 @@ A full-stack Retrieval-Augmented Generation (RAG) platform that allows users to 
 
 ### Quick Installation
 
-The platform includes an automated setup script that works on any clean Linux environment:
+The platform includes an **intelligent automated setup script** that works in both fresh installations and existing setups:
 
 ```bash
 # Clone the repository
 git clone <repository-url>
 cd rag-platform
 
-# Run the one-click setup script
+# Run the intelligent setup script
 chmod +x run.sh
 ./run.sh
 ```
 
+#### 🎯 Smart Features
+
 The script automatically:
+- ✅ **Detects existing setup** and skips unnecessary steps
+- ✅ **Auto-discovers virtual environments** (no hardcoded paths)
 - ✅ Detects your Linux distribution (Ubuntu, Debian, CentOS, RHEL, Fedora)
-- ✅ Installs all system dependencies (Python, Node.js, MongoDB, etc.)
-- ✅ Sets up Python virtual environment
+- ✅ Installs system dependencies only if missing
+- ✅ **Checks for port conflicts** before starting services
+- ✅ Sets up Python virtual environment (uses existing if found)
 - ✅ Installs backend and frontend dependencies
 - ✅ Configures and starts MongoDB
 - ✅ Creates sample documents
 - ✅ Starts all services with Supervisor
+- ✅ **Performs health checks** and shows detailed diagnostics
+- ✅ **Handles errors gracefully** with helpful troubleshooting tips
 
 **Platform will be ready at**: `http://localhost:3000`
 
-For detailed installation instructions and troubleshooting, see **[INSTALL.md](INSTALL.md)**
+#### 🩺 Diagnostic Tool
+
+Run diagnostics anytime to check platform health:
+
+```bash
+./diagnose.sh
+```
+
+This will check:
+- System dependencies (Python, Node.js, MongoDB, Supervisor)
+- Virtual environments
+- Port availability
+- Service status
+- Configuration files
+- Backend/Frontend health
+
+#### 📖 Documentation
+
+- **[RUN_SCRIPT_GUIDE.md](RUN_SCRIPT_GUIDE.md)** - Complete guide to run.sh features and troubleshooting
+- **[INSTALL.md](INSTALL.md)** - Detailed installation instructions
 
 ### Configuration
 
