@@ -563,27 +563,81 @@ install_frontend_deps() {
     # Check if package.json exists
     if [ ! -f "package.json" ]; then
         print_error "package.json not found in frontend directory"
+        cd "$SCRIPT_DIR"
         return 1
     fi
     
-    if [ ! -d "node_modules" ] || [ ! -f "node_modules/.yarn-integrity" ]; then
-        print_message "Installing frontend packages with yarn..."
-        if yarn install --silent 2>/dev/null; then
-            print_message "✅ Frontend dependencies installed"
+    # Check if node_modules exists and is valid
+    if [ -d "node_modules" ]; then
+        print_message "node_modules directory exists, checking integrity..."
+        
+        # Check if it looks complete (has react and react-dom at minimum)
+        if [ -d "node_modules/react" ] && [ -d "node_modules/react-dom" ]; then
+            print_message "✓ Core dependencies (react, react-dom) present"
+            
+            # Check if yarn.lock or package-lock.json is newer than node_modules
+            if [ "package.json" -nt "node_modules" ]; then
+                print_warning "package.json is newer than node_modules, reinstalling..."
+                rm -rf node_modules package-lock.json yarn.lock 2>/dev/null || true
+            else
+                print_message "✅ Frontend dependencies already installed and up to date"
+                cd "$SCRIPT_DIR"
+                return 0
+            fi
         else
-            print_error "Yarn installation failed, trying npm..."
-            if npm install --silent 2>/dev/null; then
-                print_message "✅ Frontend dependencies installed with npm"
+            print_warning "node_modules incomplete, reinstalling..."
+            rm -rf node_modules 2>/dev/null || true
+        fi
+    fi
+    
+    print_message "Installing frontend packages (this may take 2-3 minutes)..."
+    
+    # Try yarn first (preferred)
+    if command_exists yarn; then
+        print_message "Using yarn package manager..."
+        if yarn install 2>&1 | grep -E "(success|Done)" | tail -3; then
+            print_message "✅ Frontend dependencies installed with yarn"
+            cd "$SCRIPT_DIR"
+            return 0
+        else
+            print_warning "Yarn installation had issues, trying npm..."
+        fi
+    else
+        print_message "Yarn not found, using npm..."
+    fi
+    
+    # Fallback to npm
+    if command_exists npm; then
+        print_message "Using npm package manager..."
+        
+        # Clean npm cache if previous attempt failed
+        npm cache clean --force 2>/dev/null || true
+        
+        if npm install 2>&1 | grep -E "(added|up to date)" | tail -5; then
+            print_message "✅ Frontend dependencies installed with npm"
+            cd "$SCRIPT_DIR"
+            return 0
+        else
+            print_error "npm installation failed"
+            
+            # Try with --legacy-peer-deps flag
+            print_message "Retrying with --legacy-peer-deps..."
+            if npm install --legacy-peer-deps 2>&1 | grep -E "(added|up to date)" | tail -5; then
+                print_message "✅ Frontend dependencies installed with npm (legacy mode)"
+                cd "$SCRIPT_DIR"
+                return 0
             else
                 print_error "Failed to install frontend dependencies"
+                cd "$SCRIPT_DIR"
                 return 1
             fi
         fi
     else
-        print_message "✅ Frontend dependencies already installed"
+        print_error "Neither yarn nor npm found!"
+        print_message "Please install Node.js first"
+        cd "$SCRIPT_DIR"
+        return 1
     fi
-    
-    cd "$SCRIPT_DIR"
 }
 
 # Configure environment files
