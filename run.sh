@@ -289,26 +289,51 @@ EOF
 
 # Start MongoDB service
 start_mongodb() {
-    print_step "🗄️  Step 2/9: Starting MongoDB Service"
+    print_step "🗄️  Step 3/10: Starting MongoDB Service"
+    
+    # Check if MongoDB is already running
+    if is_port_in_use 27017; then
+        print_message "✅ MongoDB is already running on port 27017"
+        return 0
+    fi
     
     # Try different methods to start MongoDB
-    if command -v systemctl &> /dev/null; then
-        sudo systemctl start mongod 2>/dev/null || true
-        sudo systemctl enable mongod 2>/dev/null || true
-        print_message "✅ MongoDB service started with systemctl"
-    elif command -v service &> /dev/null; then
-        sudo service mongod start 2>/dev/null || true
-        print_message "✅ MongoDB service started with service"
-    else
+    local mongodb_started=false
+    
+    if command_exists systemctl; then
+        if sudo systemctl start mongod 2>/dev/null; then
+            sudo systemctl enable mongod 2>/dev/null || true
+            print_message "✅ MongoDB service started with systemctl"
+            mongodb_started=true
+        fi
+    fi
+    
+    if ! $mongodb_started && command_exists service; then
+        if sudo service mongod start 2>/dev/null; then
+            print_message "✅ MongoDB service started with service"
+            mongodb_started=true
+        fi
+    fi
+    
+    if ! $mongodb_started; then
         # Start MongoDB manually if no service manager
         print_warning "No service manager found, starting MongoDB manually..."
         if ! pgrep -x "mongod" > /dev/null; then
             sudo mkdir -p /data/db
-            sudo mongod --fork --logpath /var/log/mongodb.log --dbpath /data/db
-            print_message "✅ MongoDB started manually"
+            if sudo mongod --fork --logpath /var/log/mongodb.log --dbpath /data/db 2>/dev/null; then
+                print_message "✅ MongoDB started manually"
+                mongodb_started=true
+            fi
         else
-            print_message "✅ MongoDB already running"
+            print_message "✅ MongoDB already running (found process)"
+            mongodb_started=true
         fi
+    fi
+    
+    if ! $mongodb_started; then
+        print_error "Failed to start MongoDB"
+        print_warning "Continuing anyway - you may need to start MongoDB manually"
+        return 0  # Don't fail the entire script
     fi
     
     # Wait for MongoDB to be ready
@@ -322,6 +347,7 @@ start_mongodb() {
     done
     
     print_warning "MongoDB may not be fully ready, but continuing..."
+    return 0
 }
 
 # Create necessary directories
