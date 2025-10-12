@@ -11,7 +11,7 @@ import sys
 from datetime import datetime
 
 # Get backend URL from environment
-BACKEND_URL = "https://code-launcher-48.preview.emergentagent.com/api"
+BACKEND_URL = "https://path-safety.preview.emergentagent.com/api"
 
 class RAGPlatformTester:
     def __init__(self):
