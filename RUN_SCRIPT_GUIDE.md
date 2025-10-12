@@ -183,6 +183,16 @@ sudo systemctl status mongod
 sudo systemctl start mongod
 ```
 
+**📖 For comprehensive troubleshooting, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md)**
+
+This guide covers:
+- Installation issues and solutions
+- Runtime errors and fixes
+- Performance optimization
+- Network problems
+- MongoDB issues
+- Complete diagnostic procedures
+
 ### Frontend Won't Start
 
 **Check the logs:**
