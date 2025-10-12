@@ -107,16 +107,30 @@ class RAGService:
                 # Build enhanced system message with better instructions
                 system_message = self._build_system_prompt(context)
                 
-                # Initialize chat with Gemini
-                chat = LlmChat(
-                    api_key=api_key,
-                    session_id=session_id,
-                    system_message=system_message
-                ).with_model("gemini", "gemini-2.5-flash")
-                
-                # Send query with retry logic
-                user_message = UserMessage(text=query)
-                response = await chat.send_message(user_message)
+                # Call LLM based on available library
+                if USE_EMERGENT:
+                    # Use emergentintegrations
+                    chat = LlmChat(
+                        api_key=api_key,
+                        session_id=session_id,
+                        system_message=system_message
+                    ).with_model("gemini", "gemini-2.5-flash")
+                    
+                    user_message = UserMessage(text=query)
+                    response = await chat.send_message(user_message)
+                else:
+                    # Use google-generativeai
+                    genai.configure(api_key=api_key)
+                    model = genai.GenerativeModel(
+                        model_name='gemini-2.0-flash-exp',
+                        system_instruction=system_message
+                    )
+                    
+                    result = await asyncio.to_thread(
+                        model.generate_content,
+                        query
+                    )
+                    response = result.text
                 
                 logger.info(f"Successfully generated response for session {session_id} (attempt {attempt + 1})")
                 return response, sources
