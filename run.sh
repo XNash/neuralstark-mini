@@ -436,42 +436,120 @@ install_backend_deps() {
         return 1
     fi
     
+    print_message "Python: $(python --version 2>&1)"
+    print_message "Pip: $(pip --version 2>&1)"
+    
     # Check if requirements.txt exists
     if [ ! -f "requirements.txt" ]; then
-        print_warning "requirements.txt not found, creating from scratch..."
+        print_warning "requirements.txt not found, installing essential packages..."
         
-        print_message "Installing emergentintegrations library..."
-        pip install --quiet emergentintegrations --extra-index-url https://d33sy5i8bnduwe.cloudfront.net/simple/ 2>/dev/null || print_warning "Failed to install emergentintegrations"
+        # Install critical packages
+        print_message "Installing critical packages..."
+        pip install --upgrade pip setuptools wheel
+        pip install fastapi uvicorn[standard] motor python-dotenv python-multipart || {
+            print_error "Failed to install critical packages"
+            return 1
+        }
         
-        print_message "Installing FastAPI and web server..."
-        pip install --quiet fastapi uvicorn[standard] motor python-dotenv python-multipart 2>/dev/null || print_warning "Some packages failed to install"
+        print_message "Installing emergentintegrations..."
+        pip install emergentintegrations --extra-index-url https://d33sy5i8bnduwe.cloudfront.net/simple/ || print_warning "emergentintegrations install failed"
         
-        print_message "Installing RAG and vector store libraries..."
-        pip install --quiet chromadb sentence-transformers langchain langchain-community 2>/dev/null || print_warning "Some packages failed to install"
+        print_message "Installing RAG libraries..."
+        pip install chromadb sentence-transformers langchain langchain-community || print_warning "Some RAG libraries failed"
         
-        print_message "Installing document processing libraries..."
-        pip install --quiet pypdf pdfplumber python-docx openpyxl odfpy pytesseract pillow pdf2image 2>/dev/null || print_warning "Some packages failed to install"
+        print_message "Installing document processing..."
+        pip install pypdf pdfplumber python-docx openpyxl odfpy pytesseract pillow pdf2image watchdog || print_warning "Some doc processing libraries failed"
         
-        print_message "Installing file monitoring..."
-        pip install --quiet watchdog 2>/dev/null || print_warning "Failed to install watchdog"
-        
-        # Create requirements.txt
         pip freeze > requirements.txt
-        print_message "✅ Created requirements.txt"
+        print_message "✅ Created requirements.txt with installed packages"
     else
-        print_message "Installing from requirements.txt..."
-        if pip install --quiet -r requirements.txt 2>/dev/null; then
-            print_message "✅ Backend dependencies installed"
+        # Check if dependencies are already satisfied
+        print_message "Checking existing dependencies..."
+        
+        # Test critical imports
+        if python -c "import fastapi, uvicorn, motor" 2>/dev/null; then
+            print_message "✓ Critical packages already installed"
+            
+            # Check if all packages from requirements.txt are installed
+            print_message "Verifying all packages from requirements.txt..."
+            
+            # Count total vs installed
+            TOTAL_PACKAGES=$(grep -v "^#" requirements.txt | grep -v "^$" | wc -l)
+            
+            # Try installing missing packages only
+            print_message "Installing/updating packages from requirements.txt..."
+            print_message "This may take a few minutes for $TOTAL_PACKAGES packages..."
+            
+            # Install with progress but no full output
+            if pip install -r requirements.txt --no-deps 2>&1 | grep -E "(Installing|Requirement already satisfied|Successfully installed)" | tail -5; then
+                print_message "✅ Backend dependencies verified/updated"
+            else
+                print_warning "Some packages could not be installed, checking critical ones..."
+                
+                # Verify critical packages work
+                if python -c "import fastapi, uvicorn, motor, chromadb" 2>/dev/null; then
+                    print_message "✅ Critical packages are functional"
+                    print_warning "Some optional packages may be missing (non-critical)"
+                else
+                    print_error "Critical packages missing, installing individually..."
+                    
+                    # Install critical packages one by one
+                    print_message "1/5 Installing FastAPI..."
+                    pip install fastapi uvicorn[standard] || print_error "FastAPI failed"
+                    
+                    print_message "2/5 Installing Motor (MongoDB)..."
+                    pip install motor python-dotenv || print_error "Motor failed"
+                    
+                    print_message "3/5 Installing emergentintegrations..."
+                    pip install emergentintegrations --extra-index-url https://d33sy5i8bnduwe.cloudfront.net/simple/ || print_warning "emergentintegrations failed"
+                    
+                    print_message "4/5 Installing ChromaDB..."
+                    pip install chromadb sentence-transformers || print_error "ChromaDB failed"
+                    
+                    print_message "5/5 Installing LangChain..."
+                    pip install langchain langchain-community || print_warning "LangChain failed"
+                    
+                    # Test again
+                    if python -c "import fastapi, uvicorn, motor" 2>/dev/null; then
+                        print_message "✅ Critical packages installed successfully"
+                    else
+                        print_error "Failed to install critical packages - backend may not work"
+                        return 1
+                    fi
+                fi
+            fi
         else
-            print_error "Failed to install some dependencies from requirements.txt"
-            print_message "Trying to install critical packages individually..."
+            print_message "Installing all packages from requirements.txt..."
+            print_message "This will take several minutes..."
             
-            pip install --quiet fastapi uvicorn motor python-dotenv 2>/dev/null || true
-            pip install --quiet emergentintegrations --extra-index-url https://d33sy5i8bnduwe.cloudfront.net/simple/ 2>/dev/null || true
+            # Show progress during installation
+            pip install -r requirements.txt 2>&1 | while IFS= read -r line; do
+                if [[ "$line" =~ "Installing collected packages" ]] || [[ "$line" =~ "Successfully installed" ]] || [[ "$line" =~ "ERROR" ]]; then
+                    echo "     $line"
+                fi
+            done
             
-            print_warning "Some packages may be missing - check logs if backend fails to start"
+            # Verify installation
+            if python -c "import fastapi, uvicorn, motor" 2>/dev/null; then
+                print_message "✅ Backend dependencies installed successfully"
+            else
+                print_error "Installation completed but critical packages missing"
+                print_message "Attempting to fix by installing critical packages..."
+                pip install fastapi uvicorn[standard] motor python-dotenv
+                
+                if python -c "import fastapi, uvicorn, motor" 2>/dev/null; then
+                    print_message "✅ Critical packages now working"
+                else
+                    print_error "Critical packages still missing - manual intervention needed"
+                    return 1
+                fi
+            fi
         fi
     fi
+    
+    # Show final package count
+    INSTALLED_COUNT=$(pip list 2>/dev/null | wc -l)
+    print_message "Total packages installed: $INSTALLED_COUNT"
     
     cd "$SCRIPT_DIR"
 }
