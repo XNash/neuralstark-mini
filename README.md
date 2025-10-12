@@ -5,7 +5,7 @@ A full-stack Retrieval-Augmented Generation (RAG) platform that allows users to 
 ## 🌟 Features
 
 ### Core Functionality
-- **🔍 Automatic Document Indexing**: Watches `/app/files` directory for new or modified documents
+- **🔍 Automatic Document Indexing**: Watches `files/` directory for new or modified documents
 - **💬 AI-Powered Chat**: Chat with your documents using Gemini 2.5 Flash
 - **🌐 Multilingual Support**: Optimized for English and French with BAAI embeddings
 - **📊 Real-time Status**: Monitor indexed documents and processing status
