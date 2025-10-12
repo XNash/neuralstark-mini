@@ -828,10 +828,13 @@ start_services() {
 
 # Main installation flow
 main() {
-    print_step "🚀 RAG Platform - Universal Setup for Clean Linux"
+    print_step "🚀 RAG Platform - Universal Setup Script"
+    print_message "This script works for both fresh installs and existing setups"
+    echo ""
     
     # Pre-flight checks
     check_sudo
+    detect_existing_setup
     detect_os
     
     # Installation steps
@@ -844,6 +847,8 @@ main() {
     configure_env_files
     configure_supervisor
     start_services
+    
+    local exit_code=$?
     
     # Final summary
     print_step "✅ RAG Platform Setup Complete!"
@@ -860,8 +865,27 @@ EOF
     echo -e "${NC}"
     
     echo ""
-    print_message "🎉 Platform is ready to use!"
+    print_message "🎉 Platform setup completed!"
     echo ""
+    
+    # Print diagnostics if services aren't healthy
+    if [ $exit_code -ne 0 ]; then
+        print_warning "⚠️  Some services may need attention"
+        echo ""
+        echo -e "${YELLOW}🔍 Quick Diagnostics:${NC}"
+        echo ""
+        echo -e "${BLUE}Current service status:${NC}"
+        sudo supervisorctl status
+        echo ""
+        echo -e "${BLUE}Port usage:${NC}"
+        if command_exists ss; then
+            ss -tulpn | grep -E ':(8001|3000|27017)' || echo "  No services detected on expected ports"
+        else
+            netstat -tulpn 2>/dev/null | grep -E ':(8001|3000|27017)' || echo "  No services detected on expected ports"
+        fi
+        echo ""
+    fi
+    
     echo -e "${BLUE}📍 Access Points:${NC}"
     echo -e "   Frontend: ${GREEN}http://localhost:3000${NC}"
     echo -e "   Backend API: ${GREEN}http://localhost:8001/api/${NC}"
@@ -888,10 +912,15 @@ EOF
     echo -e "   • faq.json        - Frequently asked questions"
     echo ""
     echo -e "${BLUE}🐛 Troubleshooting:${NC}"
-    echo -e "   If services don't start:"
+    echo -e "   ${YELLOW}Backend fails to start:${NC}"
+    echo -e "   1. Check if port 8001 is free: ${YELLOW}sudo lsof -i :8001${NC}"
+    echo -e "   2. Check Python venv: ${YELLOW}$VENV_PATH/bin/python --version${NC}"
+    echo -e "   3. Check dependencies: ${YELLOW}$VENV_PATH/bin/pip list | grep fastapi${NC}"
+    echo -e "   4. View detailed errors: ${YELLOW}tail -50 /var/log/supervisor/backend.err.log${NC}"
+    echo ""
+    echo -e "   ${YELLOW}MongoDB connection fails:${NC}"
     echo -e "   1. Check MongoDB: ${YELLOW}sudo systemctl status mongod${NC}"
-    echo -e "   2. Check supervisor: ${YELLOW}sudo systemctl status supervisor${NC}"
-    echo -e "   3. Review logs in: ${YELLOW}/var/log/supervisor/${NC}"
+    echo -e "   2. Test connection: ${YELLOW}mongosh --eval 'db.adminCommand(\"ping\")'${NC}"
     echo ""
     echo -e "${GREEN}Happy chatting with your documents! 🚀${NC}"
     echo ""
