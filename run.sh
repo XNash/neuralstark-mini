@@ -352,7 +352,7 @@ start_mongodb() {
 
 # Create necessary directories
 create_directories() {
-    print_step "📁 Step 3/9: Creating Directories"
+    print_step "📁 Step 4/10: Creating Directories"
     
     mkdir -p "$SCRIPT_DIR/files"
     mkdir -p "$SCRIPT_DIR/backend/chroma_db"
@@ -364,23 +364,60 @@ create_directories() {
 
 # Set up Python virtual environment
 setup_python_env() {
-    print_step "🐍 Step 4/9: Setting Up Python Environment"
+    print_step "🐍 Step 5/10: Setting Up Python Environment"
+    
+    # If we found an existing venv, use it
+    if [ -n "$VENV_PATH" ] && [ -d "$VENV_PATH" ]; then
+        print_message "Using existing virtual environment: $VENV_PATH"
+        
+        # Test if it works
+        if "$VENV_PATH/bin/python" -c "import sys" 2>/dev/null; then
+            print_message "✅ Virtual environment is functional"
+            return 0
+        else
+            print_warning "Existing venv is broken, will create new one"
+            VENV_PATH=""
+        fi
+    fi
+    
+    # Determine where to create venv
+    if [ -z "$VENV_PATH" ]; then
+        # Try to create in script directory first
+        if [ -w "$SCRIPT_DIR" ]; then
+            VENV_PATH="$SCRIPT_DIR/.venv"
+        elif [ -w "$HOME" ]; then
+            VENV_PATH="$HOME/.venv"
+        else
+            VENV_PATH="/tmp/rag-platform-venv"
+            print_warning "Using /tmp for venv - not persistent across reboots"
+        fi
+    fi
     
     # Create virtual environment if it doesn't exist
-    if [ ! -d "$SCRIPT_DIR/.venv" ]; then
-        print_message "Creating Python virtual environment..."
-        python3 -m venv "$SCRIPT_DIR/.venv"
+    if [ ! -d "$VENV_PATH" ]; then
+        print_message "Creating Python virtual environment at: $VENV_PATH"
+        if ! python3 -m venv "$VENV_PATH" 2>/dev/null; then
+            print_error "Failed to create virtual environment"
+            return 1
+        fi
         print_message "✅ Virtual environment created"
     else
         print_message "✅ Virtual environment already exists"
     fi
     
     # Activate virtual environment
-    source "$SCRIPT_DIR/.venv/bin/activate"
+    if [ -f "$VENV_PATH/bin/activate" ]; then
+        source "$VENV_PATH/bin/activate"
+    else
+        print_error "Virtual environment activation script not found"
+        return 1
+    fi
     
     # Upgrade pip
     print_message "Upgrading pip..."
-    pip install --quiet --upgrade pip setuptools wheel
+    if ! pip install --quiet --upgrade pip setuptools wheel 2>/dev/null; then
+        print_warning "Failed to upgrade pip, continuing anyway"
+    fi
     
     print_message "✅ Python environment ready"
 }
