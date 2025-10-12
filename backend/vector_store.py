@@ -12,10 +12,10 @@ class VectorStoreService:
     
     def __init__(self, collection_name: str = "documents"):
         # Initialize ChromaDB with persistent storage
-        self.client = chromadb.Client(Settings(
-            persist_directory="/app/backend/chroma_db",
-            anonymized_telemetry=False
-        ))
+        self.client = chromadb.PersistentClient(
+            path="/app/backend/chroma_db",
+            settings=Settings(anonymized_telemetry=False)
+        )
         
         # Initialize embedding model (BAAI for multilingual support)
         logger.info("Loading embedding model: BAAI/bge-base-en-v1.5")
