@@ -212,36 +212,40 @@ GET /api/chat/history/{session_id}
 ## 🗂️ Project Structure
 
 ```
-/app/
-├── backend/                    # FastAPI backend
-│   ├── server.py              # Main FastAPI application
-│   ├── document_processor.py  # Document parsing and chunking
-│   ├── vector_store.py        # ChromaDB vector store service
-│   ├── rag_service.py         # RAG logic and Gemini integration
-│   ├── requirements.txt       # Python dependencies
-│   ├── chroma_db/            # ChromaDB persistent storage
-│   └── .env                  # Environment variables
+rag-platform/                  # Project root (portable, can be anywhere)
+├── backend/                   # FastAPI backend
+│   ├── server.py             # Main FastAPI application
+│   ├── document_processor.py # Document parsing and chunking
+│   ├── vector_store.py       # ChromaDB vector store service
+│   ├── rag_service.py        # RAG logic and Gemini integration
+│   ├── requirements.txt      # Python dependencies
+│   ├── chroma_db/           # ChromaDB persistent storage
+│   └── .env                 # Environment variables (auto-generated)
 │
-├── frontend/                  # React frontend
+├── frontend/                 # React frontend
 │   ├── src/
-│   │   ├── App.js            # Main React component
-│   │   ├── App.css           # Styling
-│   │   └── index.js          # Entry point
-│   └── .env                  # Frontend environment variables
+│   │   ├── App.js           # Main React component
+│   │   ├── App.css          # Styling
+│   │   └── index.js         # Entry point
+│   └── .env                 # Frontend environment (auto-generated)
 │
-├── files/                     # Document storage (watched directory)
-│   ├── company_info.md       # Example: Company information
-│   ├── products.txt          # Example: Product catalog
-│   └── faq.json             # Example: FAQ data
+├── files/                    # Document storage (watched directory)
+│   ├── company_info.md      # Example: Company information
+│   ├── products.txt         # Example: Product catalog
+│   └── faq.json            # Example: FAQ data
 │
-└── README.md                 # This file
+├── .venv/                   # Python virtual environment (auto-created)
+├── .cache/                  # Model cache directory (auto-created)
+├── run.sh                   # Universal setup and run script
+├── post-clone-setup.sh      # Initial setup after cloning
+└── README.md                # This file
 ```
 
 ## 🎯 How It Works
 
 ### RAG Pipeline
 
-1. **Document Processing**: Files detected in `/app/files` → Text extraction with OCR → Chunking with overlap
+1. **Document Processing**: Files detected in `files/` → Text extraction with OCR → Chunking with overlap
 2. **Embedding & Indexing**: Chunks converted to embeddings → Stored in ChromaDB with metadata
 3. **Query Processing**: User question embedded → Top K relevant chunks retrieved from vector store
 4. **Response Generation**: Context + query sent to Gemini → Response based on documents → Sources returned
