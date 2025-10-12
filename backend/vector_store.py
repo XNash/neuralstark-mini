@@ -1,5 +1,6 @@
 import logging
 from typing import List, Dict, Tuple
+from pathlib import Path
 import chromadb
 from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
@@ -11,9 +12,12 @@ class VectorStoreService:
     """Service for managing vector embeddings with ChromaDB"""
     
     def __init__(self, collection_name: str = "documents"):
-        # Initialize ChromaDB with persistent storage
+        # Initialize ChromaDB with persistent storage - use relative path
+        chroma_db_path = Path(__file__).parent / "chroma_db"
+        chroma_db_path.mkdir(parents=True, exist_ok=True)
+        
         self.client = chromadb.PersistentClient(
-            path="/app/backend/chroma_db",
+            path=str(chroma_db_path),
             settings=Settings(anonymized_telemetry=False)
         )
         
