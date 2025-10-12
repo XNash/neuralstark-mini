@@ -634,39 +634,60 @@ EOF
 
 # Configure supervisor
 configure_supervisor() {
-    print_step "🔧 Step 8/9: Configuring Supervisor"
+    print_step "🔧 Step 9/10: Configuring Supervisor"
+    
+    # Check if we should skip supervisor configuration in existing setup
+    if [ -f "/etc/supervisor/conf.d/supervisord.conf" ] && grep -q "READONLY FILE" "/etc/supervisor/conf.d/supervisord.conf" 2>/dev/null; then
+        print_warning "Found READONLY supervisor config - using existing configuration"
+        print_message "✅ Supervisor already configured (read-only mode)"
+        return 0
+    fi
     
     # Create supervisor config directory if it doesn't exist
     sudo mkdir -p /etc/supervisor/conf.d
+    
+    # Detect current user
+    CURRENT_USER="${USER:-$(whoami)}"
+    
+    # Get yarn path
+    YARN_PATH=$(command -v yarn || echo "/usr/bin/yarn")
     
     # Backend supervisor config
     print_message "Creating backend supervisor configuration..."
     cat << EOF | sudo tee /etc/supervisor/conf.d/rag-backend.conf > /dev/null
 [program:backend]
-command=$SCRIPT_DIR/.venv/bin/uvicorn server:app --host 0.0.0.0 --port 8001 --reload
+command=$VENV_PATH/bin/uvicorn server:app --host 0.0.0.0 --port 8001 --reload
 directory=$SCRIPT_DIR/backend
-user=$USER
+user=$CURRENT_USER
 autostart=true
 autorestart=true
 redirect_stderr=true
 stdout_logfile=/var/log/supervisor/backend.out.log
 stderr_logfile=/var/log/supervisor/backend.err.log
-environment=PATH="$SCRIPT_DIR/.venv/bin:%(ENV_PATH)s"
+environment=PATH="$VENV_PATH/bin:%(ENV_PATH)s"
+stopsignal=TERM
+stopwaitsecs=10
+stopasgroup=true
+killasgroup=true
 EOF
     
     # Frontend supervisor config
     print_message "Creating frontend supervisor configuration..."
     cat << EOF | sudo tee /etc/supervisor/conf.d/rag-frontend.conf > /dev/null
 [program:frontend]
-command=/usr/bin/yarn start
+command=$YARN_PATH start
 directory=$SCRIPT_DIR/frontend
-user=$USER
+user=$CURRENT_USER
 autostart=true
 autorestart=true
 redirect_stderr=true
 stdout_logfile=/var/log/supervisor/frontend.out.log
 stderr_logfile=/var/log/supervisor/frontend.err.log
-environment=PATH="/usr/bin:%(ENV_PATH)s",NODE_ENV="development"
+environment=PATH="$YARN_PATH:%(ENV_PATH)s",NODE_ENV="development",HOST="0.0.0.0",PORT="3000"
+stopsignal=TERM
+stopwaitsecs=50
+stopasgroup=true
+killasgroup=true
 EOF
     
     # Create log directory
