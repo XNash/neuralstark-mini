@@ -692,23 +692,41 @@ EOF
     
     # Create log directory
     sudo mkdir -p /var/log/supervisor
-    sudo touch /var/log/supervisor/backend.out.log
-    sudo touch /var/log/supervisor/backend.err.log
-    sudo touch /var/log/supervisor/frontend.out.log
-    sudo touch /var/log/supervisor/frontend.err.log
-    sudo chown -R $USER:$USER /var/log/supervisor/ 2>/dev/null || true
+    sudo touch /var/log/supervisor/backend.out.log 2>/dev/null || true
+    sudo touch /var/log/supervisor/backend.err.log 2>/dev/null || true
+    sudo touch /var/log/supervisor/frontend.out.log 2>/dev/null || true
+    sudo touch /var/log/supervisor/frontend.err.log 2>/dev/null || true
+    sudo chown -R $CURRENT_USER:$CURRENT_USER /var/log/supervisor/ 2>/dev/null || true
     
     # Start supervisor service
-    if command -v systemctl &> /dev/null; then
-        sudo systemctl restart supervisor 2>/dev/null || true
-        sudo systemctl enable supervisor 2>/dev/null || true
-    elif command -v service &> /dev/null; then
-        sudo service supervisor restart 2>/dev/null || true
-    else
+    local supervisor_started=false
+    if command_exists systemctl; then
+        if sudo systemctl restart supervisor 2>/dev/null; then
+            sudo systemctl enable supervisor 2>/dev/null || true
+            supervisor_started=true
+        fi
+    fi
+    
+    if ! $supervisor_started && command_exists service; then
+        if sudo service supervisor restart 2>/dev/null; then
+            supervisor_started=true
+        fi
+    fi
+    
+    if ! $supervisor_started; then
         # Start supervisord manually
         if ! pgrep -x "supervisord" > /dev/null; then
-            sudo supervisord -c /etc/supervisor/supervisord.conf
+            if sudo supervisord -c /etc/supervisor/supervisord.conf 2>/dev/null; then
+                supervisor_started=true
+            fi
+        else
+            supervisor_started=true
         fi
+    fi
+    
+    if ! $supervisor_started; then
+        print_error "Failed to start supervisor"
+        return 1
     fi
     
     # Reload supervisor configuration
@@ -721,15 +739,40 @@ EOF
 
 # Start services
 start_services() {
-    print_step "🚀 Step 9/9: Starting Services"
+    print_step "🚀 Step 10/10: Starting Services"
+    
+    # Stop any existing instances first
+    print_message "Stopping any existing instances..."
+    sudo supervisorctl stop backend frontend 2>/dev/null || true
+    sleep 2
     
     print_message "Starting all services..."
-    sudo supervisorctl restart all 2>/dev/null || true
+    if sudo supervisorctl start backend frontend 2>/dev/null; then
+        print_message "✅ Services start command sent"
+    else
+        print_warning "Failed to start services with supervisorctl, trying restart all..."
+        sudo supervisorctl restart all 2>/dev/null || true
+    fi
     
     sleep 5
     
     print_message "Checking service status..."
     sudo supervisorctl status || true
+    
+    # Check for common errors in logs
+    if [ -f "/var/log/supervisor/backend.err.log" ]; then
+        if grep -q "Address already in use" /var/log/supervisor/backend.err.log 2>/dev/null; then
+            print_error "Backend port 8001 is already in use!"
+            print_message "Finding process using port 8001..."
+            sudo lsof -i :8001 || sudo netstat -tulpn | grep :8001 || true
+        fi
+        
+        if grep -q "ModuleNotFoundError\|ImportError" /var/log/supervisor/backend.err.log 2>/dev/null; then
+            print_error "Missing Python dependencies detected!"
+            print_message "Last error from backend log:"
+            tail -5 /var/log/supervisor/backend.err.log
+        fi
+    fi
     
     # Wait for services to be fully ready
     print_message "Waiting for services to initialize..."
@@ -737,34 +780,50 @@ start_services() {
     
     # Check backend health
     print_message "Checking backend health..."
+    local backend_healthy=false
     for i in {1..20}; do
         BACKEND_STATUS=$(curl -s http://localhost:8001/api/ 2>/dev/null || echo "failed")
         if [[ $BACKEND_STATUS == *"RAG Platform API"* ]]; then
-            print_message "✅ Backend is running"
+            print_message "✅ Backend is running and responding"
+            backend_healthy=true
             break
         fi
         if [ $i -eq 20 ]; then
-            print_error "Backend may not be running properly"
+            print_error "Backend is not responding properly"
             print_warning "Check logs with: tail -f /var/log/supervisor/backend.err.log"
+            print_message "Last 10 lines of backend error log:"
+            tail -10 /var/log/supervisor/backend.err.log 2>/dev/null || echo "No log available"
         fi
         sleep 2
     done
     
     # Check frontend
     print_message "Checking frontend..."
-    sleep 5
+    local frontend_healthy=false
     for i in {1..10}; do
         FRONTEND_STATUS=$(curl -s http://localhost:3000 2>/dev/null | head -c 100 || echo "failed")
         if [[ $FRONTEND_STATUS == *"<!DOCTYPE html>"* ]] || [[ $FRONTEND_STATUS != "failed" ]]; then
             print_message "✅ Frontend is running"
+            frontend_healthy=true
             break
         fi
         if [ $i -eq 10 ]; then
-            print_warning "Frontend may still be starting up"
+            print_warning "Frontend may still be starting up (can take 30-60 seconds)"
             print_warning "Check logs with: tail -f /var/log/supervisor/frontend.out.log"
         fi
         sleep 3
     done
+    
+    # Return status
+    if $backend_healthy && $frontend_healthy; then
+        return 0
+    elif $backend_healthy; then
+        print_warning "Backend is running but frontend needs more time"
+        return 0
+    else
+        print_error "Services may not be running correctly"
+        return 1
+    fi
 }
 
 # Main installation flow
