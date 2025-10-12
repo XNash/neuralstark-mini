@@ -371,8 +371,16 @@ setup_python_env() {
         print_message "Using existing virtual environment: $VENV_PATH"
         
         # Test if it works
-        if "$VENV_PATH/bin/python" -c "import sys" 2>/dev/null; then
+        if "$VENV_PATH/bin/python" -c "import sys; print(f'Python {sys.version}')" 2>/dev/null; then
             print_message "✅ Virtual environment is functional"
+            print_debug "Python version: $($VENV_PATH/bin/python --version 2>&1)"
+            
+            # Activate it
+            if [ -f "$VENV_PATH/bin/activate" ]; then
+                source "$VENV_PATH/bin/activate"
+                print_debug "Virtual environment activated"
+            fi
+            
             return 0
         else
             print_warning "Existing venv is broken, will create new one"
@@ -385,6 +393,8 @@ setup_python_env() {
         # Try to create in script directory first
         if [ -w "$SCRIPT_DIR" ]; then
             VENV_PATH="$SCRIPT_DIR/.venv"
+        elif [ -w "/root" ]; then
+            VENV_PATH="/root/.venv"
         elif [ -w "$HOME" ]; then
             VENV_PATH="$HOME/.venv"
         else
@@ -396,27 +406,52 @@ setup_python_env() {
     # Create virtual environment if it doesn't exist
     if [ ! -d "$VENV_PATH" ]; then
         print_message "Creating Python virtual environment at: $VENV_PATH"
-        if ! python3 -m venv "$VENV_PATH" 2>/dev/null; then
+        
+        # Check Python version
+        PYTHON_VERSION=$(python3 --version 2>&1 || echo "not found")
+        print_debug "System Python: $PYTHON_VERSION"
+        
+        if ! python3 -m venv "$VENV_PATH" 2>&1 | tail -5; then
             print_error "Failed to create virtual environment"
-            return 1
+            print_message "Trying with --without-pip flag..."
+            
+            if python3 -m venv --without-pip "$VENV_PATH" 2>&1; then
+                print_message "Created venv without pip, installing pip manually..."
+                curl -sS https://bootstrap.pypa.io/get-pip.py | "$VENV_PATH/bin/python"
+            else
+                print_error "Could not create virtual environment at all"
+                return 1
+            fi
         fi
         print_message "✅ Virtual environment created"
     else
-        print_message "✅ Virtual environment already exists"
+        print_message "✅ Virtual environment already exists at: $VENV_PATH"
     fi
     
     # Activate virtual environment
     if [ -f "$VENV_PATH/bin/activate" ]; then
         source "$VENV_PATH/bin/activate"
+        print_debug "Activated: $VIRTUAL_ENV"
     else
         print_error "Virtual environment activation script not found"
         return 1
     fi
     
+    # Verify activation worked
+    WHICH_PYTHON=$(which python 2>/dev/null || echo "not found")
+    if [[ "$WHICH_PYTHON" == "$VENV_PATH"* ]]; then
+        print_message "✓ Using venv Python: $WHICH_PYTHON"
+    else
+        print_warning "Python may not be using venv: $WHICH_PYTHON"
+    fi
+    
     # Upgrade pip
-    print_message "Upgrading pip..."
-    if ! pip install --quiet --upgrade pip setuptools wheel 2>/dev/null; then
-        print_warning "Failed to upgrade pip, continuing anyway"
+    print_message "Upgrading pip, setuptools, and wheel..."
+    if python -m pip install --upgrade pip setuptools wheel 2>&1 | tail -3; then
+        print_message "✓ Package tools upgraded"
+        print_debug "Pip version: $(pip --version 2>&1)"
+    else
+        print_warning "Failed to upgrade pip, continuing with current version"
     fi
     
     print_message "✅ Python environment ready"
