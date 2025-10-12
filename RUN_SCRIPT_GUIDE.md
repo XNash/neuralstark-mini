@@ -59,6 +59,28 @@ The `run.sh` script is a comprehensive, intelligent setup script that works in *
 **Detection**: Checks if supervisor config is marked as READONLY
 **Handling**: Skips supervisor configuration if existing config is read-only
 
+### Issue 5: Installation Failures ⚠️ NEW
+
+**Problem**: `pip install -r requirements.txt` fails with some packages
+**Solution**: Script now:
+- Shows Python and pip versions for debugging
+- Tests critical imports before full installation
+- Installs critical packages individually if batch fails
+- Shows progress during installation (not silent)
+- Verifies installation success
+- Provides detailed error messages
+- Falls back to installing only critical packages if some fail
+- Shows count of installed packages
+
+**Frontend Installation Improvements**:
+- Checks if node_modules is complete (not just exists)
+- Verifies core dependencies (react, react-dom)
+- Detects if package.json is newer than node_modules
+- Shows progress during installation
+- Tries yarn first, falls back to npm
+- Uses `--legacy-peer-deps` if standard install fails
+- Cleans cache before retry
+
 ## Usage
 
 ### Basic Usage (Works in All Scenarios)
