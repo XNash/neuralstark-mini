@@ -54,6 +54,31 @@ print_step() {
     echo -e "${BLUE}===================================================${NC}\n"
 }
 
+print_debug() {
+    echo -e "${BLUE}[DEBUG]${NC} $1"
+}
+
+# Function to check if a command exists
+command_exists() {
+    command -v "$1" &> /dev/null
+}
+
+# Function to check if a port is in use
+is_port_in_use() {
+    local port=$1
+    if command_exists netstat; then
+        netstat -tuln 2>/dev/null | grep -q ":$port "
+    elif command_exists ss; then
+        ss -tuln 2>/dev/null | grep -q ":$port "
+    elif command_exists lsof; then
+        lsof -i ":$port" &>/dev/null
+    else
+        # Fallback: try to connect
+        timeout 1 bash -c "cat < /dev/null > /dev/tcp/127.0.0.1/$port" 2>/dev/null
+    fi
+    return $?
+}
+
 # Detect Linux distribution
 detect_os() {
     if [ -f /etc/os-release ]; then
