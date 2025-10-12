@@ -537,14 +537,17 @@ install_backend_deps() {
                     print_message "2/5 Installing Motor (MongoDB)..."
                     pip install motor python-dotenv || print_error "Motor failed"
                     
-                    print_message "3/5 Installing emergentintegrations..."
-                    pip install emergentintegrations --extra-index-url https://d33sy5i8bnduwe.cloudfront.net/simple/ || print_warning "emergentintegrations failed"
+                    print_message "3/5 Installing Google Generative AI..."
+                    pip install google-generativeai || print_error "Google Generative AI failed"
                     
                     print_message "4/5 Installing ChromaDB..."
                     pip install chromadb sentence-transformers || print_error "ChromaDB failed"
                     
-                    print_message "5/5 Installing LangChain..."
-                    pip install langchain langchain-community || print_warning "LangChain failed"
+                    print_message "5/5 Installing Document Processing..."
+                    pip install watchdog pypdf pdfplumber python-docx openpyxl pytesseract pillow pdf2image || print_warning "Some document processors failed"
+                    
+                    print_message "6/6 Installing LangChain..."
+                    pip install langchain langchain-community langchain-core langchain-text-splitters || print_warning "LangChain failed"
                     
                     # Test again
                     if python -c "import fastapi, uvicorn, motor" 2>/dev/null; then
