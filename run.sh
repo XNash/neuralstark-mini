@@ -686,14 +686,30 @@ configure_env_files() {
 MONGO_URL="mongodb://localhost:27017"
 DB_NAME="rag_platform"
 CORS_ORIGINS="*"
+
+# Cache directories (keep everything within /app)
+HF_HOME="$SCRIPT_DIR/.cache/huggingface"
+TRANSFORMERS_CACHE="$SCRIPT_DIR/.cache/huggingface"
+SENTENCE_TRANSFORMERS_HOME="$SCRIPT_DIR/.cache/sentence_transformers"
 EOF
-        print_message "✅ Backend .env created"
+        print_message "✅ Backend .env created with cache directories"
     else
         print_message "✅ Backend .env exists"
         # Verify critical variables exist
         if ! grep -q "MONGO_URL" "$SCRIPT_DIR/backend/.env"; then
             print_warning "MONGO_URL missing from .env, adding..."
             echo 'MONGO_URL="mongodb://localhost:27017"' >> "$SCRIPT_DIR/backend/.env"
+        fi
+        # Add cache directories if missing
+        if ! grep -q "HF_HOME" "$SCRIPT_DIR/backend/.env"; then
+            print_message "Adding cache directory configurations..."
+            cat >> "$SCRIPT_DIR/backend/.env" << EOF
+
+# Cache directories (keep everything within /app)
+HF_HOME="$SCRIPT_DIR/.cache/huggingface"
+TRANSFORMERS_CACHE="$SCRIPT_DIR/.cache/huggingface"
+SENTENCE_TRANSFORMERS_HOME="$SCRIPT_DIR/.cache/sentence_transformers"
+EOF
         fi
     fi
     
