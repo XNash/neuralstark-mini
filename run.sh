@@ -510,7 +510,7 @@ install_frontend_deps() {
 
 # Configure environment files
 configure_env_files() {
-    print_step "⚙️  Step 7/9: Configuring Environment"
+    print_step "⚙️  Step 8/10: Configuring Environment"
     
     # Backend .env
     if [ ! -f "$SCRIPT_DIR/backend/.env" ]; then
@@ -523,6 +523,11 @@ EOF
         print_message "✅ Backend .env created"
     else
         print_message "✅ Backend .env exists"
+        # Verify critical variables exist
+        if ! grep -q "MONGO_URL" "$SCRIPT_DIR/backend/.env"; then
+            print_warning "MONGO_URL missing from .env, adding..."
+            echo 'MONGO_URL="mongodb://localhost:27017"' >> "$SCRIPT_DIR/backend/.env"
+        fi
     fi
     
     # Frontend .env
@@ -539,9 +544,10 @@ EOF
 REACT_APP_BACKEND_URL=$BACKEND_URL
 WDS_SOCKET_PORT=443
 EOF
-        print_message "✅ Frontend .env created"
+        print_message "✅ Frontend .env created with BACKEND_URL: $BACKEND_URL"
     else
         print_message "✅ Frontend .env exists"
+        print_debug "Backend URL: $(grep REACT_APP_BACKEND_URL "$SCRIPT_DIR/frontend/.env" | cut -d'=' -f2)"
     fi
     
     # Check if sample documents exist
