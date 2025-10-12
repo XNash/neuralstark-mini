@@ -99,6 +99,7 @@ This will check:
 #### 📖 Documentation
 
 - **[RUN_SCRIPT_GUIDE.md](RUN_SCRIPT_GUIDE.md)** - Complete guide to run.sh features and troubleshooting
+- **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** - Comprehensive troubleshooting for installation and runtime issues
 - **[INSTALL.md](INSTALL.md)** - Detailed installation instructions
 
 ### Configuration
