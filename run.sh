@@ -751,8 +751,9 @@ EOF
 REACT_APP_BACKEND_URL=$BACKEND_URL
 
 # WebSocket configuration for development server
-# Required for hot-reload to work properly
-WDS_SOCKET_PORT=443
+# Setting to 0 allows auto-detection of the correct port
+# This prevents WebSocket connection errors on port 443
+WDS_SOCKET_PORT=0
 EOF
     
     print_message "✅ Frontend .env configured with BACKEND_URL: $BACKEND_URL"
