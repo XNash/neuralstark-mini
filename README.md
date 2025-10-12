@@ -308,7 +308,7 @@ This checks:
 ## 🔍 Troubleshooting
 
 ### Documents Not Indexing
-1. Check if files are in `/app/files`
+1. Check if files are in `files/` directory (in project root)
 2. Verify file format is supported
 3. Trigger manual reindexing via Settings page
 
