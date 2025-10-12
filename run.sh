@@ -79,6 +79,60 @@ is_port_in_use() {
     return $?
 }
 
+# Detect existing setup
+detect_existing_setup() {
+    print_step "🔍 Step 1/10: Detecting Existing Setup"
+    
+    # Check for existing virtual environments
+    local venv_locations=("$SCRIPT_DIR/.venv" "/root/.venv" "$HOME/.venv" "$SCRIPT_DIR/venv")
+    
+    for venv_path in "${venv_locations[@]}"; do
+        if [ -d "$venv_path" ] && [ -f "$venv_path/bin/python" ]; then
+            print_message "✓ Found existing virtual environment: $venv_path"
+            VENV_PATH="$venv_path"
+            EXISTING_SETUP=true
+            break
+        fi
+    done
+    
+    # Check for existing supervisor configuration
+    if [ -f "/etc/supervisor/conf.d/supervisord.conf" ] || [ -f "/etc/supervisor/conf.d/rag-backend.conf" ]; then
+        print_message "✓ Found existing supervisor configuration"
+        EXISTING_SETUP=true
+    fi
+    
+    # Check if dependencies are already installed
+    local all_deps_installed=true
+    if ! command_exists python3; then all_deps_installed=false; fi
+    if ! command_exists node; then all_deps_installed=false; fi
+    if ! command_exists mongod; then all_deps_installed=false; fi
+    if ! command_exists supervisorctl; then all_deps_installed=false; fi
+    
+    if $all_deps_installed; then
+        print_message "✓ All system dependencies are installed"
+        SKIP_SYSTEM_INSTALL=true
+    else
+        print_warning "Some system dependencies are missing"
+    fi
+    
+    # Check port availability
+    if is_port_in_use 8001; then
+        print_warning "Port 8001 is already in use (backend)"
+    fi
+    if is_port_in_use 3000; then
+        print_warning "Port 3000 is already in use (frontend)"
+    fi
+    if is_port_in_use 27017; then
+        print_message "✓ MongoDB is running on port 27017"
+    fi
+    
+    if $EXISTING_SETUP; then
+        print_message "✓ Detected existing setup - will use existing configuration"
+    else
+        print_message "Fresh installation detected - will install all dependencies"
+    fi
+}
+
 # Detect Linux distribution
 detect_os() {
     if [ -f /etc/os-release ]; then
