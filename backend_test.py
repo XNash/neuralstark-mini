@@ -11,7 +11,7 @@ import sys
 from datetime import datetime
 
 # Get backend URL from environment
-BACKEND_URL = "https://react-root-debug.preview.emergentagent.com/api"
+BACKEND_URL = "https://file-boost.preview.emergentagent.com/api"
 
 class RAGPlatformTester:
     def __init__(self):
