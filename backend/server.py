@@ -601,10 +601,10 @@ async def startup_event():
     """Initialize services and start file watcher"""
     global observer, file_handler
     
-    logger.info("Starting RAG Platform API")
+    logger.info("Starting RAG Platform API with optimized processing")
     
-    # Process existing documents
-    await process_documents()
+    # Process existing documents with caching (incremental)
+    await process_documents(clear_existing=False, use_cache=True)
     
     # Start file watcher
     files_dir = Path(__file__).parent.parent / "files"
