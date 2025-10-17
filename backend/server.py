@@ -546,11 +546,31 @@ def format_file_size(size_bytes: int) -> str:
     return f"{size_bytes:.1f} TB"
 
 @api_router.post("/documents/reindex")
-async def reindex_documents(background_tasks: BackgroundTasks):
-    """Trigger full document reindexing (clears existing index and rebuilds)"""
-    logger.info("Reindex requested - will clear existing index and rebuild")
-    background_tasks.add_task(process_documents, clear_existing=True)
-    return {"message": "Document reindexing started (clearing existing index and rebuilding)"}
+async def reindex_documents(background_tasks: BackgroundTasks, clear_cache: bool = False):
+    """Trigger document reindexing
+    
+    Args:
+        clear_cache: If True, clears cache and reprocesses all documents (full reindex)
+                    If False, only processes new/modified documents (incremental)
+    """
+    if clear_cache:
+        logger.info("Full reindex requested - will clear cache and reprocess all documents")
+        background_tasks.add_task(process_documents, clear_existing=True, use_cache=False)
+        return {"message": "Full document reindexing started (processing all documents)"}
+    else:
+        logger.info("Incremental reindex requested - will process only new/modified documents")
+        background_tasks.add_task(process_documents, clear_existing=False, use_cache=True)
+        return {"message": "Incremental document reindexing started (processing changed documents only)"}
+
+@api_router.get("/documents/cache-stats")
+async def get_cache_stats():
+    """Get document cache statistics"""
+    try:
+        stats = await document_cache.get_cache_stats()
+        return stats
+    except Exception as e:
+        logger.error(f"Error getting cache stats: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 # Include the router in the main app
 app.include_router(api_router)
