@@ -15,8 +15,13 @@ from watchdog.events import FileSystemEventHandler
 
 # Import document processing and RAG services
 from document_processor import DocumentProcessor
+from document_processor_optimized import OptimizedDocumentProcessor
 from vector_store import VectorStoreService
+from vector_store_optimized import OptimizedVectorStoreService
+from document_cache import DocumentCache
 from rag_service import RAGService
+from concurrent.futures import ProcessPoolExecutor
+import multiprocessing
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -32,10 +37,14 @@ app = FastAPI()
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
-# Initialize services
-doc_processor = DocumentProcessor()
-vector_service = VectorStoreService()
+# Initialize services with optimized versions
+doc_processor = OptimizedDocumentProcessor()  # Use optimized processor
+vector_service = OptimizedVectorStoreService()  # Use optimized vector store
+document_cache = DocumentCache(db)  # Initialize cache
 rag_service = RAGService(vector_service, db)
+
+# Process pool for parallel document processing
+process_pool = None
 
 # Define Models
 class Settings(BaseModel):
