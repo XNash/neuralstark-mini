@@ -225,8 +225,8 @@ class RAGPlatformTester:
         """Test document status after reindexing"""
         try:
             # Wait a few seconds for reindexing to process
-            print("   Waiting 3 seconds for reindexing to complete...")
-            time.sleep(3)
+            print("   Waiting 5 seconds for reindexing to complete...")
+            time.sleep(5)
             
             response = self.session.get(f"{self.base_url}/documents/status")
             if response.status_code == 200:
@@ -235,7 +235,12 @@ class RAGPlatformTester:
                 indexed_docs = data.get("indexed_documents", 0)
                 last_updated = data.get("last_updated")
                 
-                if indexed_docs > 0:
+                # Expected: 3 documents, 6 chunks (as mentioned in review request)
+                if indexed_docs >= 6 and total_docs == 3:
+                    self.log_test("Document Status (After Reindex)", True, 
+                                f"Reindexing completed successfully: {total_docs} documents, {indexed_docs} chunks (expected 6 from 3 docs)")
+                    return True
+                elif indexed_docs > 0:
                     self.log_test("Document Status (After Reindex)", True, 
                                 f"Reindexing completed: {total_docs} total, {indexed_docs} indexed chunks, last_updated: {last_updated}")
                     return True
@@ -248,6 +253,27 @@ class RAGPlatformTester:
                 return False
         except Exception as e:
             self.log_test("Document Status (After Reindex)", False, f"Request error: {str(e)}")
+            return False
+
+    def test_cache_stats_after_reindex(self):
+        """Test cache stats after reindexing to verify cache is populated"""
+        try:
+            response = self.session.get(f"{self.base_url}/documents/cache-stats")
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, dict):
+                    # Cache should show 3 documents, 6 chunks as mentioned in review request
+                    self.log_test("Cache Stats (After Reindex)", True, 
+                                f"Cache stats after reindex: {data}")
+                    return True
+                else:
+                    self.log_test("Cache Stats (After Reindex)", False, "Unexpected response format", data)
+                    return False
+            else:
+                self.log_test("Cache Stats (After Reindex)", False, f"HTTP {response.status_code}", response.text)
+                return False
+        except Exception as e:
+            self.log_test("Cache Stats (After Reindex)", False, f"Request error: {str(e)}")
             return False
     
     def test_chat_api(self):
