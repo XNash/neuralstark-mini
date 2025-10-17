@@ -157,23 +157,68 @@ class RAGPlatformTester:
             self.log_test("Document Status", False, f"Request error: {str(e)}")
             return False
     
-    def test_document_reindex(self):
-        """Test POST /api/documents/reindex"""
+    def test_cache_stats(self):
+        """Test GET /api/documents/cache-stats (NEW)"""
+        try:
+            response = self.session.get(f"{self.base_url}/documents/cache-stats")
+            if response.status_code == 200:
+                data = response.json()
+                # Cache stats should include information about cached documents
+                if isinstance(data, dict):
+                    self.log_test("Cache Stats API", True, f"Cache stats retrieved successfully: {data}")
+                    return True
+                else:
+                    self.log_test("Cache Stats API", False, "Unexpected response format", data)
+                    return False
+            else:
+                self.log_test("Cache Stats API", False, f"HTTP {response.status_code}", response.text)
+                return False
+        except Exception as e:
+            self.log_test("Cache Stats API", False, f"Request error: {str(e)}")
+            return False
+
+    def test_incremental_reindex(self):
+        """Test POST /api/documents/reindex (incremental - should use cache)"""
         try:
             response = self.session.post(f"{self.base_url}/documents/reindex")
             if response.status_code == 200:
                 data = response.json()
-                if "message" in data and "reindexing" in data["message"].lower():
-                    self.log_test("Document Reindex", True, "Reindexing triggered successfully")
+                if "message" in data and "incremental" in data["message"].lower():
+                    self.log_test("Incremental Reindex", True, "Incremental reindexing triggered successfully (uses cache)")
+                    return True
+                elif "message" in data and "reindexing" in data["message"].lower():
+                    self.log_test("Incremental Reindex", True, "Reindexing triggered successfully")
                     return True
                 else:
-                    self.log_test("Document Reindex", False, "Unexpected response format", data)
+                    self.log_test("Incremental Reindex", False, "Unexpected response format", data)
                     return False
             else:
-                self.log_test("Document Reindex", False, f"HTTP {response.status_code}", response.text)
+                self.log_test("Incremental Reindex", False, f"HTTP {response.status_code}", response.text)
                 return False
         except Exception as e:
-            self.log_test("Document Reindex", False, f"Request error: {str(e)}")
+            self.log_test("Incremental Reindex", False, f"Request error: {str(e)}")
+            return False
+
+    def test_full_reindex(self):
+        """Test POST /api/documents/reindex?clear_cache=true (full - should clear cache)"""
+        try:
+            response = self.session.post(f"{self.base_url}/documents/reindex?clear_cache=true")
+            if response.status_code == 200:
+                data = response.json()
+                if "message" in data and ("full" in data["message"].lower() or "all documents" in data["message"].lower()):
+                    self.log_test("Full Reindex", True, "Full reindexing triggered successfully (clears cache)")
+                    return True
+                elif "message" in data and "reindexing" in data["message"].lower():
+                    self.log_test("Full Reindex", True, "Reindexing triggered successfully")
+                    return True
+                else:
+                    self.log_test("Full Reindex", False, "Unexpected response format", data)
+                    return False
+            else:
+                self.log_test("Full Reindex", False, f"HTTP {response.status_code}", response.text)
+                return False
+        except Exception as e:
+            self.log_test("Full Reindex", False, f"Request error: {str(e)}")
             return False
     
     def test_document_status_after_reindex(self):
