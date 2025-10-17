@@ -659,13 +659,15 @@ class RAGPlatformTester:
     def run_all_tests(self):
         """Run all backend tests"""
         print("=" * 70)
-        print("RAG PLATFORM COMPREHENSIVE BACKEND TESTING")
+        print("OPTIMIZED RAG PLATFORM BACKEND TESTING")
+        print("Focus: Performance & New Cache Features")
         print("Testing with Real Gemini API Key: AIzaSyD273RLpkzyDyU59NKxTERC3jm0xVhH7N4")
         print("=" * 70)
         print(f"Backend URL: {self.base_url}")
         print(f"Test Session ID: {self.session_id}")
-        print(f"Documents: company_info.md, products.txt, faq.json")
-        print(f"Expected Chunks: 5 total from 3 documents")
+        print(f"Test Files: /app/files/products.txt, company_info.md, faq.json")
+        print(f"Expected: 3 documents, 6 chunks (optimized chunking)")
+        print(f"New Features: Cache Stats API, Incremental vs Full Reindex")
         print()
         
         # Test sequence - Optimized RAG Platform Testing (Focus on Performance & New Features)
