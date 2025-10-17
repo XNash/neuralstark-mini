@@ -668,15 +668,18 @@ class RAGPlatformTester:
         print(f"Expected Chunks: 5 total from 3 documents")
         print()
         
-        # Test sequence - Comprehensive RAG Platform Testing
+        # Test sequence - Optimized RAG Platform Testing (Focus on Performance & New Features)
         tests = [
             ("API Root", self.test_api_root),
             ("Settings GET (Initial)", self.test_settings_get_initial),
             ("Settings POST", self.test_settings_post),
             ("Settings GET (After Save)", self.test_settings_get_after_save),
             ("Document Status", self.test_document_status),
-            ("Document Reindex", self.test_document_reindex),
-            ("Document Status (After Reindex)", self.test_document_status_after_reindex),
+            ("Cache Stats API (NEW)", self.test_cache_stats),
+            ("Full Reindex (Clear Cache)", self.test_full_reindex),
+            ("Document Status (After Full Reindex)", self.test_document_status_after_reindex),
+            ("Cache Stats (After Reindex)", self.test_cache_stats_after_reindex),
+            ("Incremental Reindex (Use Cache)", self.test_incremental_reindex),
             ("RAG Accuracy (Products)", self.test_rag_accuracy_products),
             ("RAG Accuracy (Office Hours)", self.test_rag_accuracy_office_hours),
             ("Multilingual Support (French)", self.test_multilingual_french_query),
