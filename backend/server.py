@@ -106,14 +106,18 @@ async def check_reindex_pending():
             file_handler.pending_reindex = False
             await process_documents()
 
-# Background task to process documents
-async def process_documents(clear_existing: bool = False):
-    """Process all documents in files directory and update vector store
+# Background task to process documents with OPTIMIZED parallel processing
+async def process_documents(clear_existing: bool = False, use_cache: bool = True):
+    """Process all documents in files directory with parallel processing and caching
     
     Args:
-        clear_existing: If True, clears existing vector store before reindexing
+        clear_existing: If True, clears existing vector store and cache before reindexing
+        use_cache: If True, uses cache to skip unchanged documents
     """
     try:
+        import time
+        start_time = time.time()
+        
         # Use relative path from backend directory
         files_dir = Path(__file__).parent.parent / "files"
         if not files_dir.exists():
@@ -124,7 +128,7 @@ async def process_documents(clear_existing: bool = False):
         supported_extensions = ['.pdf', '.docx', '.doc', '.xlsx', '.xls', '.odt', '.txt', '.md', '.json', '.csv']
         files = [f for f in files_dir.rglob('*') if f.suffix.lower() in supported_extensions]
         
-        logger.info(f"Found {len(files)} documents to process (clear_existing={clear_existing})")
+        logger.info(f"Found {len(files)} documents to process (clear_existing={clear_existing}, use_cache={use_cache})")
         
         if not files:
             logger.warning("No documents found in files directory")
@@ -140,24 +144,85 @@ async def process_documents(clear_existing: bool = False):
             )
             return
         
-        # Clear vector store if requested (for full reindex)
+        # Clear vector store and cache if requested (for full reindex)
         if clear_existing:
-            logger.info("Clearing existing vector store for full reindex...")
+            logger.info("Clearing existing vector store and cache for full reindex...")
             vector_service.clear_collection()
+            await document_cache.clear_cache()
+            use_cache = False  # Don't use cache after clearing
         
-        total_chunks = 0
+        # Filter files to process based on cache
+        files_to_process = []
+        skipped_files = []
+        
+        if use_cache:
+            logger.info("Checking cache for unchanged documents...")
+            for file_path in files:
+                is_changed = await document_cache.is_document_changed(file_path)
+                if is_changed:
+                    files_to_process.append(file_path)
+                else:
+                    skipped_files.append(file_path.name)
+                    logger.debug(f"Skipping unchanged file: {file_path.name}")
+            
+            logger.info(f"Cache check complete: {len(files_to_process)} files to process, {len(skipped_files)} files skipped")
+        else:
+            files_to_process = files
+        
+        if not files_to_process:
+            logger.info("No files need processing (all cached)")
+            # Still update status
+            await db.document_status.update_one(
+                {"id": "status"},
+                {
+                    "$set": {
+                        "last_updated": datetime.now(timezone.utc).isoformat(),
+                        "total_documents": len(files)
+                    }
+                },
+                upsert=True
+            )
+            return
+        
+        # PARALLEL PROCESSING: Process multiple documents simultaneously
+        logger.info(f"Starting parallel processing of {len(files_to_process)} documents...")
+        
+        # Use asyncio to run document processing in parallel
+        loop = asyncio.get_event_loop()
+        
+        # Process documents in parallel using ProcessPoolExecutor
+        with ProcessPoolExecutor(max_workers=min(4, len(files_to_process))) as executor:
+            # Submit all document processing tasks
+            futures = [
+                loop.run_in_executor(
+                    executor,
+                    doc_processor.process_document,
+                    str(file_path)
+                )
+                for file_path in files_to_process
+            ]
+            
+            # Wait for all to complete
+            processing_results = await asyncio.gather(*futures, return_exceptions=True)
+        
+        # Collect all chunks and metadata for batch insertion
+        all_chunks = []
+        all_metadata = []
         successful_files = 0
         failed_files = []
+        file_chunk_map = {}  # Track chunks per file for cache
         
-        for file_path in files:
+        for file_path, result in zip(files_to_process, processing_results):
             try:
-                logger.info(f"Processing document: {file_path.name}")
+                if isinstance(result, Exception):
+                    logger.error(f"✗ Error processing {file_path.name}: {result}")
+                    failed_files.append(file_path.name)
+                    continue
                 
-                # Extract text from document
-                text_chunks = doc_processor.process_document(str(file_path))
+                text_chunks = result
                 
                 if text_chunks:
-                    # Add to vector store with enhanced metadata
+                    # Prepare metadata for all chunks
                     file_metadata = [
                         {
                             "source": file_path.name,
@@ -170,20 +235,60 @@ async def process_documents(clear_existing: bool = False):
                         for i in range(len(text_chunks))
                     ]
                     
-                    vector_service.add_documents(
-                        texts=text_chunks,
-                        metadata=file_metadata
-                    )
+                    # Add to batch
+                    chunk_start_idx = len(all_chunks)
+                    all_chunks.extend(text_chunks)
+                    all_metadata.extend(file_metadata)
                     
-                    total_chunks += len(text_chunks)
+                    file_chunk_map[str(file_path)] = {
+                        'chunk_count': len(text_chunks),
+                        'start_idx': chunk_start_idx
+                    }
+                    
                     successful_files += 1
                     logger.info(f"✓ Processed {file_path.name}: {len(text_chunks)} chunks")
                 else:
                     logger.warning(f"✗ No text extracted from {file_path.name}")
                     failed_files.append(file_path.name)
             except Exception as e:
-                logger.error(f"✗ Error processing {file_path.name}: {e}", exc_info=True)
+                logger.error(f"✗ Error handling result for {file_path.name}: {e}", exc_info=True)
                 failed_files.append(file_path.name)
+        
+        # BATCH INSERT: Add all chunks to vector store in one optimized batch operation
+        total_chunks = len(all_chunks)
+        if total_chunks > 0:
+            logger.info(f"Batch inserting {total_chunks} chunks into vector store...")
+            batch_start = time.time()
+            
+            try:
+                # Use optimized batch insertion
+                chunk_ids = vector_service.add_documents_batch(
+                    texts=all_chunks,
+                    metadata=all_metadata,
+                    batch_size=100  # Process in batches of 100
+                )
+                
+                batch_time = time.time() - batch_start
+                logger.info(f"Batch insertion completed in {batch_time:.2f}s ({total_chunks/batch_time:.1f} chunks/sec)")
+                
+                # Update cache for all successfully processed files
+                if use_cache and chunk_ids:
+                    for file_path in files_to_process:
+                        file_key = str(file_path)
+                        if file_key in file_chunk_map:
+                            info = file_chunk_map[file_key]
+                            start_idx = info['start_idx']
+                            chunk_count = info['chunk_count']
+                            file_chunk_ids = chunk_ids[start_idx:start_idx+chunk_count]
+                            
+                            await document_cache.update_cache(
+                                file_path,
+                                chunk_count,
+                                file_chunk_ids
+                            )
+            except Exception as e:
+                logger.error(f"Error in batch insertion: {e}", exc_info=True)
+                # Don't fail the entire process, just log the error
         
         # Save updated timestamp to database
         await db.document_status.update_one(
@@ -192,15 +297,25 @@ async def process_documents(clear_existing: bool = False):
                 "$set": {
                     "last_updated": datetime.now(timezone.utc).isoformat(),
                     "total_documents": len(files),
-                    "successful_files": successful_files,
+                    "successful_files": successful_files + len(skipped_files),  # Include cached files
                     "failed_files": failed_files,
-                    "total_chunks": total_chunks
+                    "total_chunks": total_chunks,
+                    "processing_time_seconds": time.time() - start_time,
+                    "files_processed": len(files_to_process),
+                    "files_cached": len(skipped_files)
                 }
             },
             upsert=True
         )
         
-        logger.info(f"Document processing completed: {successful_files}/{len(files)} files successful, {total_chunks} total chunks")
+        elapsed_time = time.time() - start_time
+        logger.info(f"✅ Document processing completed in {elapsed_time:.2f}s:")
+        logger.info(f"   - Total files: {len(files)}")
+        logger.info(f"   - Processed: {successful_files} files, {total_chunks} chunks")
+        logger.info(f"   - Cached: {len(skipped_files)} files")
+        logger.info(f"   - Failed: {len(failed_files)} files")
+        logger.info(f"   - Speed: {total_chunks/elapsed_time:.1f} chunks/sec" if elapsed_time > 0 else "   - Speed: N/A")
+        
         if failed_files:
             logger.warning(f"Failed to process: {', '.join(failed_files)}")
     except Exception as e:
