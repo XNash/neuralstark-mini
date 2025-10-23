@@ -121,8 +121,8 @@ async def process_documents(clear_existing: bool = False, use_cache: bool = True
         import time
         start_time = time.time()
         
-        # Use relative path from backend directory
-        files_dir = Path(__file__).parent.parent / "files"
+        # Use dynamic path from config_paths
+        files_dir = Path(config_paths.FILES_DIR_STR)
         if not files_dir.exists():
             logger.warning("Files directory does not exist, creating it...")
             files_dir.mkdir(parents=True, exist_ok=True)
