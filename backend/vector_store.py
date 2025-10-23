@@ -170,5 +170,5 @@ class VectorStoreService:
         """Get the number of documents in the collection"""
         try:
             return self.collection.count()
-        except:
+        except Exception:
             return 0
