@@ -1,3 +1,6 @@
+# IMPORTANT: Import config_paths FIRST to set environment variables for HuggingFace
+import config_paths
+
 from fastapi import FastAPI, APIRouter, HTTPException, BackgroundTasks
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
