@@ -68,7 +68,7 @@ class VectorStoreService:
                         existing_docs.append(True)
                     else:
                         existing_docs.append(False)
-            except:
+            except Exception:
                 # If query fails, proceed with adding
                 pass
             
