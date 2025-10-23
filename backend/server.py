@@ -634,11 +634,15 @@ logger = logging.getLogger(__name__)
 # File watcher setup
 observer = None
 file_handler = None
+startup_time = None
 
 @app.on_event("startup")
 async def startup_event():
     """Initialize services and start file watcher"""
-    global observer, file_handler
+    global observer, file_handler, startup_time
+    
+    import time
+    startup_time = time.time()
     
     logger.info("Starting RAG Platform API with optimized processing")
     
