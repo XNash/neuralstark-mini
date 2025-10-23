@@ -5,6 +5,7 @@ import chromadb
 from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
 import numpy as np
+import config_paths
 
 logger = logging.getLogger(__name__)
 
@@ -13,12 +14,11 @@ class OptimizedVectorStoreService:
     """Optimized vector store service with batch operations and better performance"""
     
     def __init__(self, collection_name: str = "documents"):
-        # Initialize ChromaDB with persistent storage
-        chroma_db_path = Path(__file__).parent / "chroma_db"
-        chroma_db_path.mkdir(parents=True, exist_ok=True)
+        # Initialize ChromaDB with persistent storage using dynamic paths
+        logger.info(f"Using ChromaDB path: {config_paths.CHROMA_DIR_STR}")
         
         self.client = chromadb.PersistentClient(
-            path=str(chroma_db_path),
+            path=config_paths.CHROMA_DIR_STR,
             settings=Settings(anonymized_telemetry=False)
         )
         
