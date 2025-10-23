@@ -329,6 +329,42 @@ async def process_documents(clear_existing: bool = False, use_cache: bool = True
 async def root():
     return {"message": "RAG Platform API", "status": "running"}
 
+@api_router.get("/health")
+async def health_check():
+    """Health check endpoint with system status"""
+    try:
+        # Check MongoDB connection
+        try:
+            await db.command('ping')
+            mongo_status = "connected"
+        except Exception as e:
+            logger.error(f"MongoDB connection error: {e}")
+            mongo_status = "disconnected"
+        
+        # Get document statistics
+        try:
+            doc_status = await db.document_status.find_one({"id": "status"}, {"_id": 0})
+            documents_indexed = vector_service.get_collection_count()
+        except Exception:
+            doc_status = None
+            documents_indexed = 0
+        
+        # Calculate uptime (if startup time is tracked)
+        import time
+        uptime_seconds = int(time.time() - startup_time) if 'startup_time' in globals() else None
+        
+        return {
+            "status": "healthy" if mongo_status == "connected" else "unhealthy",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "mongodb": mongo_status,
+            "documents_indexed": documents_indexed,
+            "uptime_seconds": uptime_seconds,
+            "version": "2.0.0"
+        }
+    except Exception as e:
+        logger.error(f"Health check error: {e}")
+        raise HTTPException(status_code=500, detail=f"Health check failed: {str(e)}")
+
 @api_router.get("/settings", response_model=Settings)
 async def get_settings():
     """Get current settings"""
