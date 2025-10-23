@@ -297,17 +297,70 @@ rag-platform/                  # Project root (portable, can be anywhere)
 - **Session-based Chat**: Each conversation has unique session
 - **Source Attribution**: Responses include source documents with relevance scores
 
+## 🌐 Cross-Platform Support
+
+The RAG Platform now supports **Windows, Linux, and macOS** with the same codebase!
+
+### Platform-Specific Instructions
+
+| Platform | Setup Guide | Quick Start |
+|----------|-------------|-------------|
+| 🪟 **Windows** | [WINDOWS_SETUP.md](WINDOWS_SETUP.md) | `.\setup.ps1` → `.\start.ps1` |
+| 🐧 **Linux** | [INSTALL.md](INSTALL.md) | `./run.sh` |
+| 🍎 **macOS** | [INSTALL.md](INSTALL.md) | `./run.sh` |
+
+### Cross-Platform Features
+
+- ✅ **Dynamic paths** - No hardcoded absolute paths
+- ✅ **pm2 support** - Cross-platform process manager option
+- ✅ **Portable caching** - Models cached in project directory
+- ✅ **Single codebase** - Same code works on all platforms
+
+### Process Management Options
+
+**Supervisor (Linux only - default):**
+```bash
+sudo supervisorctl status
+sudo supervisorctl restart all
+```
+
+**pm2 (All platforms):**
+```bash
+# Linux/macOS
+./pm2-start.sh
+./pm2-stop.sh
+
+# Windows
+.\start.ps1
+.\stop.ps1
+
+# Any platform with pm2 installed
+pm2 start ecosystem.config.js
+pm2 status
+pm2 logs
+```
+
+---
+
 ## 🐳 Deployment Options
+
+### Native Windows Installation
+Use PowerShell setup scripts for Windows:
+- See [WINDOWS_SETUP.md](WINDOWS_SETUP.md) for detailed instructions
+- Uses pm2 for cross-platform process management
+- Fully native Windows support
 
 ### Native Linux Installation
 Use the automated `run.sh` script that works on any clean Linux environment:
 - See [INSTALL.md](INSTALL.md) for detailed instructions
 - See [QUICKSTART.md](QUICKSTART.md) for quick setup
+- Uses Supervisor or pm2 for process management
 
 ### Docker Deployment
 Use Docker Compose for containerized deployment:
 - See [DOCKER.md](DOCKER.md) for complete Docker guide
 - Simple command: `docker compose up -d`
+- Works on all platforms with Docker installed
 
 ### Manual Setup
 For custom deployments, see the manual installation section in [INSTALL.md](INSTALL.md)
