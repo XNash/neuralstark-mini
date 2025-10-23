@@ -87,7 +87,19 @@ class DocumentStatus(BaseModel):
 # File watcher for monitoring /app/files
 class DocumentFileHandler(FileSystemEventHandler):
     def __init__(self):
-        self.pending_reindex = False
+        import threading
+        self._lock = threading.Lock()
+        self._pending_reindex = False
+    
+    @property
+    def pending_reindex(self):
+        with self._lock:
+            return self._pending_reindex
+    
+    @pending_reindex.setter
+    def pending_reindex(self, value):
+        with self._lock:
+            self._pending_reindex = value
         
     def on_created(self, event):
         if not event.is_directory:
