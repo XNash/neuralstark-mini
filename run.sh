@@ -709,11 +709,12 @@ DB_NAME="rag_platform"
 # CORS Configuration
 CORS_ORIGINS="*"
 
-# Cache directories - Auto-configured to project directory
-# These ensure all model downloads stay within the project for portability
-HF_HOME="$PROJECT_DIR/.cache/huggingface"
-TRANSFORMERS_CACHE="$PROJECT_DIR/.cache/huggingface"
-SENTENCE_TRANSFORMERS_HOME="$PROJECT_DIR/.cache/sentence_transformers"
+# Cache directories - Now set dynamically in config_paths.py for portability
+# This ensures compatibility across Windows, Linux, and macOS
+# The paths are automatically configured relative to the project root
+# HF_HOME: <project>/.cache/huggingface
+# TRANSFORMERS_CACHE: <project>/.cache/huggingface
+# SENTENCE_TRANSFORMERS_HOME: <project>/.cache/sentence_transformers
 EOF
 
     # Restore API key if it existed
