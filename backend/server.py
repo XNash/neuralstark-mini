@@ -610,7 +610,7 @@ async def startup_event():
     await process_documents(clear_existing=False, use_cache=True)
     
     # Start file watcher
-    files_dir = Path(__file__).parent.parent / "files"
+    files_dir = Path(config_paths.FILES_DIR_STR)
     if files_dir.exists():
         file_handler = DocumentFileHandler()
         observer = Observer()
