@@ -48,6 +48,33 @@ A full-stack Retrieval-Augmented Generation (RAG) platform that allows users to 
 
 ## 🚀 Getting Started
 
+### Windows Users 🪟
+
+**The RAG Platform now has full native Windows support!**
+
+See the comprehensive [WINDOWS_SETUP.md](WINDOWS_SETUP.md) guide for detailed instructions.
+
+**Quick Start (Windows):**
+
+```powershell
+# 1. Clone the repository
+git clone <repository-url> rag-platform
+cd rag-platform
+
+# 2. Run automated setup
+.\setup.ps1
+
+# 3. Start services
+.\start.ps1
+```
+
+**Prerequisites:** Python 3.11+, Node.js 18+, MongoDB 7.0+  
+**Time:** 5-10 minutes
+
+---
+
+### Linux/macOS Users 🐧🍎
+
 ### For New Machines (Cloning from GitHub)
 
 **Quick Start - ONE Command:**
