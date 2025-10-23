@@ -493,7 +493,7 @@ async def get_document_status():
 async def list_documents():
     """Get list of all documents categorized by type"""
     try:
-        files_dir = Path(__file__).parent.parent / "files"
+        files_dir = Path(config_paths.FILES_DIR_STR)
         
         if not files_dir.exists():
             return {"documents_by_type": {}, "total_count": 0}
