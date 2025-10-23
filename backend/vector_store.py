@@ -29,7 +29,7 @@ class VectorStoreService:
         try:
             self.collection = self.client.get_collection(name=collection_name)
             logger.info(f"Loaded existing collection: {collection_name}")
-        except:
+        except Exception:
             self.collection = self.client.create_collection(
                 name=collection_name,
                 metadata={"description": "RAG document embeddings"}
