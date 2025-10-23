@@ -479,7 +479,7 @@ async def get_document_status():
     """Get document indexing status"""
     status = await db.document_status.find_one({"id": "status"}, {"_id": 0})
     
-    files_dir = Path(__file__).parent.parent / "files"
+    files_dir = Path(config_paths.FILES_DIR_STR)
     supported_extensions = ['.pdf', '.docx', '.doc', '.xlsx', '.xls', '.odt', '.txt', '.md', '.json', '.csv']
     files = [f for f in files_dir.rglob('*') if f.suffix.lower() in supported_extensions] if files_dir.exists() else []
     
