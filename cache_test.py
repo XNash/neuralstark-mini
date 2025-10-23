@@ -7,7 +7,7 @@ import requests
 import json
 import time
 
-BACKEND_URL = "https://file-boost.preview.emergentagent.com/api"
+BACKEND_URL = "https://rag-portability.preview.emergentagent.com/api"
 
 def test_cache_behavior():
     """Test incremental vs full reindex cache behavior"""
