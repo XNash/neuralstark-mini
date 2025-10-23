@@ -171,7 +171,7 @@ class OptimizedVectorStoreService:
         """Get the number of documents in the collection"""
         try:
             return self.collection.count()
-        except:
+        except Exception:
             return 0
     
     def remove_documents_by_ids(self, ids: List[str]):
