@@ -283,8 +283,8 @@ function App() {
       <aside className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
         <div className="sidebar-header">
           <div className="brand">
-            <span className="brand-icon">🤖</span>
-            {sidebarOpen && <h1 className="brand-title">NeuralStark</h1>}
+            <span className="brand-icon">🧠</span>
+            {sidebarOpen && <h1 className="brand-title">Xynorash AI</h1>}
           </div>
         </div>
 
@@ -295,21 +295,21 @@ function App() {
               onClick={newChat}
               onMouseEnter={() => setShowTooltip('new-chat')}
               onMouseLeave={() => setShowTooltip(null)}
-              title="Start a new conversation (Ctrl+N)"
+              title="Démarrer une nouvelle conversation (Ctrl+N)"
             >
               <span className="btn-icon">✨</span>
-              <span>New Chat</span>
+              <span>Nouvelle Discussion</span>
             </button>
 
-            <nav className="sidebar-nav" role="navigation" aria-label="Main navigation">
+            <nav className="sidebar-nav" role="navigation" aria-label="Navigation principale">
               <button
                 className={`nav-item ${currentPage === 'chat' ? 'active' : ''}`}
                 onClick={() => setCurrentPage('chat')}
                 aria-current={currentPage === 'chat' ? 'page' : undefined}
-                title="Go to chat interface"
+                title="Aller à l'interface de discussion"
               >
                 <span className="nav-icon">💬</span>
-                <span className="nav-label">Chat</span>
+                <span className="nav-label">Discussion</span>
                 {messages.length > 0 && <span className="nav-badge">{messages.length}</span>}
               </button>
               
@@ -317,7 +317,7 @@ function App() {
                 className={`nav-item ${currentPage === 'documents' ? 'active' : ''}`}
                 onClick={() => setCurrentPage('documents')}
                 aria-current={currentPage === 'documents' ? 'page' : undefined}
-                title="Manage your documents"
+                title="Gérer vos documents"
               >
                 <span className="nav-icon">📚</span>
                 <span className="nav-label">Documents</span>
@@ -328,10 +328,10 @@ function App() {
                 className={`nav-item ${currentPage === 'settings' ? 'active' : ''}`}
                 onClick={() => setCurrentPage('settings')}
                 aria-current={currentPage === 'settings' ? 'page' : undefined}
-                title="Configure settings"
+                title="Configurer les paramètres"
               >
                 <span className="nav-icon">⚙️</span>
-                <span className="nav-label">Settings</span>
+                <span className="nav-label">Paramètres</span>
                 {!apiKeySaved && <span className="nav-badge warning">!</span>}
               </button>
             </nav>
@@ -340,9 +340,9 @@ function App() {
               <div className="doc-status-mini">
                 <span className="status-icon">📊</span>
                 <div className="status-text">
-                  <p className="status-label">Documents Indexed</p>
+                  <p className="status-label">Documents Indexés</p>
                   <p className="status-value">
-                    {docStatus ? `${docStatus.indexed_documents} chunks` : 'Loading...'}
+                    {docStatus ? `${docStatus.indexed_documents} fragments` : 'Chargement...'}
                   </p>
                 </div>
               </div>
