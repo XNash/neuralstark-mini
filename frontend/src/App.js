@@ -246,6 +246,7 @@ function App() {
 
   const newChat = () => {
     setMessages([]);
+    setErrorMessage('');
     const newSessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substring(7);
     setSessionId(newSessionId);
     
@@ -257,6 +258,9 @@ function App() {
       messageCount: 0
     };
     setChatHistory(prev => [newSession, ...prev]);
+    
+    // Focus input after new chat
+    setTimeout(() => inputRef.current?.focus(), 100);
   };
 
   const updateChatHistory = () => {
