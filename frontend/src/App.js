@@ -231,13 +231,13 @@ function App() {
         }, 2000);
       } else {
         setSaveStatus('error');
-        setErrorMessage('Failed to start reindexing. Please try again.');
+        setErrorMessage('Échec du démarrage de la réindexation. Veuillez réessayer.');
         setTimeout(() => setSaveStatus(null), 3000);
       }
     } catch (error) {
       console.error('Error reindexing:', error);
       setSaveStatus('error');
-      setErrorMessage('Network error during reindexing.');
+      setErrorMessage('Erreur réseau lors de la réindexation.');
       setTimeout(() => setSaveStatus(null), 3000);
     }
   };
