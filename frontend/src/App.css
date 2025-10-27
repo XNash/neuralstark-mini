@@ -300,14 +300,14 @@ body {
   border-bottom: 1px solid var(--divider-color);
   display: flex;
   align-items: center;
-  padding: 0 24px;
-  gap: 16px;
+  padding: 0 16px;
+  gap: 12px;
   box-shadow: var(--elevation-1);
 }
 
 .menu-toggle {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -323,7 +323,7 @@ body {
 }
 
 .hamburger {
-  width: 24px;
+  width: 20px;
   height: 2px;
   background: var(--text-primary);
   position: relative;
@@ -334,18 +334,18 @@ body {
 .hamburger::after {
   content: '';
   position: absolute;
-  width: 24px;
+  width: 20px;
   height: 2px;
   background: var(--text-primary);
   transition: var(--transition-fast);
 }
 
 .hamburger::before {
-  top: -8px;
+  top: -6px;
 }
 
 .hamburger::after {
-  top: 8px;
+  top: 6px;
 }
 
 .header-info {
@@ -353,7 +353,7 @@ body {
 }
 
 .page-title {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 500;
   color: var(--text-primary);
   letter-spacing: 0.15px;
@@ -361,22 +361,22 @@ body {
 }
 
 .header-subtitle {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-tertiary);
   margin-top: 2px;
 }
 
 .header-actions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: center;
 }
 
 /* Material Badge */
 .status-badge {
-  padding: 6px 12px;
-  border-radius: 16px;
-  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.5px;
   text-transform: uppercase;
