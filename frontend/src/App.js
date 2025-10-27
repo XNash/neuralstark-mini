@@ -498,21 +498,36 @@ function App() {
               <div className="input-area">
                 <div className="input-wrapper">
                   <textarea
+                    ref={inputRef}
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Type your message..."
+                    placeholder="Type your message... (Enter to send, Ctrl+Enter for new line)"
                     rows="1"
                     disabled={isLoading}
                     className="message-input"
+                    aria-label="Message input"
+                    maxLength="2000"
                   />
-                  <button
-                    onClick={sendMessage}
-                    disabled={isLoading || !inputMessage.trim()}
-                    className="send-btn"
-                  >
-                    <span className="send-icon">📤</span>
-                  </button>
+                  <div className="input-actions">
+                    <span className="char-count" aria-label="Character count">
+                      {inputMessage.length}/2000
+                    </span>
+                    <button
+                      onClick={sendMessage}
+                      disabled={isLoading || !inputMessage.trim()}
+                      className="send-btn"
+                      aria-label="Send message"
+                      title="Send message (Enter)"
+                    >
+                      <span className="send-icon">
+                        {isLoading ? '⏳' : '📤'}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                <div className="input-help">
+                  <span className="help-text">💡 Tip: Press Enter to send, Shift+Enter for new line</span>
                 </div>
               </div>
             </div>
