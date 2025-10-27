@@ -405,41 +405,41 @@ function App() {
               <div className="messages-area">
                 {messages.length === 0 && (
                   <div className="welcome-screen">
-                    <div className="welcome-icon">🤖</div>
-                    <h2 className="welcome-title">Welcome to NeuralStark</h2>
+                    <div className="welcome-icon">🧠</div>
+                    <h2 className="welcome-title">Bienvenue sur Xynorash AI</h2>
                     <p className="welcome-subtitle">
-                      Start a conversation with your documents
+                      Commencez une conversation avec vos documents
                     </p>
                     
                     <div className="feature-grid">
                       <div className="feature-card">
                         <span className="feature-icon">📄</span>
-                        <h3>PDF Support</h3>
-                        <p>OCR-enabled document processing</p>
+                        <h3>Support PDF</h3>
+                        <p>Traitement de documents avec OCR</p>
                       </div>
                       <div className="feature-card">
                         <span className="feature-icon">🌐</span>
-                        <h3>Multilingual</h3>
-                        <p>English & French optimized</p>
+                        <h3>Multilingue</h3>
+                        <p>Optimisé pour anglais et français</p>
                       </div>
                       <div className="feature-card">
                         <span className="feature-icon">🔍</span>
-                        <h3>Smart Search</h3>
-                        <p>Vector-based retrieval</p>
+                        <h3>Recherche Intelligente</h3>
+                        <p>Récupération basée sur les vecteurs</p>
                       </div>
                       <div className="feature-card">
                         <span className="feature-icon">💡</span>
-                        <h3>AI-Powered</h3>
+                        <h3>Propulsé par IA</h3>
                         <p>Gemini 2.5 Flash</p>
                       </div>
                     </div>
 
                     <div className="quick-tips">
-                      <h4>Quick Tips:</h4>
+                      <h4>Conseils Rapides:</h4>
                       <ul>
-                        <li>Add documents to <code>/app/files</code> directory</li>
-                        <li>Configure your Gemini API key in Settings</li>
-                        <li>Ask questions about your documents in natural language</li>
+                        <li>Ajoutez des documents dans le répertoire <code>/app/files</code></li>
+                        <li>Configurez votre clé API Gemini dans les Paramètres</li>
+                        <li>Posez des questions sur vos documents en langage naturel</li>
                       </ul>
                     </div>
                   </div>
