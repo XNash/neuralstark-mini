@@ -7,7 +7,7 @@ import requests
 import json
 import time
 
-BACKEND_URL = "https://bugbuster-34.preview.emergentagent.com/api"
+BACKEND_URL = "https://dev-setup-guide-2.preview.emergentagent.com/api"
 
 def test_incremental_cache():
     """Test that incremental reindex skips cached files"""
