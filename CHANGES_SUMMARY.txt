@@ -1,5 +1,5 @@
 ═══════════════════════════════════════════════════════════════
-    RAG PLATFORM - PORTABILITY & AUTO-CONFIGURATION UPDATE
+    NEURALSTARK - PORTABILITY & AUTO-CONFIGURATION UPDATE
 ═══════════════════════════════════════════════════════════════
 
 DATE: 2025-10-12
