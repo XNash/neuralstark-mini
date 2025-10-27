@@ -406,7 +406,7 @@ function App() {
                 {messages.length === 0 && (
                   <div className="welcome-screen">
                     <div className="welcome-icon">🧠</div>
-                    <h2 className="welcome-title">Bienvenue sur Xynorash AI</h2>
+                    <h2 className="welcome-title">Bienvenue sur Neuralstark AI</h2>
                     <p className="welcome-subtitle">
                       Commencez une conversation avec vos documents
                     </p>
