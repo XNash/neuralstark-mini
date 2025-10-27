@@ -659,7 +659,7 @@ class RAGPlatformTester:
     def run_all_tests(self):
         """Run all backend tests"""
         print("=" * 70)
-        print("OPTIMIZED RAG PLATFORM BACKEND TESTING")
+        print("OPTIMIZED NEURALSTARK BACKEND TESTING")
         print("Focus: Performance & New Cache Features")
         print("Testing with Real Gemini API Key: AIzaSyD273RLpkzyDyU59NKxTERC3jm0xVhH7N4")
         print("=" * 70)
