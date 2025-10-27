@@ -566,7 +566,7 @@ function App() {
           {currentPage === 'documents' && (
             <div className="documents-page">
               <div className="page-header">
-                <h2>Document Management</h2>
+                <h2>Gestion des Documents</h2>
                 <div className="header-actions-group">
                   <button 
                     className="btn-secondary" 
@@ -574,21 +574,21 @@ function App() {
                       loadDocumentStatus();
                       loadDocumentsList();
                     }}
-                    title="Refresh document list"
+                    title="Actualiser la liste des documents"
                   >
                     <span className="btn-icon">🔄</span>
-                    Refresh
+                    Actualiser
                   </button>
                   <button 
                     className="btn-primary" 
                     onClick={handleReindexClick}
                     disabled={saveStatus === 'indexing'}
-                    title="Reindex all documents"
+                    title="Réindexer tous les documents"
                   >
                     <span className="btn-icon">
                       {saveStatus === 'indexing' ? '⏳' : '🔄'}
                     </span>
-                    {saveStatus === 'indexing' ? 'Indexing...' : 'Reindex Documents'}
+                    {saveStatus === 'indexing' ? 'Indexation...' : 'Réindexer les Documents'}
                   </button>
                 </div>
               </div>
@@ -598,17 +598,17 @@ function App() {
                 <div className="modal-overlay" onClick={() => setShowConfirmDialog(false)}>
                   <div className="modal-dialog" onClick={(e) => e.stopPropagation()} role="dialog" aria-labelledby="confirm-title">
                     <div className="modal-header">
-                      <h3 id="confirm-title">Confirm Document Reindexing</h3>
+                      <h3 id="confirm-title">Confirmer la Réindexation des Documents</h3>
                       <button 
                         className="modal-close" 
                         onClick={() => setShowConfirmDialog(false)}
-                        aria-label="Close dialog"
+                        aria-label="Fermer la boîte de dialogue"
                       >
                         ✕
                       </button>
                     </div>
                     <div className="modal-body">
-                      <p>Choose reindexing option:</p>
+                      <p>Choisissez l'option de réindexation:</p>
                       <div className="reindex-options">
                         <button 
                           className="option-btn"
@@ -616,8 +616,8 @@ function App() {
                         >
                           <span className="option-icon">⚡</span>
                           <div className="option-content">
-                            <strong>Quick Reindex</strong>
-                            <small>Only process new or changed files</small>
+                            <strong>Réindexation Rapide</strong>
+                            <small>Traiter uniquement les fichiers nouveaux ou modifiés</small>
                           </div>
                         </button>
                         <button 
@@ -626,8 +626,8 @@ function App() {
                         >
                           <span className="option-icon">🔄</span>
                           <div className="option-content">
-                            <strong>Full Reindex</strong>
-                            <small>Reprocess all files (slower)</small>
+                            <strong>Réindexation Complète</strong>
+                            <small>Retraiter tous les fichiers (plus lent)</small>
                           </div>
                         </button>
                       </div>
@@ -637,7 +637,7 @@ function App() {
                         className="btn-secondary" 
                         onClick={() => setShowConfirmDialog(false)}
                       >
-                        Cancel
+                        Annuler
                       </button>
                     </div>
                   </div>
@@ -646,7 +646,7 @@ function App() {
 
               {saveStatus === 'success' && (
                 <div className="success-banner" role="status">
-                  ✓ Documents reindexed successfully!
+                  ✓ Documents réindexés avec succès!
                 </div>
               )}
 
