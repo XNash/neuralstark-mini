@@ -453,7 +453,7 @@ function App() {
                     <div className="message-bubble">
                       <div className="message-header-info">
                         <span className="message-sender">
-                          {msg.role === 'user' ? 'Vous' : 'Xynorash AI'}
+                          {msg.role === 'user' ? 'Vous' : 'Neuralstark AI'}
                         </span>
                         <span className="message-time">
                           {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
