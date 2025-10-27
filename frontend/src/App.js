@@ -654,7 +654,7 @@ function App() {
                 <div className="stat-card">
                   <div className="stat-icon">📚</div>
                   <div className="stat-content">
-                    <p className="stat-label">Total Documents</p>
+                    <p className="stat-label">Total des Documents</p>
                     <p className="stat-value">{docStatus?.total_documents || 0}</p>
                   </div>
                 </div>
@@ -662,7 +662,7 @@ function App() {
                 <div className="stat-card">
                   <div className="stat-icon">📊</div>
                   <div className="stat-content">
-                    <p className="stat-label">Indexed Chunks</p>
+                    <p className="stat-label">Fragments Indexés</p>
                     <p className="stat-value">{docStatus?.indexed_documents || 0}</p>
                   </div>
                 </div>
@@ -670,23 +670,23 @@ function App() {
                 <div className="stat-card">
                   <div className="stat-icon">⏰</div>
                   <div className="stat-content">
-                    <p className="stat-label">Last Updated</p>
+                    <p className="stat-label">Dernière Mise à Jour</p>
                     <p className="stat-value">
                       {docStatus?.last_updated 
-                        ? new Date(docStatus.last_updated).toLocaleDateString()
-                        : 'Never'}
+                        ? new Date(docStatus.last_updated).toLocaleDateString('fr-FR')
+                        : 'Jamais'}
                     </p>
                   </div>
                 </div>
               </div>
 
               <div className="info-section">
-                <h3>Supported Document Formats</h3>
+                <h3>Formats de Documents Supportés</h3>
                 <div className="format-grid">
                   <div className="format-item">
                     <span className="format-icon">📄</span>
                     <span className="format-name">PDF</span>
-                    <span className="format-desc">With OCR support</span>
+                    <span className="format-desc">Avec support OCR</span>
                   </div>
                   <div className="format-item">
                     <span className="format-icon">📝</span>
@@ -700,12 +700,12 @@ function App() {
                   </div>
                   <div className="format-item">
                     <span className="format-icon">📋</span>
-                    <span className="format-name">Text</span>
+                    <span className="format-name">Texte</span>
                     <span className="format-desc">.txt, .md</span>
                   </div>
                   <div className="format-item">
                     <span className="format-icon">💾</span>
-                    <span className="format-name">Data</span>
+                    <span className="format-name">Données</span>
                     <span className="format-desc">.json, .csv</span>
                   </div>
                   <div className="format-item">
@@ -717,13 +717,13 @@ function App() {
               </div>
 
               <div className="info-section">
-                <h3>How to Add Documents</h3>
+                <h3>Comment Ajouter des Documents</h3>
                 <div className="instructions-card">
                   <ol className="instructions-list">
-                    <li>Place your documents in the <code>/app/files</code> directory</li>
-                    <li>The system automatically monitors for new files</li>
-                    <li>Documents are indexed within 5-10 seconds</li>
-                    <li>Use the "Reindex Documents" button to manually trigger indexing</li>
+                    <li>Placez vos documents dans le répertoire <code>/app/files</code></li>
+                    <li>Le système surveille automatiquement les nouveaux fichiers</li>
+                    <li>Les documents sont indexés en 5-10 secondes</li>
+                    <li>Utilisez le bouton "Réindexer les Documents" pour déclencher manuellement l'indexation</li>
                   </ol>
                 </div>
               </div>
