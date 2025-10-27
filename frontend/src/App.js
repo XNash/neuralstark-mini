@@ -766,14 +766,14 @@ function App() {
             <div className="settings-page">
               <div className="settings-section">
                 <div className="section-header">
-                  <h3>🔑 API Configuration</h3>
-                  <p className="section-desc">Configure your Google Gemini API key for AI-powered responses</p>
+                  <h3>🔑 Configuration de l'API</h3>
+                  <p className="section-desc">Configurez votre clé API Google Gemini pour des réponses alimentées par l'IA</p>
                 </div>
                 <div className="settings-card">
                   <div className="form-group">
                     <label className="form-label" htmlFor="api-key-input">
-                      Gemini API Key
-                      <span className="required-indicator" title="Required field">*</span>
+                      Clé API Gemini
+                      <span className="required-indicator" title="Champ requis">*</span>
                     </label>
                     <div className="input-with-button">
                       <input
@@ -784,7 +784,7 @@ function App() {
                           setApiKey(e.target.value);
                           setErrorMessage('');
                         }}
-                        placeholder="Enter your API key (min. 10 characters)..."
+                        placeholder="Entrez votre clé API (min. 10 caractères)..."
                         className={`form-input ${errorMessage && !apiKey ? 'input-error' : ''}`}
                         aria-required="true"
                         aria-invalid={errorMessage && !apiKey ? 'true' : 'false'}
@@ -796,12 +796,12 @@ function App() {
                         className="btn-primary"
                         disabled={saveStatus === 'saving'}
                       >
-                        {saveStatus === 'saving' ? '⏳ Saving...' : '💾 Save'}
+                        {saveStatus === 'saving' ? '⏳ Enregistrement...' : '💾 Enregistrer'}
                       </button>
                     </div>
                     {saveStatus === 'success' && (
                       <p className="form-help success" role="status">
-                        ✓ API key saved successfully and is working
+                        ✓ Clé API enregistrée avec succès et fonctionne
                       </p>
                     )}
                     {saveStatus === 'error' && errorMessage && (
@@ -811,11 +811,11 @@ function App() {
                     )}
                     {apiKeySaved && !saveStatus && (
                       <p className="form-help success">
-                        ✓ API key is configured and working
+                        ✓ La clé API est configurée et fonctionne
                       </p>
                     )}
                     <p className="form-help" id="api-key-help">
-                      Get your free API key from{' '}
+                      Obtenez votre clé API gratuite depuis{' '}
                       <a 
                         href="https://aistudio.google.com/app/apikey" 
                         target="_blank" 
@@ -824,7 +824,7 @@ function App() {
                       >
                         Google AI Studio
                       </a>
-                      . Your key is stored securely and never shared.
+                      . Votre clé est stockée en toute sécurité et n'est jamais partagée.
                     </p>
                   </div>
                 </div>
@@ -832,26 +832,26 @@ function App() {
 
               <div className="settings-section">
                 <div className="section-header">
-                  <h3>🤖 Model Information</h3>
-                  <p className="section-desc">Current AI model configuration</p>
+                  <h3>🧠 Informations sur le Modèle</h3>
+                  <p className="section-desc">Configuration actuelle du modèle d'IA</p>
                 </div>
                 <div className="settings-card">
                   <div className="info-grid">
                     <div className="info-item">
-                      <span className="info-label">Language Model</span>
+                      <span className="info-label">Modèle de Langage</span>
                       <span className="info-value">Gemini 2.5 Flash</span>
                     </div>
                     <div className="info-item">
-                      <span className="info-label">Embedding Model</span>
+                      <span className="info-label">Modèle d'Embedding</span>
                       <span className="info-value">BAAI/bge-base-en-v1.5</span>
                     </div>
                     <div className="info-item">
-                      <span className="info-label">Vector Database</span>
+                      <span className="info-label">Base de Données Vectorielle</span>
                       <span className="info-value">ChromaDB</span>
                     </div>
                     <div className="info-item">
-                      <span className="info-label">Languages</span>
-                      <span className="info-value">English, French</span>
+                      <span className="info-label">Langues</span>
+                      <span className="info-value">Anglais, Français</span>
                     </div>
                   </div>
                 </div>
@@ -859,26 +859,26 @@ function App() {
 
               <div className="settings-section">
                 <div className="section-header">
-                  <h3>ℹ️ System Information</h3>
-                  <p className="section-desc">Platform details and version</p>
+                  <h3>ℹ️ Informations Système</h3>
+                  <p className="section-desc">Détails de la plateforme et version</p>
                 </div>
                 <div className="settings-card">
                   <div className="info-grid">
                     <div className="info-item">
-                      <span className="info-label">Platform Version</span>
+                      <span className="info-label">Version de la Plateforme</span>
                       <span className="info-value">2.0.0</span>
                     </div>
                     <div className="info-item">
-                      <span className="info-label">Backend URL</span>
+                      <span className="info-label">URL du Backend</span>
                       <span className="info-value">{BACKEND_URL || 'localhost:8001'}</span>
                     </div>
                     <div className="info-item">
-                      <span className="info-label">Document Directory</span>
+                      <span className="info-label">Répertoire de Documents</span>
                       <span className="info-value">/app/files</span>
                     </div>
                     <div className="info-item">
-                      <span className="info-label">Auto-indexing</span>
-                      <span className="info-value">Enabled (5s interval)</span>
+                      <span className="info-label">Auto-indexation</span>
+                      <span className="info-value">Activée (intervalle de 5s)</span>
                     </div>
                   </div>
                 </div>
