@@ -85,7 +85,7 @@ function App() {
 
   const saveSettings = async () => {
     if (!apiKey || apiKey.trim().length < 10) {
-      setErrorMessage('Please enter a valid API key (minimum 10 characters)');
+      setErrorMessage('Veuillez entrer une clé API valide (minimum 10 caractères)');
       setSaveStatus('error');
       setTimeout(() => {
         setErrorMessage('');
@@ -111,7 +111,7 @@ function App() {
         setTimeout(() => setSaveStatus(null), 3000);
       } else {
         setSaveStatus('error');
-        setErrorMessage('Failed to save API key. Please try again.');
+        setErrorMessage('Échec de l\'enregistrement de la clé API. Veuillez réessayer.');
         setTimeout(() => {
           setSaveStatus(null);
           setErrorMessage('');
@@ -120,7 +120,7 @@ function App() {
     } catch (error) {
       console.error('Error saving settings:', error);
       setSaveStatus('error');
-      setErrorMessage('Network error. Please check your connection.');
+      setErrorMessage('Erreur réseau. Veuillez vérifier votre connexion.');
       setTimeout(() => {
         setSaveStatus(null);
         setErrorMessage('');
