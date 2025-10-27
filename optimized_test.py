@@ -14,7 +14,7 @@ def test_optimized_features():
     session = requests.Session()
     
     print("=" * 70)
-    print("OPTIMIZED RAG PLATFORM COMPREHENSIVE TEST")
+    print("OPTIMIZED NEURALSTARK COMPREHENSIVE TEST")
     print("=" * 70)
     
     results = []
