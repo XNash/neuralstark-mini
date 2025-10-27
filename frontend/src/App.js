@@ -132,7 +132,7 @@ function App() {
     if (!inputMessage.trim() || isLoading) return;
 
     if (!apiKeySaved) {
-      setErrorMessage('⚠️ Please configure your Gemini API key in Settings first');
+      setErrorMessage('⚠️ Veuillez configurer votre clé API Gemini dans les Paramètres d\'abord');
       setTimeout(() => setErrorMessage(''), 4000);
       setCurrentPage('settings');
       return;
@@ -169,20 +169,20 @@ function App() {
         // Update chat history
         updateChatHistory();
       } else {
-        const errorMsg = data.detail || 'Failed to get response';
+        const errorMsg = data.detail || 'Échec de l\'obtention de la réponse';
         setMessages(prev => [
           ...prev,
           {
             role: 'assistant',
-            content: `❌ Error: ${errorMsg}`,
+            content: `❌ Erreur: ${errorMsg}`,
             isError: true,
           },
         ]);
-        setErrorMessage(`Error: ${errorMsg}`);
+        setErrorMessage(`Erreur: ${errorMsg}`);
       }
     } catch (error) {
       console.error('Error sending message:', error);
-      const errorMsg = 'Failed to communicate with the server. Please check your connection.';
+      const errorMsg = 'Échec de la communication avec le serveur. Veuillez vérifier votre connexion.';
       setMessages(prev => [
         ...prev,
         {
