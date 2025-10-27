@@ -35,7 +35,7 @@ function App() {
     // Add initial session to history
     setChatHistory([{
       id: newSessionId,
-      title: 'New Conversation',
+      title: 'Nouvelle Conversation',
       timestamp: new Date().toISOString(),
       messageCount: 0
     }]);
