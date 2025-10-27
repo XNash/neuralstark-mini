@@ -730,7 +730,7 @@ function App() {
 
               {documentsList.total_count > 0 && (
                 <div className="info-section">
-                  <h3>📁 Indexed Files ({documentsList.total_count})</h3>
+                  <h3>📁 Fichiers Indexés ({documentsList.total_count})</h3>
                   <div className="files-by-type">
                     {Object.entries(documentsList.documents_by_type).map(([category, files]) => (
                       <div key={category} className="file-category">
