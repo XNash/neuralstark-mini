@@ -448,12 +448,12 @@ function App() {
                 {messages.map((msg, index) => (
                   <div key={index} className={`message ${msg.role}`}>
                     <div className="message-avatar">
-                      {msg.role === 'user' ? '👤' : '🤖'}
+                      {msg.role === 'user' ? '👤' : '🧠'}
                     </div>
                     <div className="message-bubble">
                       <div className="message-header-info">
                         <span className="message-sender">
-                          {msg.role === 'user' ? 'You' : 'AI Assistant'}
+                          {msg.role === 'user' ? 'Vous' : 'Xynorash AI'}
                         </span>
                         <span className="message-time">
                           {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -511,7 +511,7 @@ function App() {
 
                 {isLoading && (
                   <div className="message assistant">
-                    <div className="message-avatar">🤖</div>
+                    <div className="message-avatar">🧠</div>
                     <div className="message-bubble loading">
                       <div className="typing-indicator">
                         <span></span>
