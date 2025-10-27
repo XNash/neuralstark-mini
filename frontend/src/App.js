@@ -537,11 +537,88 @@ function App() {
             <div className="documents-page">
               <div className="page-header">
                 <h2>Document Management</h2>
-                <button className="btn-primary" onClick={reindexDocuments}>
-                  <span className="btn-icon">🔄</span>
-                  Reindex Documents
-                </button>
+                <div className="header-actions-group">
+                  <button 
+                    className="btn-secondary" 
+                    onClick={() => {
+                      loadDocumentStatus();
+                      loadDocumentsList();
+                    }}
+                    title="Refresh document list"
+                  >
+                    <span className="btn-icon">🔄</span>
+                    Refresh
+                  </button>
+                  <button 
+                    className="btn-primary" 
+                    onClick={handleReindexClick}
+                    disabled={saveStatus === 'indexing'}
+                    title="Reindex all documents"
+                  >
+                    <span className="btn-icon">
+                      {saveStatus === 'indexing' ? '⏳' : '🔄'}
+                    </span>
+                    {saveStatus === 'indexing' ? 'Indexing...' : 'Reindex Documents'}
+                  </button>
+                </div>
               </div>
+
+              {/* Confirmation Dialog */}
+              {showConfirmDialog && (
+                <div className="modal-overlay" onClick={() => setShowConfirmDialog(false)}>
+                  <div className="modal-dialog" onClick={(e) => e.stopPropagation()} role="dialog" aria-labelledby="confirm-title">
+                    <div className="modal-header">
+                      <h3 id="confirm-title">Confirm Document Reindexing</h3>
+                      <button 
+                        className="modal-close" 
+                        onClick={() => setShowConfirmDialog(false)}
+                        aria-label="Close dialog"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="modal-body">
+                      <p>Choose reindexing option:</p>
+                      <div className="reindex-options">
+                        <button 
+                          className="option-btn"
+                          onClick={() => reindexDocuments(false)}
+                        >
+                          <span className="option-icon">⚡</span>
+                          <div className="option-content">
+                            <strong>Quick Reindex</strong>
+                            <small>Only process new or changed files</small>
+                          </div>
+                        </button>
+                        <button 
+                          className="option-btn"
+                          onClick={() => reindexDocuments(true)}
+                        >
+                          <span className="option-icon">🔄</span>
+                          <div className="option-content">
+                            <strong>Full Reindex</strong>
+                            <small>Reprocess all files (slower)</small>
+                          </div>
+                        </button>
+                      </div>
+                    </div>
+                    <div className="modal-footer">
+                      <button 
+                        className="btn-secondary" 
+                        onClick={() => setShowConfirmDialog(false)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {saveStatus === 'success' && (
+                <div className="success-banner" role="status">
+                  ✓ Documents reindexed successfully!
+                </div>
+              )}
 
               <div className="stats-grid">
                 <div className="stat-card">
