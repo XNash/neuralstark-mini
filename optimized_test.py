@@ -7,7 +7,7 @@ import requests
 import json
 import time
 
-BACKEND_URL = "https://qa-fullstack.preview.emergentagent.com/api"
+BACKEND_URL = "https://bugbuster-34.preview.emergentagent.com/api"
 
 def test_optimized_features():
     """Test all optimized RAG Platform features"""
