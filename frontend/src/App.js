@@ -358,28 +358,28 @@ function App() {
           <button 
             className="menu-toggle" 
             onClick={toggleSidebar}
-            aria-label={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
-            title={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
+            aria-label={sidebarOpen ? 'Fermer la barre latérale' : 'Ouvrir la barre latérale'}
+            title={sidebarOpen ? 'Fermer la barre latérale' : 'Ouvrir la barre latérale'}
           >
             <span className="hamburger"></span>
           </button>
           
           <div className="header-info">
             <h2 className="page-title">
-              {currentPage === 'chat' && '💬 Chat'}
+              {currentPage === 'chat' && '💬 Discussion'}
               {currentPage === 'documents' && '📚 Documents'}
-              {currentPage === 'settings' && '⚙️ Settings'}
+              {currentPage === 'settings' && '⚙️ Paramètres'}
             </h2>
             {currentPage === 'chat' && docStatus && (
-              <p className="header-subtitle" aria-label="Document status">
-                {docStatus.total_documents} documents • {docStatus.indexed_documents} indexed chunks
+              <p className="header-subtitle" aria-label="Statut des documents">
+                {docStatus.total_documents} documents • {docStatus.indexed_documents} fragments indexés
               </p>
             )}
           </div>
 
           <div className="header-actions">
-            {apiKeySaved && <span className="status-badge success" title="API key configured">✓ API Configured</span>}
-            {!apiKeySaved && <span className="status-badge warning" title="API key required">⚠ API Key Required</span>}
+            {apiKeySaved && <span className="status-badge success" title="Clé API configurée">✓ API Configurée</span>}
+            {!apiKeySaved && <span className="status-badge warning" title="Clé API requise">⚠ Clé API Requise</span>}
           </div>
         </header>
 
@@ -391,7 +391,7 @@ function App() {
             <button 
               className="error-close" 
               onClick={() => setErrorMessage('')}
-              aria-label="Close error message"
+              aria-label="Fermer le message d'erreur"
             >
               ✕
             </button>
