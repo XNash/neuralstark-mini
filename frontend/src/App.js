@@ -82,6 +82,17 @@ function App() {
   };
 
   const saveSettings = async () => {
+    if (!apiKey || apiKey.trim().length < 10) {
+      setErrorMessage('Please enter a valid API key (minimum 10 characters)');
+      setSaveStatus('error');
+      setTimeout(() => {
+        setErrorMessage('');
+        setSaveStatus(null);
+      }, 3000);
+      return;
+    }
+
+    setSaveStatus('saving');
     try {
       const response = await fetch(`${BACKEND_URL}/api/settings`, {
         method: 'POST',
@@ -93,13 +104,25 @@ function App() {
 
       if (response.ok) {
         setApiKeySaved(true);
-        alert('API key saved successfully!');
+        setSaveStatus('success');
+        setErrorMessage('');
+        setTimeout(() => setSaveStatus(null), 3000);
       } else {
-        alert('Failed to save API key');
+        setSaveStatus('error');
+        setErrorMessage('Failed to save API key. Please try again.');
+        setTimeout(() => {
+          setSaveStatus(null);
+          setErrorMessage('');
+        }, 3000);
       }
     } catch (error) {
       console.error('Error saving settings:', error);
-      alert('Error saving API key');
+      setSaveStatus('error');
+      setErrorMessage('Network error. Please check your connection.');
+      setTimeout(() => {
+        setSaveStatus(null);
+        setErrorMessage('');
+      }, 3000);
     }
   };
 
