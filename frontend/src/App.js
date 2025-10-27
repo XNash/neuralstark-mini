@@ -737,27 +737,54 @@ function App() {
               <div className="settings-section">
                 <div className="section-header">
                   <h3>🔑 API Configuration</h3>
-                  <p className="section-desc">Configure your Google Gemini API key</p>
+                  <p className="section-desc">Configure your Google Gemini API key for AI-powered responses</p>
                 </div>
                 <div className="settings-card">
                   <div className="form-group">
-                    <label className="form-label">Gemini API Key</label>
+                    <label className="form-label" htmlFor="api-key-input">
+                      Gemini API Key
+                      <span className="required-indicator" title="Required field">*</span>
+                    </label>
                     <div className="input-with-button">
                       <input
+                        id="api-key-input"
                         type="password"
                         value={apiKey}
-                        onChange={(e) => setApiKey(e.target.value)}
-                        placeholder="Enter your API key..."
-                        className="form-input"
+                        onChange={(e) => {
+                          setApiKey(e.target.value);
+                          setErrorMessage('');
+                        }}
+                        placeholder="Enter your API key (min. 10 characters)..."
+                        className={`form-input ${errorMessage && !apiKey ? 'input-error' : ''}`}
+                        aria-required="true"
+                        aria-invalid={errorMessage && !apiKey ? 'true' : 'false'}
+                        aria-describedby="api-key-help"
+                        minLength="10"
                       />
-                      <button onClick={saveSettings} className="btn-primary">
-                        Save
+                      <button 
+                        onClick={saveSettings} 
+                        className="btn-primary"
+                        disabled={saveStatus === 'saving'}
+                      >
+                        {saveStatus === 'saving' ? '⏳ Saving...' : '💾 Save'}
                       </button>
                     </div>
-                    {apiKeySaved && (
-                      <p className="form-help success">✓ API key is configured and working</p>
+                    {saveStatus === 'success' && (
+                      <p className="form-help success" role="status">
+                        ✓ API key saved successfully and is working
+                      </p>
                     )}
-                    <p className="form-help">
+                    {saveStatus === 'error' && errorMessage && (
+                      <p className="form-help error" role="alert">
+                        ✕ {errorMessage}
+                      </p>
+                    )}
+                    {apiKeySaved && !saveStatus && (
+                      <p className="form-help success">
+                        ✓ API key is configured and working
+                      </p>
+                    )}
+                    <p className="form-help" id="api-key-help">
                       Get your free API key from{' '}
                       <a 
                         href="https://aistudio.google.com/app/apikey" 
@@ -767,6 +794,7 @@ function App() {
                       >
                         Google AI Studio
                       </a>
+                      . Your key is stored securely and never shared.
                     </p>
                   </div>
                 </div>
