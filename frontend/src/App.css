@@ -1175,8 +1175,404 @@ body {
 }
 
 /* ============================================
-   SCROLLBAR - MATERIAL
+   BASTIEN & SCAPIN ERGONOMIC ENHANCEMENTS
    ============================================ */
+
+/* 1. GUIDANCE - Navigation badges and indicators */
+.nav-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background: var(--primary-color);
+  color: var(--text-inverse);
+  border-radius: 9px;
+  font-size: 10px;
+  font-weight: 600;
+  margin-left: auto;
+}
+
+.nav-badge.warning {
+  background: var(--md-warning);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* 2. WORKLOAD - Global error banner */
+.global-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #FFEBEE;
+  border-left: 4px solid var(--md-error);
+  color: var(--md-error);
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0 16px 0 16px;
+  border-radius: var(--radius-md);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-icon {
+  font-size: 16px;
+}
+
+.error-text {
+  flex: 1;
+}
+
+.error-close {
+  background: transparent;
+  border: none;
+  color: var(--md-error);
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color var(--transition-fast);
+}
+
+.error-close:hover {
+  background: rgba(244, 67, 54, 0.1);
+}
+
+/* 3. EXPLICIT CONTROL - Modal dialogs */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-dialog {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elevation-8);
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow: auto;
+  animation: scaleIn 0.2s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid var(--divider-color);
+}
+
+.modal-header h3 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 20px;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color var(--transition-fast);
+}
+
+.modal-close:hover {
+  background: var(--bg-tertiary);
+}
+
+.modal-body {
+  padding: 16px;
+}
+
+.modal-body p {
+  margin: 0 0 16px 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px;
+  border-top: 1px solid var(--divider-color);
+}
+
+/* Reindex options */
+.reindex-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.option-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg-tertiary);
+  border: 2px solid var(--divider-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+}
+
+.option-btn:hover {
+  border-color: var(--primary-color);
+  background: var(--primary-light);
+  box-shadow: var(--elevation-2);
+}
+
+.option-icon {
+  font-size: 24px;
+}
+
+.option-content {
+  flex: 1;
+}
+
+.option-content strong {
+  display: block;
+  font-size: 13px;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.option-content small {
+  display: block;
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+/* 4. ADAPTABILITY - Secondary button style */
+.btn-secondary {
+  padding: 8px 14px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--divider-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--transition-fast);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--primary-color);
+  box-shadow: var(--elevation-2);
+}
+
+.header-actions-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* 5. ERROR MANAGEMENT - Form validation */
+.form-help.error {
+  color: var(--md-error);
+  font-weight: 500;
+}
+
+.input-error {
+  border-color: var(--md-error) !important;
+  box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.1) !important;
+}
+
+.required-indicator {
+  color: var(--md-error);
+  margin-left: 4px;
+  font-weight: 600;
+}
+
+/* Success banner */
+.success-banner {
+  background: #E8F5E9;
+  border-left: 4px solid var(--md-success);
+  color: var(--md-success);
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  border-radius: var(--radius-md);
+  animation: slideDown 0.3s ease-out;
+}
+
+/* 6. CONSISTENCY - Input actions group */
+.input-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.char-count {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  padding: 4px 8px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.input-help {
+  margin-top: 8px;
+  text-align: center;
+}
+
+.help-text {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
+/* 7. SIGNIFICANCE OF CODES - Enhanced tooltips */
+[title] {
+  cursor: help;
+}
+
+/* 8. COMPATIBILITY - Accessible focus states */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Loading state for buttons */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Improved message input wrapper */
+.input-wrapper {
+  display: flex;
+  gap: 10px;
+  max-width: 700px;
+  margin: 0 auto;
+  align-items: flex-end;
+}
+
+.message-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--divider-color);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-family: inherit;
+  resize: none;
+  min-height: 38px;
+  max-height: 180px;
+  outline: none;
+  transition: border-color var(--transition-fast);
+  background: var(--bg-secondary);
+}
+
+.message-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.message-input:disabled {
+  background: var(--bg-tertiary);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .modal-dialog {
+    max-width: 95%;
+  }
+
+  .header-actions-group {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .header-actions-group button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .input-wrapper {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .input-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .char-count {
+    flex: 1;
+    text-align: center;
+  }
+}
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
