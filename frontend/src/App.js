@@ -532,23 +532,23 @@ function App() {
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Type your message... (Enter to send, Ctrl+Enter for new line)"
+                    placeholder="Tapez votre message... (Entrée pour envoyer, Ctrl+Entrée pour nouvelle ligne)"
                     rows="1"
                     disabled={isLoading}
                     className="message-input"
-                    aria-label="Message input"
+                    aria-label="Saisie du message"
                     maxLength="2000"
                   />
                   <div className="input-actions">
-                    <span className="char-count" aria-label="Character count">
+                    <span className="char-count" aria-label="Nombre de caractères">
                       {inputMessage.length}/2000
                     </span>
                     <button
                       onClick={sendMessage}
                       disabled={isLoading || !inputMessage.trim()}
                       className="send-btn"
-                      aria-label="Send message"
-                      title="Send message (Enter)"
+                      aria-label="Envoyer le message"
+                      title="Envoyer le message (Entrée)"
                     >
                       <span className="send-icon">
                         {isLoading ? '⏳' : '📤'}
@@ -557,7 +557,7 @@ function App() {
                   </div>
                 </div>
                 <div className="input-help">
-                  <span className="help-text">💡 Tip: Press Enter to send, Shift+Enter for new line</span>
+                  <span className="help-text">💡 Astuce: Appuyez sur Entrée pour envoyer, Maj+Entrée pour nouvelle ligne</span>
                 </div>
               </div>
             </div>
