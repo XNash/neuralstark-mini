@@ -284,7 +284,7 @@ function App() {
         <div className="sidebar-header">
           <div className="brand">
             <span className="brand-icon">🧠</span>
-            {sidebarOpen && <h1 className="brand-title">Xynorash AI</h1>}
+            {sidebarOpen && <h1 className="brand-title">Neuralstark AI</h1>}
           </div>
         </div>
 
