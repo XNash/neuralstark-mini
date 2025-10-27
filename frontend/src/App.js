@@ -468,14 +468,40 @@ function App() {
                         <div className="message-sources">
                           <p className="sources-title">📎 Sources</p>
                           <div className="sources-list">
-                            {msg.sources.map((source, idx) => (
-                              <div key={idx} className="source-chip">
-                                <span className="source-name">{source.source}</span>
-                                <span className="source-relevance">
-                                  {Math.round(source.relevance_score * 100)}%
-                                </span>
-                              </div>
-                            ))}
+                            {(() => {
+                              // Group sources by name and calculate average relevance
+                              const groupedSources = msg.sources.reduce((acc, source) => {
+                                if (!acc[source.source]) {
+                                  acc[source.source] = {
+                                    name: source.source,
+                                    scores: [],
+                                    count: 0
+                                  };
+                                }
+                                acc[source.source].scores.push(source.relevance_score);
+                                acc[source.source].count++;
+                                return acc;
+                              }, {});
+
+                              // Calculate average and create final array
+                              const finalSources = Object.values(groupedSources).map(group => ({
+                                name: group.name,
+                                avgScore: group.scores.reduce((sum, score) => sum + score, 0) / group.count,
+                                count: group.count
+                              }));
+
+                              return finalSources.map((source, idx) => (
+                                <div key={idx} className="source-chip">
+                                  <span className="source-name">
+                                    {source.name}
+                                    {source.count > 1 && <span className="source-count"> (×{source.count})</span>}
+                                  </span>
+                                  <span className="source-relevance">
+                                    {Math.round(source.avgScore * 100)}%
+                                  </span>
+                                </div>
+                              ));
+                            })()}
                           </div>
                         </div>
                       )}
