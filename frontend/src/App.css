@@ -69,10 +69,10 @@
   --elevation-4: 0 4px 8px rgba(0,0,0,0.12);
   --elevation-8: 0 8px 16px rgba(0,0,0,0.12);
 
-  /* Layout */
-  --sidebar-width: 280px;
-  --sidebar-collapsed: 64px;
-  --header-height: 64px;
+  /* Layout - Compact */
+  --sidebar-width: 240px;
+  --sidebar-collapsed: 56px;
+  --header-height: 56px;
   
   /* Material Design Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -92,7 +92,7 @@ body {
   background: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.5;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 /* App Layout */
