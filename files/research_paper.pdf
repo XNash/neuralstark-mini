@@ -1,21 +1,74 @@
-RESEARCH FINDINGS - PDF FORMAT
+%PDF-1.3
+%“Œ‹ž ReportLab Generated PDF document http://www.reportlab.com
+1 0 obj
+<<
+/F1 2 0 R /F2 3 0 R
+>>
+endobj
+2 0 obj
+<<
+/BaseFont /Helvetica /Encoding /WinAnsiEncoding /Name /F1 /Subtype /Type1 /Type /Font
+>>
+endobj
+3 0 obj
+<<
+/BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding /Name /F2 /Subtype /Type1 /Type /Font
+>>
+endobj
+4 0 obj
+<<
+/Contents 8 0 R /MediaBox [ 0 0 612 792 ] /Parent 7 0 R /Resources <<
+/Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>> /Rotate 0 /Trans <<
 
-Artificial Intelligence in Healthcare
+>> 
+  /Type /Page
+>>
+endobj
+5 0 obj
+<<
+/PageMode /UseNone /Pages 7 0 R /Type /Catalog
+>>
+endobj
+6 0 obj
+<<
+/Author (anonymous) /CreationDate (D:20251027183750+00'00') /Creator (ReportLab PDF Library - www.reportlab.com) /Keywords () /ModDate (D:20251027183750+00'00') /Producer (ReportLab PDF Library - www.reportlab.com) 
+  /Subject (unspecified) /Title (untitled) /Trapped /False
+>>
+endobj
+7 0 obj
+<<
+/Count 1 /Kids [ 4 0 R ] /Type /Pages
+>>
+endobj
+8 0 obj
+<<
+/Filter [ /ASCII85Decode /FlateDecode ] /Length 736
+>>
+stream
+Gas1]hf$st&:WfG\<fd;[ZGTF\+Zq?/#uc.e3unjHHnB3jOh:lJH#;5PBLbu7?snLEqt1>I;T6<J$T&X2?4glpoqm`Rm=N:/5L:7n)1'je(5t/c2.9!RJa1"#Dap*iF86BftcA0c,7eHHZ]^sF`G)I5!?\!I(<S"l@-?JQLCLE%d!TN\9X,s9.jSfSIE#$(MH=%KSHl@W&<+=,Q\jn7A5?s_Vr9!s0qS>IPsF+5Pj;k%#^G`03U#`el%V8LE;/5$<kiO"8ptib;ED)6+!a@.0<Z4UV$d]5&.#eeAch*aTtC#E.#YgXN4@OC-O'00Us\N`/UlqHOs'erko0+q$A-Ra1h7E8;.(U@)sbX&HbV5_.VM[T_9T]l+f&G?k^?cJnFU$+uu_ca]qX(+Ad]pF1-Yt&sVc'QRkgbT<FGP0*d[3":>`CZN`!Th2*&DF]P72OcLDE7!#Gtcib+,XfF](U%a]KER/r,7X,D'h-a'fZJ*n,OTA8(L[Ht.(.!0R$^dfh.6fh1Po<]e#K']e/q$AYkV9!g&T]`Z/>*MU/`<WW:19'p^i0Wfa`E!*FMdgDFUa??0:s=0\Y&`;<'8#7_$/%B(ac2df4W"e=4Tpu7Gb;rjbJe8ik2S3HsBH7IRo+[FQcZ,ShB+Z)k8in:D[++UEaXsTfD+:FcA)jqf\QG'n?MidSUkL'?YbnA,#58rq`1N4I)9VIWAfNI>ahP_Z%kr7iJ"p_OEaoP]RN~>endstream
+endobj
+xref
+0 9
+0000000000 65535 f 
+0000000073 00000 n 
+0000000114 00000 n 
+0000000221 00000 n 
+0000000333 00000 n 
+0000000526 00000 n 
+0000000594 00000 n 
+0000000890 00000 n 
+0000000949 00000 n 
+trailer
+<<
+/ID 
+[<ac5c8448863a69037de2ff49db11cd07><ac5c8448863a69037de2ff49db11cd07>]
+% ReportLab generated PDF document -- digest (http://www.reportlab.com)
 
-Abstract:
-This research paper explores AI applications in medical diagnosis.
-
-Key Findings:
-1. AI models achieved 94% accuracy in detecting diabetic retinopathy
-2. Machine learning reduced diagnosis time from 48 hours to 2 hours
-3. Natural language processing improved patient record analysis by 60%
-
-Methodology:
-- Dataset: 50,000 medical images from 10 hospitals
-- Models tested: CNN, ResNet, Vision Transformers
-- Training duration: 6 months
-
-Conclusions:
-AI shows promising results in healthcare diagnostics but requires human oversight for critical decisions.
-
-This research paper content is ONLY in the PDF file.
+/Info 6 0 R
+/Root 5 0 R
+/Size 9
+>>
+startxref
+1775
+%%EOF
