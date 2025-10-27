@@ -288,34 +288,49 @@ function App() {
 
         {sidebarOpen && (
           <>
-            <button className="new-chat-btn" onClick={newChat}>
+            <button 
+              className="new-chat-btn" 
+              onClick={newChat}
+              onMouseEnter={() => setShowTooltip('new-chat')}
+              onMouseLeave={() => setShowTooltip(null)}
+              title="Start a new conversation (Ctrl+N)"
+            >
               <span className="btn-icon">✨</span>
               <span>New Chat</span>
             </button>
 
-            <nav className="sidebar-nav">
+            <nav className="sidebar-nav" role="navigation" aria-label="Main navigation">
               <button
                 className={`nav-item ${currentPage === 'chat' ? 'active' : ''}`}
                 onClick={() => setCurrentPage('chat')}
+                aria-current={currentPage === 'chat' ? 'page' : undefined}
+                title="Go to chat interface"
               >
                 <span className="nav-icon">💬</span>
                 <span className="nav-label">Chat</span>
+                {messages.length > 0 && <span className="nav-badge">{messages.length}</span>}
               </button>
               
               <button
                 className={`nav-item ${currentPage === 'documents' ? 'active' : ''}`}
                 onClick={() => setCurrentPage('documents')}
+                aria-current={currentPage === 'documents' ? 'page' : undefined}
+                title="Manage your documents"
               >
                 <span className="nav-icon">📚</span>
                 <span className="nav-label">Documents</span>
+                {docStatus && <span className="nav-badge">{docStatus.total_documents}</span>}
               </button>
 
               <button
                 className={`nav-item ${currentPage === 'settings' ? 'active' : ''}`}
                 onClick={() => setCurrentPage('settings')}
+                aria-current={currentPage === 'settings' ? 'page' : undefined}
+                title="Configure settings"
               >
                 <span className="nav-icon">⚙️</span>
                 <span className="nav-label">Settings</span>
+                {!apiKeySaved && <span className="nav-badge warning">!</span>}
               </button>
             </nav>
 
@@ -337,8 +352,13 @@ function App() {
       {/* Main Content */}
       <main className="main-container">
         {/* Header */}
-        <header className="top-header">
-          <button className="menu-toggle" onClick={toggleSidebar}>
+        <header className="top-header" role="banner">
+          <button 
+            className="menu-toggle" 
+            onClick={toggleSidebar}
+            aria-label={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
+            title={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
+          >
             <span className="hamburger"></span>
           </button>
           
@@ -349,17 +369,32 @@ function App() {
               {currentPage === 'settings' && '⚙️ Settings'}
             </h2>
             {currentPage === 'chat' && docStatus && (
-              <p className="header-subtitle">
+              <p className="header-subtitle" aria-label="Document status">
                 {docStatus.total_documents} documents • {docStatus.indexed_documents} indexed chunks
               </p>
             )}
           </div>
 
           <div className="header-actions">
-            {apiKeySaved && <span className="status-badge success">✓ API Configured</span>}
-            {!apiKeySaved && <span className="status-badge warning">⚠ API Key Required</span>}
+            {apiKeySaved && <span className="status-badge success" title="API key configured">✓ API Configured</span>}
+            {!apiKeySaved && <span className="status-badge warning" title="API key required">⚠ API Key Required</span>}
           </div>
         </header>
+
+        {/* Global Error Message */}
+        {errorMessage && (
+          <div className="global-error" role="alert">
+            <span className="error-icon">⚠️</span>
+            <span className="error-text">{errorMessage}</span>
+            <button 
+              className="error-close" 
+              onClick={() => setErrorMessage('')}
+              aria-label="Close error message"
+            >
+              ✕
+            </button>
+          </div>
+        )}
 
         {/* Page Content */}
         <div className="page-content">
