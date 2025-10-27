@@ -1,0 +1,20 @@
+ENGINEERING BEST PRACTICES DOCUMENT
+
+This document contains engineering guidelines specific to DOCX files.
+
+Code Review Process:
+1. All code must pass automated tests
+2. Require at least two approvers
+3. Use semantic versioning for releases
+
+Architecture Principles:
+- Microservices should be independently deployable
+- Use event-driven architecture for asynchronous operations
+- Implement circuit breakers for external service calls
+
+Documentation Standards:
+- Every API endpoint must have OpenAPI documentation
+- Include example requests and responses
+- Document error codes and their meanings
+
+This information is ONLY in the DOCX file.

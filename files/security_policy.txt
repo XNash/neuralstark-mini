@@ -1,0 +1,20 @@
+SECURITY POLICY - TXT FORMAT
+
+Password Requirements:
+- Minimum 12 characters
+- Must include uppercase, lowercase, numbers, and special characters
+- Cannot reuse last 5 passwords
+- Expire every 90 days
+
+Access Control:
+- Use principle of least privilege
+- Multi-factor authentication required for all systems
+- VPN required for remote access
+- Access reviews conducted quarterly
+
+Incident Response:
+- Report security incidents within 1 hour
+- Contact: security@techcorp.com
+- Incident response team available 24/7
+
+This security policy is ONLY in the TXT file.

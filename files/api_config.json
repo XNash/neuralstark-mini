@@ -1,0 +1,21 @@
+{
+  "service_name": "Payment Processing API",
+  "version": "2.5.0",
+  "description": "This JSON file contains payment API configuration",
+  "endpoints": {
+    "create_payment": {
+      "path": "/api/v2/payments",
+      "method": "POST",
+      "rate_limit": "100 requests per minute",
+      "authentication": "API Key + OAuth2"
+    },
+    "get_payment_status": {
+      "path": "/api/v2/payments/{id}",
+      "method": "GET",
+      "rate_limit": "200 requests per minute"
+    }
+  },
+  "supported_currencies": ["USD", "EUR", "GBP", "JPY"],
+  "payment_methods": ["credit_card", "debit_card", "bank_transfer", "digital_wallet"],
+  "note": "This payment API configuration is ONLY in the JSON file"
+}

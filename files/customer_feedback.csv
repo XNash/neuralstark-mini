@@ -1,0 +1,9 @@
+CustomerID,Date,Rating,Category,Feedback
+1001,2024-01-15,5,Product Quality,Excellent product exceeded expectations
+1002,2024-01-16,4,Shipping,Fast delivery but packaging could be better
+1003,2024-01-17,5,Customer Service,Support team was very helpful and responsive
+1004,2024-01-18,3,Pricing,Good product but slightly overpriced
+1005,2024-01-19,5,Product Quality,Amazing quality and durability
+1006,2024-01-20,4,User Experience,Easy to use interface with minor bugs
+
+Note: This customer feedback data is ONLY available in the CSV file.
