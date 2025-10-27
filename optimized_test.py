@@ -141,7 +141,7 @@ def test_optimized_features():
     
     # Summary
     print("\n" + "=" * 70)
-    print("OPTIMIZED RAG PLATFORM TEST SUMMARY")
+    print("OPTIMIZED NEURALSTARK TEST SUMMARY")
     print("=" * 70)
     
     passed = sum(1 for _, success, _ in results if success)
