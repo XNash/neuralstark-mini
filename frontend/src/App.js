@@ -460,7 +460,9 @@ function App() {
                         </span>
                       </div>
                       <div className={`message-text ${msg.isError ? 'error' : ''}`}>
-                        {msg.content}
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                          {msg.content}
+                        </ReactMarkdown>
                       </div>
                       {msg.sources && msg.sources.length > 0 && (
                         <div className="message-sources">
