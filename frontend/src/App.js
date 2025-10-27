@@ -130,7 +130,8 @@ function App() {
     if (!inputMessage.trim() || isLoading) return;
 
     if (!apiKeySaved) {
-      alert('Please configure your Gemini API key in Settings first');
+      setErrorMessage('⚠️ Please configure your Gemini API key in Settings first');
+      setTimeout(() => setErrorMessage(''), 4000);
       setCurrentPage('settings');
       return;
     }
@@ -139,6 +140,7 @@ function App() {
     setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
     setIsLoading(true);
+    setErrorMessage('');
 
     try {
       const response = await fetch(`${BACKEND_URL}/api/chat`, {
@@ -165,25 +167,29 @@ function App() {
         // Update chat history
         updateChatHistory();
       } else {
+        const errorMsg = data.detail || 'Failed to get response';
         setMessages(prev => [
           ...prev,
           {
             role: 'assistant',
-            content: `Error: ${data.detail || 'Failed to get response'}`,
+            content: `❌ Error: ${errorMsg}`,
             isError: true,
           },
         ]);
+        setErrorMessage(`Error: ${errorMsg}`);
       }
     } catch (error) {
       console.error('Error sending message:', error);
+      const errorMsg = 'Failed to communicate with the server. Please check your connection.';
       setMessages(prev => [
         ...prev,
         {
           role: 'assistant',
-          content: 'Error: Failed to communicate with the server',
+          content: `❌ ${errorMsg}`,
           isError: true,
         },
       ]);
+      setErrorMessage(errorMsg);
     } finally {
       setIsLoading(false);
     }
@@ -194,23 +200,48 @@ function App() {
       e.preventDefault();
       sendMessage();
     }
+    // Ctrl+Enter for new line
+    if (e.key === 'Enter' && e.ctrlKey) {
+      setInputMessage(prev => prev + '\n');
+    }
   };
 
-  const reindexDocuments = async () => {
+  const reindexDocuments = async (fullReindex = false) => {
+    setShowConfirmDialog(false);
+    setSaveStatus('indexing');
+    setErrorMessage('');
+    
     try {
-      const response = await fetch(`${BACKEND_URL}/api/documents/reindex`, {
+      const url = fullReindex 
+        ? `${BACKEND_URL}/api/documents/reindex?clear_cache=true`
+        : `${BACKEND_URL}/api/documents/reindex`;
+        
+      const response = await fetch(url, {
         method: 'POST',
       });
+      
       if (response.ok) {
-        alert('Document reindexing started. This may take a few moments.');
+        setSaveStatus('success');
         setTimeout(() => {
           loadDocumentStatus();
           loadDocumentsList();
+          setSaveStatus(null);
         }, 2000);
+      } else {
+        setSaveStatus('error');
+        setErrorMessage('Failed to start reindexing. Please try again.');
+        setTimeout(() => setSaveStatus(null), 3000);
       }
     } catch (error) {
       console.error('Error reindexing:', error);
+      setSaveStatus('error');
+      setErrorMessage('Network error during reindexing.');
+      setTimeout(() => setSaveStatus(null), 3000);
     }
+  };
+
+  const handleReindexClick = () => {
+    setShowConfirmDialog(true);
   };
 
   const newChat = () => {
