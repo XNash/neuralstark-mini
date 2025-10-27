@@ -1,4 +1,4 @@
-# RAG Platform - Permanent Configuration Guide
+# NeuralStark - Permanent Configuration Guide
 
 **Last Updated:** October 12, 2025  
 **Status:** ✅ Production Ready
@@ -61,7 +61,7 @@ SENTENCE_TRANSFORMERS_HOME="/app/.cache/sentence_transformers"
 
 **Purpose:**
 - `MONGO_URL`: MongoDB connection string
-- `DB_NAME`: Database name for RAG platform
+- `DB_NAME`: Database name for NeuralStark
 - `HF_HOME`: HuggingFace cache directory (prevents downloads to `/root/.cache`)
 - `TRANSFORMERS_CACHE`: Transformers library cache (prevents downloads to `/root/.cache`)
 - `SENTENCE_TRANSFORMERS_HOME`: Sentence transformers cache (prevents downloads to `/root/.cache`)
@@ -83,7 +83,7 @@ __pycache__/
 venv/
 .venv/
 
-# RAG Platform specific
+# NeuralStark specific
 chroma_db/
 *.sqlite3
 

@@ -1,7 +1,7 @@
 #!/bin/bash
-# Start RAG Platform services with pm2 (cross-platform alternative to Supervisor)
+# Start NeuralStark services with pm2 (cross-platform alternative to Supervisor)
 
-echo "Starting RAG Platform with pm2..."
+echo "Starting NeuralStark with pm2..."
 
 # Check if pm2 is installed
 if ! command -v pm2 &> /dev/null; then
@@ -21,7 +21,7 @@ pm2 save
 
 echo ""
 echo "╔══════════════════════════════════════════════════════════════╗"
-echo "║              RAG Platform Started! 🚀                        ║"
+echo "║              NeuralStark Started! 🚀                        ║"
 echo "╚══════════════════════════════════════════════════════════════╝"
 echo ""
 echo "Services:"

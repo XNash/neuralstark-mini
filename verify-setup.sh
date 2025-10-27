@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ###############################################################################
-# RAG Platform - Setup Verification Script
+# NeuralStark - Setup Verification Script
 # This script verifies that all components are properly installed and running
 ###############################################################################
 
@@ -34,7 +34,7 @@ print_warn() {
 }
 
 echo -e "\n${BLUE}========================================${NC}"
-echo -e "${BLUE}  RAG Platform - Setup Verification${NC}"
+echo -e "${BLUE}  NeuralStark - Setup Verification${NC}"
 echo -e "${BLUE}========================================${NC}\n"
 
 # Check System Dependencies
@@ -223,7 +223,7 @@ echo -e "\n${BLUE}=== API Connectivity ===${NC}\n"
 
 print_check "Checking backend API..."
 BACKEND_RESPONSE=$(curl -s http://localhost:8001/api/ 2>/dev/null || echo "failed")
-if [[ $BACKEND_RESPONSE == *"RAG Platform API"* ]]; then
+if [[ $BACKEND_RESPONSE == *"NeuralStark API"* ]]; then
     print_pass "Backend API is responding"
 else
     print_warn "Backend API is not responding (may still be starting up)"

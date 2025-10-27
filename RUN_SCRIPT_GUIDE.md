@@ -1,4 +1,4 @@
-# RAG Platform - run.sh Script Guide
+# NeuralStark - run.sh Script Guide
 
 ## Overview
 
@@ -283,7 +283,7 @@ The script performs automatic health checks:
 ### Backend Health
 ```bash
 curl http://localhost:8001/api/
-# Should return: {"message": "RAG Platform API", ...}
+# Should return: {"message": "NeuralStark API", ...}
 ```
 
 ### Frontend Health

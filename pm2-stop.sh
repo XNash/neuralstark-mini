@@ -1,7 +1,7 @@
 #!/bin/bash
-# Stop RAG Platform services
+# Stop NeuralStark services
 
-echo "Stopping RAG Platform..."
+echo "Stopping NeuralStark..."
 
 if command -v pm2 &> /dev/null; then
     pm2 stop ecosystem.config.js

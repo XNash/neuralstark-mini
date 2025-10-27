@@ -39,7 +39,7 @@ print_step() {
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$SCRIPT_DIR"
 
-print_step "🚀 RAG Platform - Complete Setup & Verification"
+print_step "🚀 NeuralStark - Complete Setup & Verification"
 
 # Step 1: Check Python version
 print_step "Step 1/8: Checking Python Version"

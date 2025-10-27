@@ -1,6 +1,6 @@
-# 🚀 RAG Platform - Complete Deployment Guide
+# 🚀 NeuralStark - Complete Deployment Guide
 
-This document provides an overview of all deployment methods available for the RAG Platform.
+This document provides an overview of all deployment methods available for the NeuralStark.
 
 ## 📚 Documentation Index
 

@@ -1,4 +1,4 @@
-# RAG Platform - Portability Fixes Implementation Plan
+# NeuralStark - Portability Fixes Implementation Plan
 
 **Document Version:** 1.0  
 **Created:** 2025-01-17  
@@ -27,7 +27,7 @@
 
 ```python
 """
-Cross-platform path configuration for RAG Platform.
+Cross-platform path configuration for NeuralStark.
 Automatically detects project root and sets up cache directories.
 """
 import os
@@ -156,7 +156,7 @@ yarn global add pm2
 
 ```javascript
 /**
- * PM2 Ecosystem Configuration for RAG Platform
+ * PM2 Ecosystem Configuration for NeuralStark
  * Cross-platform process management for Windows, Linux, and macOS
  * 
  * Usage:
@@ -229,7 +229,7 @@ module.exports = {
 **File:** `/app/pm2-start.sh` (Linux/macOS)
 ```bash
 #!/bin/bash
-echo "Starting RAG Platform with pm2..."
+echo "Starting NeuralStark with pm2..."
 pm2 start ecosystem.config.js
 pm2 save
 echo "Services started. View status with: pm2 status"
@@ -239,7 +239,7 @@ echo "View logs with: pm2 logs"
 **File:** `/app/pm2-stop.sh` (Linux/macOS)
 ```bash
 #!/bin/bash
-echo "Stopping RAG Platform..."
+echo "Stopping NeuralStark..."
 pm2 stop ecosystem.config.js
 pm2 save
 echo "Services stopped."
@@ -248,7 +248,7 @@ echo "Services stopped."
 **File:** `/app/pm2-restart.sh` (Linux/macOS)
 ```bash
 #!/bin/bash
-echo "Restarting RAG Platform..."
+echo "Restarting NeuralStark..."
 pm2 restart ecosystem.config.js
 echo "Services restarted."
 ```
@@ -267,9 +267,9 @@ echo "Services restarted."
 ```powershell
 <#
 .SYNOPSIS
-    RAG Platform - Windows Setup Script
+    NeuralStark - Windows Setup Script
 .DESCRIPTION
-    Installs all dependencies and sets up the RAG Platform on Windows
+    Installs all dependencies and sets up the NeuralStark on Windows
 .NOTES
     Requires Administrator privileges for some installations
 #>
@@ -326,7 +326,7 @@ function Test-CommandExists {
 function Start-RagSetup {
     Write-Host @"
 ╔══════════════════════════════════════════════════════════════╗
-║                 RAG Platform Setup for Windows              ║
+║                 NeuralStark Setup for Windows              ║
 ║                                                              ║
 ║  This script will install and configure:                    ║
 ║  - Python 3.11+                                             ║
@@ -447,7 +447,7 @@ function Start-RagSetup {
     if (-not (Test-Path "backend\.env")) {
         Write-Host "Creating backend .env file..."
         @"
-# RAG Platform Backend Environment
+# NeuralStark Backend Environment
 # Generated: $(Get-Date)
 
 # MongoDB Configuration
@@ -469,7 +469,7 @@ CORS_ORIGINS=*
     if (-not (Test-Path "frontend\.env")) {
         Write-Host "Creating frontend .env file..."
         @"
-# RAG Platform Frontend Environment
+# NeuralStark Frontend Environment
 # Generated: $(Get-Date)
 
 # Backend API URL
@@ -501,7 +501,7 @@ Next steps:
 1. Start MongoDB service (if not running):
    net start MongoDB
 
-2. Start RAG Platform:
+2. Start NeuralStark:
    .\start.ps1
 
 3. Access the application:
@@ -534,12 +534,12 @@ catch {
 ```powershell
 <#
 .SYNOPSIS
-    Start RAG Platform services on Windows
+    Start NeuralStark services on Windows
 #>
 
 $ErrorActionPreference = "Stop"
 
-Write-Host "Starting RAG Platform..." -ForegroundColor Cyan
+Write-Host "Starting NeuralStark..." -ForegroundColor Cyan
 
 # Check if MongoDB is running
 $mongoService = Get-Service -Name MongoDB -ErrorAction SilentlyContinue
@@ -568,7 +568,7 @@ pm2 save
 Write-Host "`n" -NoNewline
 Write-Host @"
 ╔══════════════════════════════════════════════════════════════╗
-║              RAG Platform Started! 🚀                        ║
+║              NeuralStark Started! 🚀                        ║
 ╚══════════════════════════════════════════════════════════════╝
 
 Services:
@@ -591,10 +591,10 @@ Useful commands:
 ```powershell
 <#
 .SYNOPSIS
-    Stop RAG Platform services on Windows
+    Stop NeuralStark services on Windows
 #>
 
-Write-Host "Stopping RAG Platform..." -ForegroundColor Cyan
+Write-Host "Stopping NeuralStark..." -ForegroundColor Cyan
 
 if (Get-Command pm2 -ErrorAction SilentlyContinue) {
     pm2 stop ecosystem.config.js
@@ -619,9 +619,9 @@ else {
 **File:** `/app/WINDOWS_SETUP.md`
 
 ```markdown
-# Windows Setup Guide - RAG Platform
+# Windows Setup Guide - NeuralStark
 
-Complete guide for setting up and running the RAG Platform on Windows 10/11.
+Complete guide for setting up and running the NeuralStark on Windows 10/11.
 
 ## Prerequisites
 

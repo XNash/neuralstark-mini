@@ -1,4 +1,4 @@
-# 🤖 RAG Platform - AI-Powered Document Q&A System
+# 🤖 NeuralStark - AI-Powered Document Q&A System
 
 A full-stack Retrieval-Augmented Generation (RAG) platform that allows users to chat with their documents using AI. The system automatically indexes documents and uses them as context for answering questions.
 
@@ -50,7 +50,7 @@ A full-stack Retrieval-Augmented Generation (RAG) platform that allows users to 
 
 ### Windows Users 🪟
 
-**The RAG Platform now has full native Windows support!**
+**The NeuralStark now has full native Windows support!**
 
 See the comprehensive [WINDOWS_SETUP.md](WINDOWS_SETUP.md) guide for detailed instructions.
 
@@ -299,7 +299,7 @@ rag-platform/                  # Project root (portable, can be anywhere)
 
 ## 🌐 Cross-Platform Support
 
-The RAG Platform now supports **Windows, Linux, and macOS** with the same codebase!
+The NeuralStark now supports **Windows, Linux, and macOS** with the same codebase!
 
 ### Platform-Specific Instructions
 

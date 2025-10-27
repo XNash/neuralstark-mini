@@ -1,6 +1,6 @@
-# 🐳 RAG Platform - Docker Deployment Guide
+# 🐳 NeuralStark - Docker Deployment Guide
 
-This guide explains how to deploy the RAG Platform using Docker and Docker Compose.
+This guide explains how to deploy the NeuralStark using Docker and Docker Compose.
 
 ## 📋 Table of Contents
 
@@ -556,7 +556,7 @@ docker run --rm \
 
 - [Docker Documentation](https://docs.docker.com/)
 - [Docker Compose Documentation](https://docs.docker.com/compose/)
-- [RAG Platform README](README.md)
+- [NeuralStark README](README.md)
 - [Installation Guide](INSTALL.md)
 
 ---

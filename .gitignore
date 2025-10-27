@@ -52,7 +52,7 @@ __pycache__/
 venv/
 .venv/
 
-# RAG Platform specific
+# NeuralStark specific
 chroma_db/
 *.sqlite3
 

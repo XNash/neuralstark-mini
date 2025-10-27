@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Performance Benchmark Script for RAG Platform Document Processing
+Performance Benchmark Script for NeuralStark Document Processing
 
 This script compares the performance of the original vs optimized document processing.
 """

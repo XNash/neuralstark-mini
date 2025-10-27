@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-    Stop RAG Platform services on Windows
+    Stop NeuralStark services on Windows
 #>
 
-Write-Host "Stopping RAG Platform..." -ForegroundColor Cyan
+Write-Host "Stopping NeuralStark..." -ForegroundColor Cyan
 
 if (Get-Command pm2 -ErrorAction SilentlyContinue) {
     pm2 stop ecosystem.config.js

@@ -1,10 +1,10 @@
-# 🚀 Setting Up RAG Platform After Cloning from GitHub
+# 🚀 Setting Up NeuralStark After Cloning from GitHub
 
 This guide is for users who clone this repository from GitHub to their own Linux machine.
 
 ## ✨ What Makes This Setup Special
 
-The RAG Platform is designed to be **fully portable** and work on **any Linux system** without hardcoded paths. All paths are automatically detected and configured based on where you clone the repository.
+The NeuralStark is designed to be **fully portable** and work on **any Linux system** without hardcoded paths. All paths are automatically detected and configured based on where you clone the repository.
 
 ## 📋 Prerequisites
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Comprehensive test of optimized RAG Platform features
+Comprehensive test of optimized NeuralStark features
 """
 
 import requests
@@ -10,7 +10,7 @@ import time
 BACKEND_URL = "https://dev-setup-guide-2.preview.emergentagent.com/api"
 
 def test_optimized_features():
-    """Test all optimized RAG Platform features"""
+    """Test all optimized NeuralStark features"""
     session = requests.Session()
     
     print("=" * 70)

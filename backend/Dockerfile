@@ -1,4 +1,4 @@
-# Backend Dockerfile for RAG Platform
+# Backend Dockerfile for NeuralStark
 
 FROM python:3.11-slim
 

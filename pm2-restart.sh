@@ -1,7 +1,7 @@
 #!/bin/bash
-# Restart RAG Platform services
+# Restart NeuralStark services
 
-echo "Restarting RAG Platform..."
+echo "Restarting NeuralStark..."
 
 if command -v pm2 &> /dev/null; then
     pm2 restart ecosystem.config.js

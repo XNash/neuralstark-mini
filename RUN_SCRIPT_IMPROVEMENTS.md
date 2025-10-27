@@ -134,7 +134,7 @@ command=$VENV_PATH/bin/uvicorn ...
 ```bash
 # Tests if backend responds with expected message
 curl http://localhost:8001/api/
-# Expected: {"message": "RAG Platform API", ...}
+# Expected: {"message": "NeuralStark API", ...}
 ```
 
 **Frontend Health:**

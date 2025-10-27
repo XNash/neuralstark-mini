@@ -1,4 +1,4 @@
-# Frontend Dockerfile for RAG Platform
+# Frontend Dockerfile for NeuralStark
 
 FROM node:20-slim
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-# RAG Platform - Configuration Verification Script
+# NeuralStark - Configuration Verification Script
 # This script verifies that all configurations are correct
 
 set -e
@@ -10,7 +10,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 echo "========================================"
-echo "RAG Platform Configuration Verification"
+echo "NeuralStark Configuration Verification"
 echo "========================================"
 echo ""
 

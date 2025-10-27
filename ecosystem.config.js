@@ -1,5 +1,5 @@
 /**
- * PM2 Ecosystem Configuration for RAG Platform
+ * PM2 Ecosystem Configuration for NeuralStark
  * Cross-platform process management for Windows, Linux, and macOS
  * 
  * Usage:

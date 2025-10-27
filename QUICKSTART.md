@@ -1,4 +1,4 @@
-# 🚀 RAG Platform - Quick Start Guide
+# 🚀 NeuralStark - Quick Start Guide
 
 ## One-Command Setup & Launch for Clean Linux
 
@@ -134,7 +134,7 @@ curl http://localhost:8001/api/
 Expected response:
 ```json
 {
-  "message": "RAG Platform API",
+  "message": "NeuralStark API",
   "status": "running"
 }
 ```

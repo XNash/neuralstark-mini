@@ -282,7 +282,7 @@ function App() {
         <div className="sidebar-header">
           <div className="brand">
             <span className="brand-icon">🤖</span>
-            {sidebarOpen && <h1 className="brand-title">RAG Platform</h1>}
+            {sidebarOpen && <h1 className="brand-title">NeuralStark</h1>}
           </div>
         </div>
 
@@ -404,7 +404,7 @@ function App() {
                 {messages.length === 0 && (
                   <div className="welcome-screen">
                     <div className="welcome-icon">🤖</div>
-                    <h2 className="welcome-title">Welcome to RAG Platform</h2>
+                    <h2 className="welcome-title">Welcome to NeuralStark</h2>
                     <p className="welcome-subtitle">
                       Start a conversation with your documents
                     </p>

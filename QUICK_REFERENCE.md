@@ -1,4 +1,4 @@
-# RAG Platform - Quick Reference Card
+# NeuralStark - Quick Reference Card
 
 ## 🚀 Getting Started
 

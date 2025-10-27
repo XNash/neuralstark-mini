@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Comprehensive Backend API Testing for RAG Platform
+Comprehensive Backend API Testing for NeuralStark
 Tests all backend endpoints with realistic data
 """
 
@@ -41,7 +41,7 @@ class RAGPlatformTester:
             response = self.session.get(f"{self.base_url}/")
             if response.status_code == 200:
                 data = response.json()
-                if data.get("message") == "RAG Platform API" and data.get("status") == "running":
+                if data.get("message") == "NeuralStark API" and data.get("status") == "running":
                     self.log_test("API Root", True, "API is running and accessible")
                     return True
                 else:
@@ -670,7 +670,7 @@ class RAGPlatformTester:
         print(f"New Features: Cache Stats API, Incremental vs Full Reindex")
         print()
         
-        # Test sequence - Optimized RAG Platform Testing (Focus on Performance & New Features)
+        # Test sequence - Optimized NeuralStark Testing (Focus on Performance & New Features)
         tests = [
             ("API Root", self.test_api_root),
             ("Settings GET (Initial)", self.test_settings_get_initial),

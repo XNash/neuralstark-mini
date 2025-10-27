@@ -66,7 +66,7 @@ Test in Chrome or Edge to verify it's Firefox-specific:
 
 ## Verification
 After trying any solution, you should see:
-- The RAG Platform app loads with sidebar
+- The NeuralStark app loads with sidebar
 - No "Root element not found" errors in console
 - Welcome screen with feature cards visible
 

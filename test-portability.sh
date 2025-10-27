@@ -1,5 +1,5 @@
 #!/bin/bash
-# Test script to verify portability of RAG Platform
+# Test script to verify portability of NeuralStark
 # This simulates what a GitHub user would experience
 
 set -e
@@ -27,7 +27,7 @@ print_test() {
 }
 
 echo "=========================================="
-echo "RAG Platform - Portability Test Suite"
+echo "NeuralStark - Portability Test Suite"
 echo "=========================================="
 echo ""
 
@@ -197,7 +197,7 @@ echo "  ✅ Setup scripts auto-detect directories"
 echo "  ✅ Documentation uses generic paths"
 echo "  ✅ GitHub setup guide available"
 echo ""
-print_success "This RAG Platform is portable and will work anywhere!"
+print_success "This NeuralStark is portable and will work anywhere!"
 echo ""
 print_info "GitHub Clone Test:"
 echo "  Users can clone to any directory and run:"

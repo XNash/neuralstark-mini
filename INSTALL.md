@@ -1,6 +1,6 @@
-# 🚀 RAG Platform - Installation Guide
+# 🚀 NeuralStark - Installation Guide
 
-This guide will help you set up the RAG Platform on any clean Linux environment.
+This guide will help you set up the NeuralStark on any clean Linux environment.
 
 ## 📋 Table of Contents
 

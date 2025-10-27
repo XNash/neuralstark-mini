@@ -1,4 +1,4 @@
-# RAG Platform - Troubleshooting Guide
+# NeuralStark - Troubleshooting Guide
 
 ## Installation Issues
 
@@ -6,9 +6,9 @@
 
 **Symptoms:**
 ```
-[RAG Platform] Installing from requirements.txt...
+[NeuralStark] Installing from requirements.txt...
 [ERROR] Failed to install some dependencies from requirements.txt
-[RAG Platform] Trying to install critical packages individually...
+[NeuralStark] Trying to install critical packages individually...
 ```
 
 **Common Causes:**
@@ -123,7 +123,7 @@ pip install --only-binary numpy,scipy,pillow -r requirements.txt
 
 **Symptoms:**
 ```
-[RAG Platform] Installing frontend packages with yarn...
+[NeuralStark] Installing frontend packages with yarn...
 [ERROR] Yarn installation failed, trying npm...
 ```
 
@@ -397,7 +397,7 @@ sudo supervisorctl status
 ```bash
 # Backend
 curl http://localhost:8001/api/
-# Should return: {"message": "RAG Platform API", ...}
+# Should return: {"message": "NeuralStark API", ...}
 
 # Frontend
 curl http://localhost:3000

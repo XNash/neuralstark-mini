@@ -1,11 +1,11 @@
 <#
 .SYNOPSIS
-    Start RAG Platform services on Windows
+    Start NeuralStark services on Windows
 #>
 
 $ErrorActionPreference = "Stop"
 
-Write-Host "Starting RAG Platform..." -ForegroundColor Cyan
+Write-Host "Starting NeuralStark..." -ForegroundColor Cyan
 
 # Check if MongoDB is running
 $mongoService = Get-Service -Name MongoDB -ErrorAction SilentlyContinue
@@ -39,7 +39,7 @@ pm2 save
 Write-Host "`n" -NoNewline
 Write-Host @"
 ╔══════════════════════════════════════════════════════════════╗
-║              RAG Platform Started! 🚀                        ║
+║              NeuralStark Started! 🚀                        ║
 ╚══════════════════════════════════════════════════════════════╝
 
 Services:

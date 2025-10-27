@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ###############################################################################
-# RAG Platform - Diagnostic Script
+# NeuralStark - Diagnostic Script
 # Run this script to diagnose common issues with the platform
 ###############################################################################
 
@@ -13,7 +13,7 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 echo -e "${BLUE}================================${NC}"
-echo -e "${BLUE}  RAG Platform Diagnostics${NC}"
+echo -e "${BLUE}  NeuralStark Diagnostics${NC}"
 echo -e "${BLUE}================================${NC}"
 echo ""
 
@@ -168,7 +168,7 @@ echo ""
 echo -e "${BLUE}[8/10] Checking Backend Health${NC}"
 echo "--------------------------------"
 BACKEND_RESPONSE=$(curl -s http://localhost:8001/api/ 2>/dev/null || echo "failed")
-if [[ $BACKEND_RESPONSE == *"RAG Platform API"* ]]; then
+if [[ $BACKEND_RESPONSE == *"NeuralStark API"* ]]; then
     echo -e "  ✅ Backend is responding correctly"
     echo "     Response: $BACKEND_RESPONSE"
 else
@@ -223,7 +223,7 @@ if ! command -v mongod &> /dev/null; then issues+=("MongoDB not installed"); fi
 if ! command -v supervisorctl &> /dev/null; then issues+=("Supervisor not installed"); fi
 if ! pgrep -x mongod > /dev/null; then issues+=("MongoDB not running"); fi
 if ! pgrep -x supervisord > /dev/null; then issues+=("Supervisor not running"); fi
-if [[ ! $BACKEND_RESPONSE == *"RAG Platform API"* ]]; then issues+=("Backend not responding"); fi
+if [[ ! $BACKEND_RESPONSE == *"NeuralStark API"* ]]; then issues+=("Backend not responding"); fi
 
 if [ ${#issues[@]} -eq 0 ]; then
     echo -e "${GREEN}✅ All checks passed! Platform appears healthy.${NC}"

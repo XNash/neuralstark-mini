@@ -1,5 +1,5 @@
 """
-Cross-platform path configuration for RAG Platform.
+Cross-platform path configuration for NeuralStark.
 Automatically detects project root and sets up cache directories.
 Works on Windows, Linux, and macOS.
 """

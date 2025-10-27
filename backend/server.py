@@ -339,7 +339,7 @@ async def process_documents(clear_existing: bool = False, use_cache: bool = True
 # API Routes
 @api_router.get("/")
 async def root():
-    return {"message": "RAG Platform API", "status": "running"}
+    return {"message": "NeuralStark API", "status": "running"}
 
 @api_router.get("/health")
 async def health_check():
@@ -656,7 +656,7 @@ async def startup_event():
     import time
     startup_time = time.time()
     
-    logger.info("Starting RAG Platform API with optimized processing")
+    logger.info("Starting NeuralStark API with optimized processing")
     
     # Process existing documents with caching (incremental)
     await process_documents(clear_existing=False, use_cache=True)
@@ -683,4 +683,4 @@ async def shutdown_event():
         observer.join()
     
     client.close()
-    logger.info("RAG Platform API shutdown complete")
+    logger.info("NeuralStark API shutdown complete")

@@ -1,8 +1,8 @@
 <#
 .SYNOPSIS
-    RAG Platform - Windows Setup Script
+    NeuralStark - Windows Setup Script
 .DESCRIPTION
-    Installs all dependencies and sets up the RAG Platform on Windows
+    Installs all dependencies and sets up the NeuralStark on Windows
 .NOTES
     Requires PowerShell 5.1 or higher
 #>
@@ -59,7 +59,7 @@ function Test-CommandExists {
 function Start-RagSetup {
     Write-Host @"
 ╔══════════════════════════════════════════════════════════════╗
-║                 RAG Platform Setup for Windows              ║
+║                 NeuralStark Setup for Windows              ║
 ║                                                              ║
 ║  This script will install and configure:                    ║
 ║  - Python 3.11+                                             ║
@@ -180,7 +180,7 @@ function Start-RagSetup {
     if (-not (Test-Path "backend\.env")) {
         Write-Host "Creating backend .env file..."
         @"
-# RAG Platform Backend Environment
+# NeuralStark Backend Environment
 # Generated: $(Get-Date)
 
 # MongoDB Configuration
@@ -203,7 +203,7 @@ CORS_ORIGINS=*
     if (-not (Test-Path "frontend\.env")) {
         Write-Host "Creating frontend .env file..."
         @"
-# RAG Platform Frontend Environment
+# NeuralStark Frontend Environment
 # Generated: $(Get-Date)
 
 # Backend API URL
@@ -235,7 +235,7 @@ Next steps:
 1. Start MongoDB service (if not running):
    net start MongoDB
 
-2. Start RAG Platform:
+2. Start NeuralStark:
    .\start.ps1
 
 3. Access the application:

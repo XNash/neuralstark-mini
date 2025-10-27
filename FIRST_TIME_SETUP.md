@@ -212,7 +212,7 @@ mongodb      RUNNING   pid 1236, uptime 0:01:23
 ```bash
 # Backend API
 curl http://localhost:8001/api/
-# Expected: {"message":"RAG Platform API","status":"running"}
+# Expected: {"message":"NeuralStark API","status":"running"}
 
 # Document Status
 curl http://localhost:8001/api/documents/status

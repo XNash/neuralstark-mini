@@ -1,4 +1,4 @@
-# RAG Platform - Complete User Guide
+# NeuralStark - Complete User Guide
 
 ## 🎯 For Users Cloning from GitHub
 
@@ -120,7 +120,7 @@ sudo supervisorctl status
 curl http://localhost:8001/api/
 
 # Expected output:
-# {"message":"RAG Platform API","status":"running"}
+# {"message":"NeuralStark API","status":"running"}
 
 # 3. Check document indexing
 curl http://localhost:8001/api/documents/status
@@ -143,7 +143,7 @@ Open your browser and go to:
 http://localhost:3000
 ```
 
-You'll see the RAG Platform interface with:
+You'll see the NeuralStark interface with:
 - **Chat Page** - Main conversation interface
 - **Documents Page** - View indexing status
 - **Settings Page** - Configure API key
@@ -494,6 +494,6 @@ Each instance:
 
 ---
 
-**Enjoy your RAG Platform! 🚀📚💬**
+**Enjoy your NeuralStark! 🚀📚💬**
 
 For questions or issues, please open a GitHub issue.

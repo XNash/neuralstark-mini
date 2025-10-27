@@ -1,6 +1,6 @@
-# Windows Setup Guide - RAG Platform
+# Windows Setup Guide - NeuralStark
 
-Complete guide for setting up and running the RAG Platform on Windows 10/11.
+Complete guide for setting up and running the NeuralStark on Windows 10/11.
 
 ---
 
@@ -148,7 +148,7 @@ cd ..
 
 **Backend** (`backend\.env`):
 ```ini
-# RAG Platform Backend Environment
+# NeuralStark Backend Environment
 MONGO_URL=mongodb://localhost:27017
 DB_NAME=rag_platform
 CORS_ORIGINS=*
@@ -158,7 +158,7 @@ CORS_ORIGINS=*
 
 **Frontend** (`frontend\.env`):
 ```ini
-# RAG Platform Frontend Environment
+# NeuralStark Frontend Environment
 REACT_APP_BACKEND_URL=http://localhost:8001
 WDS_SOCKET_PORT=0
 ```
@@ -461,7 +461,7 @@ $env:NODE_OPTIONS="--max-old-space-size=4096"
 
 ### 4. Close Unused Applications
 
-The RAG Platform uses:
+The NeuralStark uses:
 - Backend: ~1GB RAM
 - Frontend: ~500MB RAM
 - MongoDB: ~500MB RAM
@@ -569,4 +569,4 @@ curl http://localhost:8001/api
 
 **Windows setup complete!** 🎉
 
-Enjoy using the RAG Platform on Windows!
+Enjoy using the NeuralStark on Windows!
