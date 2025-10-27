@@ -760,6 +760,12 @@ body {
   font-weight: 500;
 }
 
+.source-count {
+  color: var(--text-tertiary);
+  font-weight: 400;
+  font-size: 10px;
+}
+
 .source-relevance {
   color: var(--text-tertiary);
 }
