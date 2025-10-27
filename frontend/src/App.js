@@ -255,7 +255,7 @@ function App() {
     // Add new session to history
     const newSession = {
       id: newSessionId,
-      title: 'New Conversation',
+      title: 'Nouvelle Conversation',
       timestamp: new Date().toISOString(),
       messageCount: 0
     };
