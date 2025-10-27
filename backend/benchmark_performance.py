@@ -75,7 +75,7 @@ async def process_documents_parallel(files: List[Path], processor) -> tuple:
 async def run_benchmark():
     """Run performance benchmark"""
     print("=" * 80)
-    print("RAG PLATFORM DOCUMENT PROCESSING PERFORMANCE BENCHMARK")
+    print("NEURALSTARK DOCUMENT PROCESSING PERFORMANCE BENCHMARK")
     print("=" * 80)
     print()
     
