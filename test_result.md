@@ -382,13 +382,13 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Optimized NeuralStark testing completed successfully"
-    - "All performance and caching features verified working"
-    - "Cache Stats API, Incremental vs Full Reindex functionality confirmed"
+    - "Tests endpoints CRUD NeuralStark (français) terminés avec succès"
+    - "Tous les endpoints CRUD vérifiés fonctionnels: status, list, cache-stats, reindex, health"
+    - "Cohérence des données confirmée entre tous les endpoints"
   stuck_tasks: 
     - "RAG Pipeline End-to-End Testing with Real API - requires API quota increase (system confirmed working)"
   test_all: true
-  test_priority: "optimized_features_complete"
+  test_priority: "crud_endpoints_french_complete"
 
 agent_communication:
     - agent: "testing"
