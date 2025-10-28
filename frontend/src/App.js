@@ -101,7 +101,7 @@ function App() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ gemini_api_key: apiKey }),
+        body: JSON.stringify({ cerebras_api_key: apiKey }),
       });
 
       if (response.ok) {
