@@ -843,7 +843,7 @@ function App() {
                     </div>
                     <div className="info-item">
                       <span className="info-label">Modèle d'Embedding</span>
-                      <span className="info-value">BAAI/bge-base-en-v1.5</span>
+                      <span className="info-value">manu/bge-m3-custom-fr</span>
                     </div>
                     <div className="info-item">
                       <span className="info-label">Base de Données Vectorielle</span>
