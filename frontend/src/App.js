@@ -839,7 +839,7 @@ function App() {
                   <div className="info-grid">
                     <div className="info-item">
                       <span className="info-label">Modèle de Langage</span>
-                      <span className="info-value">Cerebras Llama 3.3 70B</span>
+                      <span className="info-value">Cerebras GPT-OSS-120B</span>
                     </div>
                     <div className="info-item">
                       <span className="info-label">Modèle d'Embedding</span>
