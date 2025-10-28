@@ -706,49 +706,72 @@ function App() {
                 </div>
               </div>
 
-              {/* Confirmation Dialog */}
+              {/* Confirmation Dialog - Principe de Contrôle Explicite */}
               {showConfirmDialog && (
-                <div className="modal-overlay" onClick={() => setShowConfirmDialog(false)}>
+                <div className="modal-overlay" onClick={cancelConfirmAction}>
                   <div className="modal-dialog" onClick={(e) => e.stopPropagation()} role="dialog" aria-labelledby="confirm-title">
                     <div className="modal-header">
-                      <h3 id="confirm-title">Confirmer la Réindexation des Documents</h3>
+                      <h3 id="confirm-title">
+                        {confirmAction && confirmAction.toString().includes('reindex') 
+                          ? 'Confirmer la Réindexation'
+                          : 'Confirmer la Suppression'}
+                      </h3>
                       <button 
                         className="modal-close" 
-                        onClick={() => setShowConfirmDialog(false)}
+                        onClick={cancelConfirmAction}
                         aria-label="Fermer la boîte de dialogue"
                       >
                         ✕
                       </button>
                     </div>
                     <div className="modal-body">
-                      <p>Choisissez l'option de réindexation:</p>
-                      <div className="reindex-options">
-                        <button 
-                          className="option-btn"
-                          onClick={() => reindexDocuments(false)}
-                        >
-                          <span className="option-icon">⚡</span>
-                          <div className="option-content">
-                            <strong>Réindexation Rapide</strong>
-                            <small>Traiter uniquement les fichiers nouveaux ou modifiés</small>
+                      {confirmAction && confirmAction.toString().includes('reindex') ? (
+                        <>
+                          <p>Choisissez l'option de réindexation:</p>
+                          <div className="reindex-options">
+                            <button 
+                              className="option-btn"
+                              onClick={() => { reindexDocuments(false); setShowConfirmDialog(false); }}
+                            >
+                              <span className="option-icon">⚡</span>
+                              <div className="option-content">
+                                <strong>Réindexation Rapide</strong>
+                                <small>Traiter uniquement les fichiers nouveaux ou modifiés</small>
+                              </div>
+                            </button>
+                            <button 
+                              className="option-btn"
+                              onClick={() => { reindexDocuments(true); setShowConfirmDialog(false); }}
+                            >
+                              <span className="option-icon">🔄</span>
+                              <div className="option-content">
+                                <strong>Réindexation Complète</strong>
+                                <small>Retraiter tous les fichiers (plus lent)</small>
+                              </div>
+                            </button>
                           </div>
-                        </button>
-                        <button 
-                          className="option-btn"
-                          onClick={() => reindexDocuments(true)}
-                        >
-                          <span className="option-icon">🔄</span>
-                          <div className="option-content">
-                            <strong>Réindexation Complète</strong>
-                            <small>Retraiter tous les fichiers (plus lent)</small>
-                          </div>
-                        </button>
-                      </div>
+                        </>
+                      ) : (
+                        <>
+                          <p className="confirm-message">
+                            ⚠️ Êtes-vous sûr de vouloir supprimer cette conversation ?
+                          </p>
+                          <p className="confirm-hint">Cette action est irréversible.</p>
+                        </>
+                      )}
                     </div>
                     <div className="modal-footer">
+                      {!confirmAction?.toString().includes('reindex') && (
+                        <button 
+                          className="btn-danger" 
+                          onClick={executeConfirmAction}
+                        >
+                          Supprimer
+                        </button>
+                      )}
                       <button 
                         className="btn-secondary" 
-                        onClick={() => setShowConfirmDialog(false)}
+                        onClick={cancelConfirmAction}
                       >
                         Annuler
                       </button>
