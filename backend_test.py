@@ -920,12 +920,12 @@ class CebrasMigrationTester:
         return passed == total
 
 if __name__ == "__main__":
-    tester = RAGPlatformTester()
-    success = tester.run_all_tests()
+    tester = CebrasMigrationTester()
+    success = tester.run_cerebras_migration_tests()
     
     if success:
-        print("🎉 All tests passed!")
+        print("🎉 Cerebras migration tests passed!")
         sys.exit(0)
     else:
-        print("⚠️  Some tests failed. Check the details above.")
+        print("⚠️  Some migration tests failed. Check the details above.")
         sys.exit(1)
