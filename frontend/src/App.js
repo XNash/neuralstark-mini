@@ -232,8 +232,8 @@ function App() {
         };
         setMessages(prev => [...prev, assistantMessage]);
         
-        // Update chat history
-        updateChatHistory();
+        // Reload chat sessions to update list
+        loadChatSessions();
       } else {
         const errorMsg = data.detail || 'Échec de l\'obtention de la réponse';
         setMessages(prev => [
