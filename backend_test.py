@@ -124,29 +124,35 @@ class CebrasMigrationTester:
             self.log_test("Documents List", False, f"Erreur de requête: {str(e)}")
             return False
     
-    def test_settings_get_initial(self):
-        """Test GET /api/settings - initial state"""
+    def test_settings_get_cerebras_field(self):
+        """Test GET /api/settings - should return cerebras_api_key field (not gemini_api_key)"""
         try:
             response = self.session.get(f"{self.base_url}/settings")
             if response.status_code == 200:
                 data = response.json()
-                expected_fields = ["id", "gemini_api_key", "updated_at"]
-                if all(field in data for field in expected_fields):
-                    # API key should be null initially
-                    if data["gemini_api_key"] is None:
-                        self.log_test("Settings GET (Initial)", True, "Settings retrieved successfully, API key is null")
-                        return True
-                    else:
-                        self.log_test("Settings GET (Initial)", True, f"Settings retrieved, API key present: {data['gemini_api_key'][:10]}...")
-                        return True
+                expected_fields = ["id", "cerebras_api_key", "updated_at"]
+                
+                # Check for cerebras_api_key field (migration requirement)
+                if "cerebras_api_key" in data:
+                    self.log_test("Settings GET (Cerebras Field)", True, 
+                                f"✅ Migration successful: cerebras_api_key field present")
+                    
+                    # Check if old gemini field is gone
+                    if "gemini_api_key" in data:
+                        self.log_test("Settings GET (Cerebras Field)", False, 
+                                    "❌ Migration incomplete: gemini_api_key field still present", data)
+                        return False
+                    
+                    return True
                 else:
-                    self.log_test("Settings GET (Initial)", False, "Missing required fields", data)
+                    self.log_test("Settings GET (Cerebras Field)", False, 
+                                "❌ Migration failed: cerebras_api_key field missing", data)
                     return False
             else:
-                self.log_test("Settings GET (Initial)", False, f"HTTP {response.status_code}", response.text)
+                self.log_test("Settings GET (Cerebras Field)", False, f"HTTP {response.status_code}", response.text)
                 return False
         except Exception as e:
-            self.log_test("Settings GET (Initial)", False, f"Request error: {str(e)}")
+            self.log_test("Settings GET (Cerebras Field)", False, f"Request error: {str(e)}")
             return False
     
     def test_settings_post(self):
