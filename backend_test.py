@@ -535,8 +535,8 @@ class CebrasMigrationTester:
         except Exception as e:
             self.log_test("Session ID Creation", False, f"Request error: {str(e)}")
             return False
-    
-    def test_rag_accuracy_products(self):
+
+    def run_cerebras_migration_tests(self):
         """Test RAG accuracy with product-related query"""
         try:
             payload = {
