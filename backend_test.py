@@ -184,23 +184,25 @@ class CebrasMigrationTester:
             self.log_test("Settings POST (Cerebras)", False, f"Request error: {str(e)}")
             return False
     
-    def test_settings_get_after_save(self):
-        """Test GET /api/settings - after saving API key"""
+    def test_settings_persistence_cerebras(self):
+        """Test GET /api/settings - verify Cerebras API key persistence in MongoDB"""
         try:
             response = self.session.get(f"{self.base_url}/settings")
             if response.status_code == 200:
                 data = response.json()
-                if data.get("gemini_api_key") == "AIzaSyD273RLpkzyDyU59NKxTERC3jm0xVhH7N4":
-                    self.log_test("Settings GET (After Save)", True, "Real Gemini API key retrieved successfully")
+                if data.get("cerebras_api_key") == CEREBRAS_API_KEY:
+                    self.log_test("Settings Persistence (Cerebras)", True, 
+                                "✅ Cerebras API key persisted correctly in MongoDB")
                     return True
                 else:
-                    self.log_test("Settings GET (After Save)", False, "API key not persisted", data)
+                    self.log_test("Settings Persistence (Cerebras)", False, 
+                                "❌ Cerebras API key not persisted correctly", data)
                     return False
             else:
-                self.log_test("Settings GET (After Save)", False, f"HTTP {response.status_code}", response.text)
+                self.log_test("Settings Persistence (Cerebras)", False, f"HTTP {response.status_code}", response.text)
                 return False
         except Exception as e:
-            self.log_test("Settings GET (After Save)", False, f"Request error: {str(e)}")
+            self.log_test("Settings Persistence (Cerebras)", False, f"Request error: {str(e)}")
             return False
     
     def test_document_status(self):
