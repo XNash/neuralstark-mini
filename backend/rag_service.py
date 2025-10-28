@@ -123,20 +123,19 @@ class RAGService:
                 error_str = str(e).lower()
                 
                 # Check if it's a quota/rate limit error
-                if "quota" in error_str or "429" in error_str or "resource_exhausted" in error_str:
+                if "quota" in error_str or "429" in error_str or "resource_exhausted" in error_str or "rate" in error_str:
                     logger.error(f"API quota exceeded: {e}")
                     raise Exception(
-                        "The Gemini API quota has been exceeded. Please check your API key's billing details at "
-                        "https://aistudio.google.com/app/apikey or try again later. "
-                        "Free tier allows 250 requests per day."
+                        "The Cerebras API rate limit has been exceeded. Please try again later or check your API key's billing details at "
+                        "https://cloud.cerebras.ai"
                     )
                 
                 # Check if it's an authentication error
-                if "unauthorized" in error_str or "401" in error_str or "invalid" in error_str:
+                if "unauthorized" in error_str or "401" in error_str or "invalid" in error_str or "authentication" in error_str:
                     logger.error(f"API authentication failed: {e}")
                     raise Exception(
-                        "Invalid or unauthorized API key. Please check your Gemini API key in Settings. "
-                        "Get a valid key from https://aistudio.google.com/app/apikey"
+                        "Invalid or unauthorized API key. Please check your Cerebras API key in Settings. "
+                        "Get a valid key from https://cloud.cerebras.ai"
                     )
                 
                 # For other errors, retry with exponential backoff
