@@ -767,12 +767,12 @@ function App() {
               <div className="settings-section">
                 <div className="section-header">
                   <h3>🔑 Configuration de l'API</h3>
-                  <p className="section-desc">Configurez votre clé API Google Gemini pour des réponses alimentées par l'IA</p>
+                  <p className="section-desc">Configurez votre clé API Cerebras pour des réponses alimentées par l'IA</p>
                 </div>
                 <div className="settings-card">
                   <div className="form-group">
                     <label className="form-label" htmlFor="api-key-input">
-                      Clé API Gemini
+                      Clé API Cerebras
                       <span className="required-indicator" title="Champ requis">*</span>
                     </label>
                     <div className="input-with-button">
@@ -815,14 +815,14 @@ function App() {
                       </p>
                     )}
                     <p className="form-help" id="api-key-help">
-                      Obtenez votre clé API gratuite depuis{' '}
+                      Obtenez votre clé API depuis{' '}
                       <a 
-                        href="https://aistudio.google.com/app/apikey" 
+                        href="https://cloud.cerebras.ai" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="link"
                       >
-                        Google AI Studio
+                        Cerebras Cloud
                       </a>
                       . Votre clé est stockée en toute sécurité et n'est jamais partagée.
                     </p>
@@ -839,7 +839,7 @@ function App() {
                   <div className="info-grid">
                     <div className="info-item">
                       <span className="info-label">Modèle de Langage</span>
-                      <span className="info-value">Gemini 2.5 Flash</span>
+                      <span className="info-value">Cerebras Llama 3.3 70B</span>
                     </div>
                     <div className="info-item">
                       <span className="info-label">Modèle d'Embedding</span>
