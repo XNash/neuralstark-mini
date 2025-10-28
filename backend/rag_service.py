@@ -20,7 +20,7 @@ class RAGService:
         self.max_context_tokens = 8000  # Conservative estimate for context size
     
     def update_api_key(self, api_key: str):
-        """Update the API key for Gemini"""
+        """Update the API key for Cerebras"""
         self.api_key = api_key
     
     def _filter_relevant_docs(self, docs: List[str], metadata: List[Dict]) -> Tuple[List[str], List[Dict]]:
