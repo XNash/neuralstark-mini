@@ -2,18 +2,9 @@ import logging
 from typing import List, Dict, Tuple
 import asyncio
 from vector_store import VectorStoreService
+from cerebras.cloud.sdk import Cerebras
 
-# Try to import emergentintegrations, fall back to google-generativeai
-try:
-    from emergentintegrations.llm.chat import LlmChat, UserMessage
-    USE_EMERGENT = True
-    logger = logging.getLogger(__name__)
-    logger.info("Using emergentintegrations for LLM")
-except ImportError:
-    import google.generativeai as genai
-    USE_EMERGENT = False
-    logger = logging.getLogger(__name__)
-    logger.info("Using google-generativeai for LLM (emergentintegrations not available)")
+logger = logging.getLogger(__name__)
 
 
 class RAGService:
