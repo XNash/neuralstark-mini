@@ -21,9 +21,9 @@ class VectorStoreService:
             settings=Settings(anonymized_telemetry=False)
         )
         
-        # Initialize embedding model (BAAI for multilingual support)
-        logger.info("Loading embedding model: BAAI/bge-base-en-v1.5")
-        self.embedding_model = SentenceTransformer('BAAI/bge-base-en-v1.5')
+        # Initialize embedding model (manu/bge-m3-custom-fr for French-optimized multilingual support)
+        logger.info("Loading embedding model: manu/bge-m3-custom-fr")
+        self.embedding_model = SentenceTransformer('manu/bge-m3-custom-fr')
         
         # Get or create collection
         try:
