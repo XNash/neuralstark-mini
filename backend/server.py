@@ -383,7 +383,7 @@ async def get_settings():
     settings = await db.settings.find_one({"id": "main"}, {"_id": 0})
     if not settings:
         # Return default settings
-        return Settings(id="main", gemini_api_key=None)
+        return Settings(id="main", cerebras_api_key=None)
     
     if isinstance(settings.get('updated_at'), str):
         settings['updated_at'] = datetime.fromisoformat(settings['updated_at'])
@@ -395,7 +395,7 @@ async def update_settings(settings_update: SettingsUpdate):
     """Update settings (API key)"""
     settings_obj = Settings(
         id="main",
-        gemini_api_key=settings_update.gemini_api_key
+        cerebras_api_key=settings_update.cerebras_api_key
     )
     
     doc = settings_obj.model_dump()
@@ -408,7 +408,7 @@ async def update_settings(settings_update: SettingsUpdate):
     )
     
     # Update RAG service with new API key
-    rag_service.update_api_key(settings_update.gemini_api_key)
+    rag_service.update_api_key(settings_update.cerebras_api_key)
     
     return settings_obj
 
