@@ -72,15 +72,81 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+### `yarn build`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### `yarn test`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Launches the test runner in the interactive watch mode.
+
+## Environment Configuration
+
+Create a `.env` file in the frontend directory:
+
+```env
+REACT_APP_BACKEND_URL=http://localhost:8001
+```
+
+## Windows-Specific Notes
+
+### Path Separators
+The project automatically handles Windows path separators (`\`) vs Unix path separators (`/`).
+
+### Command Line
+All scripts work in:
+- PowerShell
+- Command Prompt (CMD)
+- Git Bash
+- Windows Terminal
+
+### Node Version
+Tested with Node.js v22.19.0 on Windows 11.
+
+### Common Issues
+
+**Issue: `basedir=$(dirname ...)` syntax error**
+- **Solution**: Use `yarn start:win` instead of calling bash scripts directly
+
+**Issue: Cross-env not found**
+- **Solution**: Run `yarn install` to install all dependencies including cross-env
+
+**Issue: Permission denied on node_modules**
+- **Solution**: Run your terminal as Administrator or check file permissions
+
+## Backend Connection
+
+The frontend connects to the FastAPI backend at `http://localhost:8001/api`.
+
+Make sure the backend is running before starting the frontend:
+
+```bash
+# In the backend directory
+pip install -r requirements.txt
+python server.py
+```
+
+## Features
+
+- 💬 Chat interface with RAG-powered responses
+- 📚 Document management and indexing
+- ⚙️ Settings configuration
+- 🤖 Cerebras AI integration (llama-3.3-70b)
+- 🌐 Multilingual support (English/French)
+- 📊 Document statistics and cache management
+
+## Technology Stack
+
+- React 19.0
+- Tailwind CSS
+- Radix UI Components
+- React Router
+- Axios for API calls
+- React Markdown for message rendering
 
 ## Learn More
 
