@@ -132,7 +132,7 @@ function App() {
     if (!inputMessage.trim() || isLoading) return;
 
     if (!apiKeySaved) {
-      setErrorMessage('⚠️ Veuillez configurer votre clé API Gemini dans les Paramètres d\'abord');
+      setErrorMessage('⚠️ Veuillez configurer votre clé API Cerebras dans les Paramètres d\'abord');
       setTimeout(() => setErrorMessage(''), 4000);
       setCurrentPage('settings');
       return;
