@@ -1,6 +1,49 @@
-# Getting Started with Create React App
+# NeuralStark Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React-based frontend for the NeuralStark RAG (Retrieval-Augmented Generation) platform.
+
+## 🪟 Windows Compatibility
+
+This project is optimized for Windows development. The scripts use cross-platform compatible commands.
+
+## Prerequisites
+
+- **Node.js** 16+ (recommended: 18.x or 22.x)
+- **Yarn** 1.22+ (recommended package manager)
+- **Windows 10/11**, macOS, or Linux
+
+## Quick Start
+
+### Installation
+
+```bash
+# Install dependencies
+yarn install
+```
+
+### Running the Development Server
+
+**On Windows (PowerShell or CMD):**
+```bash
+yarn start:win
+```
+
+**On macOS/Linux:**
+```bash
+yarn start:unix
+```
+
+**Cross-platform (requires cross-env):**
+```bash
+yarn start
+```
+
+**Alternative Windows method:**
+```bash
+node start-windows.js
+```
+
+The app will open at [http://localhost:3000](http://localhost:3000).
 
 ## Available Scripts
 
