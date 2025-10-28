@@ -7,7 +7,7 @@ import requests
 import json
 import time
 
-BACKEND_URL = "https://file-handler-3.preview.emergentagent.com/api"
+BACKEND_URL = "https://knowledge-crud-1.preview.emergentagent.com/api"
 
 def test_cache_behavior():
     """Test incremental vs full reindex cache behavior"""
