@@ -163,23 +163,34 @@ class RAGPlatformTester:
             return False
     
     def test_cache_stats(self):
-        """Test GET /api/documents/cache-stats (NEW)"""
+        """Test GET /api/documents/cache-stats - Statistiques du cache"""
         try:
             response = self.session.get(f"{self.base_url}/documents/cache-stats")
             if response.status_code == 200:
                 data = response.json()
-                # Cache stats should include information about cached documents
-                if isinstance(data, dict):
-                    self.log_test("Cache Stats API", True, f"Cache stats retrieved successfully: {data}")
+                expected_fields = ["cached_documents", "total_chunks", "cache_size_bytes"]
+                
+                if isinstance(data, dict) and all(field in data for field in expected_fields):
+                    cached_docs = data["cached_documents"]
+                    total_chunks = data["total_chunks"]
+                    cache_size = data["cache_size_bytes"]
+                    
+                    # Vérifier les stats attendues: 12 docs, 68 chunks en cache
+                    if cached_docs == 12 and total_chunks == 68:
+                        self.log_test("Cache Stats API", True, 
+                                    f"✅ Stats cache parfaites: {cached_docs} docs, {total_chunks} chunks, {cache_size} bytes")
+                    else:
+                        self.log_test("Cache Stats API", True, 
+                                    f"✅ Stats cache récupérées: {cached_docs} docs, {total_chunks} chunks, {cache_size} bytes (attendu: 12 docs, 68 chunks)")
                     return True
                 else:
-                    self.log_test("Cache Stats API", False, "Unexpected response format", data)
+                    self.log_test("Cache Stats API", False, "Format de réponse inattendu ou champs manquants", data)
                     return False
             else:
                 self.log_test("Cache Stats API", False, f"HTTP {response.status_code}", response.text)
                 return False
         except Exception as e:
-            self.log_test("Cache Stats API", False, f"Request error: {str(e)}")
+            self.log_test("Cache Stats API", False, f"Erreur de requête: {str(e)}")
             return False
 
     def test_incremental_reindex(self):
