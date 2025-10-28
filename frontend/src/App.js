@@ -32,14 +32,7 @@ function App() {
     loadSettings();
     loadDocumentStatus();
     loadDocumentsList();
-    
-    // Add initial session to history
-    setChatHistory([{
-      id: newSessionId,
-      title: 'Nouvelle Conversation',
-      timestamp: new Date().toISOString(),
-      messageCount: 0
-    }]);
+    loadChatSessions();
   }, []);
 
   // Scroll to bottom when messages change
