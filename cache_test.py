@@ -7,7 +7,7 @@ import requests
 import json
 import time
 
-BACKEND_URL = "https://embeddings-fr.preview.emergentagent.com/api"
+BACKEND_URL = "https://end-to-end-test.preview.emergentagent.com/api"
 
 def test_cache_behavior():
     """Test incremental vs full reindex cache behavior"""
