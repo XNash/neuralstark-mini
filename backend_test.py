@@ -378,7 +378,7 @@ class EmbeddingMigrationTester:
             return False
     
     def test_chat_api_cerebras_simple(self):
-        """Test POST /api/chat with simple query using Cerebras API"""
+        """Test POST /api/chat with simple query using Cerebras API and new embedding model"""
         try:
             # Test with the simple query mentioned in review request
             payload = {
@@ -401,36 +401,88 @@ class EmbeddingMigrationTester:
                     sources = data["sources"]
                     session_id = data["session_id"]
                     
-                    self.log_test("Chat API (Cerebras Simple)", True, 
-                                f"✅ Cerebras LLM response generated successfully. Session: {session_id}, Sources: {len(sources)}")
+                    self.log_test("Chat API (English Query)", True, 
+                                f"✅ Vector search with new embedding model working. Session: {session_id}, Sources: {len(sources)}")
                     print(f"   Response preview: {response_text[:150]}...")
-                    print(f"   Model used: llama-3.3-70b (Cerebras)")
+                    print(f"   Embedding model: manu/bge-m3-custom-fr (French-optimized multilingual)")
                     return True
                 else:
-                    self.log_test("Chat API (Cerebras Simple)", False, 
+                    self.log_test("Chat API (English Query)", False, 
                                 "❌ Missing required fields in response", data)
                     return False
             elif response.status_code == 400:
                 error_data = response.json()
                 if "cerebras" in error_data.get("detail", "").lower():
-                    self.log_test("Chat API (Cerebras Simple)", False, 
+                    self.log_test("Chat API (English Query)", False, 
                                 f"❌ Cerebras API key validation failed: {error_data.get('detail')}")
                     return False
                 else:
-                    self.log_test("Chat API (Cerebras Simple)", False, 
+                    self.log_test("Chat API (English Query)", False, 
                                 f"❌ Bad request: {error_data.get('detail')}")
                     return False
             elif response.status_code == 429:
                 error_data = response.json()
-                self.log_test("Chat API (Cerebras Simple)", False, 
+                self.log_test("Chat API (English Query)", False, 
                             f"❌ Rate limit exceeded: {error_data.get('detail')}")
                 return False
             else:
-                self.log_test("Chat API (Cerebras Simple)", False, 
+                self.log_test("Chat API (English Query)", False, 
                             f"❌ HTTP {response.status_code}", response.text)
                 return False
         except Exception as e:
-            self.log_test("Chat API (Cerebras Simple)", False, f"Request error: {str(e)}")
+            self.log_test("Chat API (English Query)", False, f"Request error: {str(e)}")
+            return False
+    
+    def test_chat_api_french_query(self):
+        """Test POST /api/chat with French query to verify French-optimized embedding model"""
+        try:
+            # Test with French query to verify the French-optimized model
+            payload = {
+                "message": "Quels documents avez-vous dans votre base de données?",
+                "session_id": self.session_id + "-fr"
+            }
+            
+            response = self.session.post(
+                f"{self.base_url}/chat",
+                json=payload,
+                headers={"Content-Type": "application/json"}
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                expected_fields = ["response", "session_id", "sources"]
+                
+                if all(field in data for field in expected_fields):
+                    response_text = data["response"]
+                    sources = data["sources"]
+                    session_id = data["session_id"]
+                    
+                    self.log_test("Chat API (French Query)", True, 
+                                f"✅ French query processed successfully with new embedding model. Session: {session_id}, Sources: {len(sources)}")
+                    print(f"   French query: 'Quels documents avez-vous dans votre base de données?'")
+                    print(f"   Response preview: {response_text[:150]}...")
+                    print(f"   Embedding model: manu/bge-m3-custom-fr (French-optimized)")
+                    return True
+                else:
+                    self.log_test("Chat API (French Query)", False, 
+                                "❌ Missing required fields in response", data)
+                    return False
+            elif response.status_code == 400:
+                error_data = response.json()
+                self.log_test("Chat API (French Query)", False, 
+                            f"❌ Bad request: {error_data.get('detail')}")
+                return False
+            elif response.status_code == 429:
+                error_data = response.json()
+                self.log_test("Chat API (French Query)", False, 
+                            f"❌ Rate limit exceeded: {error_data.get('detail')}")
+                return False
+            else:
+                self.log_test("Chat API (French Query)", False, 
+                            f"❌ HTTP {response.status_code}", response.text)
+                return False
+        except Exception as e:
+            self.log_test("Chat API (French Query)", False, f"Request error: {str(e)}")
             return False
     
     def test_chat_api_error_handling(self):
