@@ -26,7 +26,7 @@ FILES_DIR.mkdir(parents=True, exist_ok=True)
 # Set environment variables for HuggingFace and related libraries
 # These must be set before importing transformers/sentence_transformers
 os.environ['HF_HOME'] = str(HF_CACHE)
-os.environ['TRANSFORMERS_CACHE'] = str(HF_CACHE)
+# Note: TRANSFORMERS_CACHE is deprecated in favor of HF_HOME (v5+)
 os.environ['SENTENCE_TRANSFORMERS_HOME'] = str(ST_CACHE)
 
 # Export as strings for compatibility
