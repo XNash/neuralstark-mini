@@ -48,6 +48,18 @@ A full-stack Retrieval-Augmented Generation (RAG) platform that allows users to 
 
 ## 🚀 Getting Started
 
+### 🪟 Windows Users
+
+**See [WINDOWS_SETUP.md](WINDOWS_SETUP.md) for detailed Windows-specific instructions!**
+
+The project is fully compatible with Windows 10/11 and includes:
+- Windows-specific start scripts
+- Cross-platform path handling
+- PowerShell-friendly commands
+- Detailed troubleshooting guide
+
+### Quick Start (All Platforms)
+
 ### Windows Users 🪟
 
 **The NeuralStark now has full native Windows support!**
