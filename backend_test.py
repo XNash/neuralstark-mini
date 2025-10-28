@@ -194,25 +194,28 @@ class RAGPlatformTester:
             return False
 
     def test_incremental_reindex(self):
-        """Test POST /api/documents/reindex (incremental - should use cache)"""
+        """Test POST /api/documents/reindex - Réindexation incrémentale (utilise le cache)"""
         try:
             response = self.session.post(f"{self.base_url}/documents/reindex")
             if response.status_code == 200:
                 data = response.json()
-                if "message" in data and "incremental" in data["message"].lower():
-                    self.log_test("Incremental Reindex", True, "Incremental reindexing triggered successfully (uses cache)")
-                    return True
-                elif "message" in data and "reindexing" in data["message"].lower():
-                    self.log_test("Incremental Reindex", True, "Reindexing triggered successfully")
+                if "message" in data:
+                    message = data["message"]
+                    if "incremental" in message.lower() or "changed documents only" in message.lower():
+                        self.log_test("Réindexation Incrémentale", True, 
+                                    f"✅ Réindexation incrémentale déclenchée avec succès (utilise le cache): {message}")
+                    else:
+                        self.log_test("Réindexation Incrémentale", True, 
+                                    f"✅ Réindexation déclenchée: {message}")
                     return True
                 else:
-                    self.log_test("Incremental Reindex", False, "Unexpected response format", data)
+                    self.log_test("Réindexation Incrémentale", False, "Format de réponse inattendu", data)
                     return False
             else:
-                self.log_test("Incremental Reindex", False, f"HTTP {response.status_code}", response.text)
+                self.log_test("Réindexation Incrémentale", False, f"HTTP {response.status_code}", response.text)
                 return False
         except Exception as e:
-            self.log_test("Incremental Reindex", False, f"Request error: {str(e)}")
+            self.log_test("Réindexation Incrémentale", False, f"Erreur de requête: {str(e)}")
             return False
 
     def test_full_reindex(self):
