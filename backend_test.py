@@ -377,12 +377,12 @@ class CebrasMigrationTester:
             self.log_test("Cache Stats (After Reindex)", False, f"Request error: {str(e)}")
             return False
     
-    def test_chat_api(self):
-        """Test POST /api/chat - with realistic query"""
+    def test_chat_api_cerebras_simple(self):
+        """Test POST /api/chat with simple query using Cerebras API"""
         try:
-            # Test with a realistic query about TechCorp products
+            # Test with the simple query mentioned in review request
             payload = {
-                "message": "What products does TechCorp offer and what are their prices?",
+                "message": "What documents do you have?",
                 "session_id": self.session_id
             }
             
@@ -401,28 +401,36 @@ class CebrasMigrationTester:
                     sources = data["sources"]
                     session_id = data["session_id"]
                     
-                    self.log_test("Chat API", True, 
-                                f"Chat response generated successfully. Session: {session_id}, Sources: {len(sources)}")
-                    print(f"   Response preview: {response_text[:100]}...")
+                    self.log_test("Chat API (Cerebras Simple)", True, 
+                                f"✅ Cerebras LLM response generated successfully. Session: {session_id}, Sources: {len(sources)}")
+                    print(f"   Response preview: {response_text[:150]}...")
+                    print(f"   Model used: llama-3.3-70b (Cerebras)")
                     return True
                 else:
-                    self.log_test("Chat API", False, "Missing required fields in response", data)
+                    self.log_test("Chat API (Cerebras Simple)", False, 
+                                "❌ Missing required fields in response", data)
                     return False
             elif response.status_code == 400:
-                # This might be expected if API key is invalid
                 error_data = response.json()
-                if "api key" in error_data.get("detail", "").lower():
-                    self.log_test("Chat API", True, 
-                                "Chat API correctly validates API key (expected with test key)")
-                    return True
-                else:
-                    self.log_test("Chat API", False, f"Bad request: {error_data.get('detail')}")
+                if "cerebras" in error_data.get("detail", "").lower():
+                    self.log_test("Chat API (Cerebras Simple)", False, 
+                                f"❌ Cerebras API key validation failed: {error_data.get('detail')}")
                     return False
+                else:
+                    self.log_test("Chat API (Cerebras Simple)", False, 
+                                f"❌ Bad request: {error_data.get('detail')}")
+                    return False
+            elif response.status_code == 429:
+                error_data = response.json()
+                self.log_test("Chat API (Cerebras Simple)", False, 
+                            f"❌ Rate limit exceeded: {error_data.get('detail')}")
+                return False
             else:
-                self.log_test("Chat API", False, f"HTTP {response.status_code}", response.text)
+                self.log_test("Chat API (Cerebras Simple)", False, 
+                            f"❌ HTTP {response.status_code}", response.text)
                 return False
         except Exception as e:
-            self.log_test("Chat API", False, f"Request error: {str(e)}")
+            self.log_test("Chat API (Cerebras Simple)", False, f"Request error: {str(e)}")
             return False
     
     def test_chat_history(self):
