@@ -9,7 +9,7 @@ import json
 import time
 from datetime import datetime
 
-BACKEND_URL = "https://gpt-oss-upgrade.preview.emergentagent.com/api"
+BACKEND_URL = "https://embeddings-fr.preview.emergentagent.com/api"
 
 def test_data_coherence():
     """Test la cohérence des données entre tous les endpoints CRUD"""
