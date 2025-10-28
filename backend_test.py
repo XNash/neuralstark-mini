@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-Comprehensive Backend API Testing for NeuralStark
-Tests all backend endpoints with realistic data
+Cerebras Migration Testing for NeuralStark Backend
+Tests migration from Google Gemini to Cerebras AI
+Focus: Settings API, Chat API with Cerebras, Document APIs, Health Check
 """
 
 import requests
@@ -13,12 +14,15 @@ from datetime import datetime
 # Get backend URL from environment
 BACKEND_URL = "https://gpt-oss-upgrade.preview.emergentagent.com/api"
 
-class RAGPlatformTester:
+# Cerebras API key provided in review request
+CEREBRAS_API_KEY = "csk-c2wp6rmd4ed5jxtkydymmw6jp9vyv294fntcet6923dnftnw"
+
+class CebrasMigrationTester:
     def __init__(self):
         self.base_url = BACKEND_URL
         self.session = requests.Session()
         self.test_results = []
-        self.session_id = "test-session-" + str(int(time.time()))
+        self.session_id = "cerebras-test-" + str(int(time.time()))
         
     def log_test(self, test_name, success, message, details=None):
         """Log test results"""
