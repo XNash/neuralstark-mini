@@ -108,7 +108,7 @@ class RAGService:
                         {"role": "system", "content": system_message},
                         {"role": "user", "content": query}
                     ],
-                    model="llama-3.3-70b",
+                    model="gpt-oss-120b",
                     max_completion_tokens=2048,
                     temperature=0.7,
                     top_p=1
