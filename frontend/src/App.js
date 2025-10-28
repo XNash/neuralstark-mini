@@ -430,7 +430,7 @@ function App() {
                       <div className="feature-card">
                         <span className="feature-icon">💡</span>
                         <h3>Propulsé par IA</h3>
-                        <p>Gemini 2.5 Flash</p>
+                        <p>Cerebras Llama 3.3 70B</p>
                       </div>
                     </div>
 
