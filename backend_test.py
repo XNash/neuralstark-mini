@@ -838,35 +838,31 @@ class CebrasMigrationTester:
             self.log_test("Source Attribution", False, f"Request error: {str(e)}")
             return False
     
-    def run_all_tests(self):
-        """Run all backend tests"""
+    def run_cerebras_migration_tests(self):
+        """Run Cerebras migration focused tests"""
         print("=" * 80)
-        print("TESTS ENDPOINTS CRUD NEURALSTARK (en français)")
-        print("Application RAG avec gestion de documents - Backend FastAPI sur port 8001")
+        print("CEREBRAS MIGRATION TESTING FOR NEURALSTARK BACKEND")
+        print("Testing migration from Google Gemini to Cerebras AI")
         print("=" * 80)
         print(f"Backend URL: {self.base_url}")
         print(f"Test Session ID: {self.session_id}")
-        print(f"Répertoire documents: /app/files (12 documents attendus)")
-        print(f"Valeurs attendues: 12 documents, 68 chunks indexés")
-        print(f"Endpoints testés: status, list, cache-stats, reindex, health")
+        print(f"Cerebras API Key: {CEREBRAS_API_KEY[:20]}...")
+        print(f"Expected Model: llama-3.3-70b (Cerebras)")
         print()
         
-        # Test sequence - Focus sur les endpoints CRUD mentionnés dans la demande française
+        # Test sequence focused on Cerebras migration requirements
         tests = [
             ("API Root", self.test_api_root),
-            ("Health Check (/api/health)", self.test_health_endpoint),
-            ("Document Status (/api/documents/status)", self.test_document_status),
-            ("Documents List (/api/documents/list)", self.test_documents_list),
-            ("Cache Stats (/api/documents/cache-stats)", self.test_cache_stats),
-            ("Réindexation Complète (clear_cache=true)", self.test_full_reindex),
-            ("Document Status (Après Réindexation)", self.test_document_status_after_reindex),
-            ("Cache Stats (Après Réindexation)", self.test_cache_stats_after_reindex),
-            ("Réindexation Incrémentale (sans paramètres)", self.test_incremental_reindex),
-            ("Settings GET (Initial)", self.test_settings_get_initial),
-            ("Settings POST", self.test_settings_post),
-            ("Settings GET (After Save)", self.test_settings_get_after_save),
-            ("Chat API (Test avec quota)", self.test_chat_api),
-            ("Chat History", self.test_chat_history),
+            ("Health Check", self.test_health_endpoint),
+            ("Settings GET (Cerebras Field Check)", self.test_settings_get_cerebras_field),
+            ("Settings POST (Cerebras API Key)", self.test_settings_post_cerebras),
+            ("Settings Persistence (MongoDB)", self.test_settings_persistence_cerebras),
+            ("Document Status API", self.test_document_status),
+            ("Documents List API", self.test_documents_list),
+            ("Document Reindex API", self.test_incremental_reindex),
+            ("Chat API Error Handling", self.test_chat_api_error_handling),
+            ("Chat API (Cerebras Simple Query)", self.test_chat_api_cerebras_simple),
+            ("Session ID Creation", self.test_session_id_creation),
         ]
         
         passed = 0
@@ -882,38 +878,44 @@ class CebrasMigrationTester:
         
         # Summary
         print("=" * 70)
-        print("RÉSUMÉ DES TESTS CRUD NEURALSTARK")
+        print("CEREBRAS MIGRATION TEST SUMMARY")
         print("=" * 70)
-        print(f"Total des tests: {total}")
-        print(f"Réussis: {passed}")
-        print(f"Échoués: {total - passed}")
-        print(f"Taux de réussite: {(passed/total)*100:.1f}%")
+        print(f"Total tests: {total}")
+        print(f"Passed: {passed}")
+        print(f"Failed: {total - passed}")
+        print(f"Success rate: {(passed/total)*100:.1f}%")
         print()
         
-        # Tests critiques CRUD
-        crud_tests = [r for r in self.test_results if any(keyword in r["test"].lower() 
-                     for keyword in ["document status", "cache stats", "reindex", "health", "documents list"])]
-        crud_passed = len([t for t in crud_tests if t["success"]])
-        print(f"Tests CRUD critiques: {crud_passed}/{len(crud_tests)} réussis")
+        # Migration-specific test analysis
+        migration_tests = [r for r in self.test_results if any(keyword in r["test"].lower() 
+                         for keyword in ["cerebras", "settings", "chat", "error"])]
+        migration_passed = len([t for t in migration_tests if t["success"]])
+        print(f"Migration-critical tests: {migration_passed}/{len(migration_tests)} passed")
         print()
         
         # Failed tests details
         failed_tests = [r for r in self.test_results if not r["success"]]
         if failed_tests:
-            print("TESTS ÉCHOUÉS:")
+            print("FAILED TESTS (CRITICAL ISSUES):")
             for test in failed_tests:
                 print(f"❌ {test['test']}: {test['message']}")
                 if test.get('details'):
-                    print(f"   Détails: {test['details']}")
+                    print(f"   Details: {test['details']}")
             print()
         
-        # Tests réussis critiques
-        successful_crud = [r for r in crud_tests if r["success"]]
-        if successful_crud:
-            print("ENDPOINTS CRUD FONCTIONNELS:")
-            for test in successful_crud:
+        # Successful migration tests
+        successful_migration = [r for r in migration_tests if r["success"]]
+        if successful_migration:
+            print("SUCCESSFUL MIGRATION TESTS:")
+            for test in successful_migration:
                 print(f"✅ {test['test']}: {test['message']}")
             print()
+        
+        # Document APIs (should still work)
+        doc_tests = [r for r in self.test_results if any(keyword in r["test"].lower() 
+                    for keyword in ["document", "health"])]
+        doc_passed = len([t for t in doc_tests if t["success"]])
+        print(f"Document APIs (should still work): {doc_passed}/{len(doc_tests)} passed")
         
         return passed == total
 
