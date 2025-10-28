@@ -438,7 +438,7 @@ function App() {
                       <h4>Conseils Rapides:</h4>
                       <ul>
                         <li>Ajoutez des documents dans le répertoire <code>/app/files</code></li>
-                        <li>Configurez votre clé API Gemini dans les Paramètres</li>
+                        <li>Configurez votre clé API Cerebras dans les Paramètres</li>
                         <li>Posez des questions sur vos documents en langage naturel</li>
                       </ul>
                     </div>
