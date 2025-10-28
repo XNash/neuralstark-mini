@@ -449,14 +449,10 @@ test_plan:
   stuck_tasks: []
   test_all: true
   test_priority: "cerebras_migration_testing"
-    - "Tous les endpoints CRUD vérifiés fonctionnels: status, list, cache-stats, reindex, health"
-    - "Cohérence des données confirmée entre tous les endpoints"
-  stuck_tasks: 
-    - "RAG Pipeline End-to-End Testing with Real API - requires API quota increase (system confirmed working)"
-  test_all: true
-  test_priority: "crud_endpoints_french_complete"
 
 agent_communication:
+    - agent: "main"
+      message: "CEREBRAS MIGRATION COMPLETED (2025-10-28): Successfully migrated NeuralStark from Google Gemini to Cerebras AI. BACKEND: ✅ Installed cerebras_cloud_sdk package, removed google-generativeai. ✅ Updated rag_service.py to use Cerebras client with llama-3.3-70b model. ✅ Modified server.py Settings model: renamed gemini_api_key to cerebras_api_key. ✅ Updated all API endpoints and error messages to reference Cerebras Cloud (https://cloud.cerebras.ai). ✅ Added CEREBRAS_API_KEY to .env with user-provided key. ✅ Backend restarted successfully with no errors. FRONTEND: ✅ Updated App.js to use cerebras_api_key in API calls. ✅ Changed all UI text from 'Gemini 2.5 Flash' to 'Cerebras Llama 3.3 70B'. ✅ Updated Settings page labels, descriptions, and links to cloud.cerebras.ai. ✅ Modified feature cards and quick tips to reference Cerebras. Ready for comprehensive backend and frontend testing with real Cerebras API."
     - agent: "testing"
       message: "Comprehensive backend testing completed successfully. All 8 core backend functionalities are working correctly. Chat API failures are expected due to test API key - this confirms proper API key validation. NeuralStark backend is fully functional and ready for production use."
     - agent: "testing"
