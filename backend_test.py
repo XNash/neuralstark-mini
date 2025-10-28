@@ -746,37 +746,32 @@ class RAGPlatformTester:
     
     def run_all_tests(self):
         """Run all backend tests"""
-        print("=" * 70)
-        print("OPTIMIZED NEURALSTARK BACKEND TESTING")
-        print("Focus: Performance & New Cache Features")
-        print("Testing with Real Gemini API Key: AIzaSyD273RLpkzyDyU59NKxTERC3jm0xVhH7N4")
-        print("=" * 70)
+        print("=" * 80)
+        print("TESTS ENDPOINTS CRUD NEURALSTARK (en français)")
+        print("Application RAG avec gestion de documents - Backend FastAPI sur port 8001")
+        print("=" * 80)
         print(f"Backend URL: {self.base_url}")
         print(f"Test Session ID: {self.session_id}")
-        print(f"Test Files: /app/files/products.txt, company_info.md, faq.json")
-        print(f"Expected: 3 documents, 6 chunks (optimized chunking)")
-        print(f"New Features: Cache Stats API, Incremental vs Full Reindex")
+        print(f"Répertoire documents: /app/files (12 documents attendus)")
+        print(f"Valeurs attendues: 12 documents, 68 chunks indexés")
+        print(f"Endpoints testés: status, list, cache-stats, reindex, health")
         print()
         
-        # Test sequence - Optimized NeuralStark Testing (Focus on Performance & New Features)
+        # Test sequence - Focus sur les endpoints CRUD mentionnés dans la demande française
         tests = [
             ("API Root", self.test_api_root),
+            ("Health Check (/api/health)", self.test_health_endpoint),
+            ("Document Status (/api/documents/status)", self.test_document_status),
+            ("Documents List (/api/documents/list)", self.test_documents_list),
+            ("Cache Stats (/api/documents/cache-stats)", self.test_cache_stats),
+            ("Réindexation Complète (clear_cache=true)", self.test_full_reindex),
+            ("Document Status (Après Réindexation)", self.test_document_status_after_reindex),
+            ("Cache Stats (Après Réindexation)", self.test_cache_stats_after_reindex),
+            ("Réindexation Incrémentale (sans paramètres)", self.test_incremental_reindex),
             ("Settings GET (Initial)", self.test_settings_get_initial),
             ("Settings POST", self.test_settings_post),
             ("Settings GET (After Save)", self.test_settings_get_after_save),
-            ("Document Status", self.test_document_status),
-            ("Cache Stats API (NEW)", self.test_cache_stats),
-            ("Full Reindex (Clear Cache)", self.test_full_reindex),
-            ("Document Status (After Full Reindex)", self.test_document_status_after_reindex),
-            ("Cache Stats (After Reindex)", self.test_cache_stats_after_reindex),
-            ("Incremental Reindex (Use Cache)", self.test_incremental_reindex),
-            ("RAG Accuracy (Products)", self.test_rag_accuracy_products),
-            ("RAG Accuracy (Office Hours)", self.test_rag_accuracy_office_hours),
-            ("Multilingual Support (French)", self.test_multilingual_french_query),
-            ("RAG Accuracy (Refund Policy)", self.test_rag_accuracy_refund_policy),
-            ("RAG Out-of-Scope Handling", self.test_rag_out_of_scope_query),
-            ("Session Continuity", self.test_session_continuity),
-            ("Source Attribution", self.test_source_attribution),
+            ("Chat API (Test avec quota)", self.test_chat_api),
             ("Chat History", self.test_chat_history),
         ]
         
