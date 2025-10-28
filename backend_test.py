@@ -234,12 +234,12 @@ class RAGPlatformTester:
             response = self.session.get(f"{self.base_url}/documents/cache-stats")
             if response.status_code == 200:
                 data = response.json()
-                expected_fields = ["cached_documents", "total_chunks", "cache_size_bytes"]
+                expected_fields = ["total_documents", "total_chunks", "total_size_bytes"]
                 
                 if isinstance(data, dict) and all(field in data for field in expected_fields):
-                    cached_docs = data["cached_documents"]
+                    cached_docs = data["total_documents"]
                     total_chunks = data["total_chunks"]
-                    cache_size = data["cache_size_bytes"]
+                    cache_size = data["total_size_bytes"]
                     
                     # Vérifier les stats attendues: 12 docs, 68 chunks en cache
                     if cached_docs == 12 and total_chunks == 68:
