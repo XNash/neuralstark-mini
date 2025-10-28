@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Cerebras Migration Testing for NeuralStark Backend
-Tests migration from Google Gemini to Cerebras AI
-Focus: Settings API, Chat API with Cerebras, Document APIs, Health Check
+Embedding Model Migration Testing for NeuralStark Backend
+Tests migration from BAAI/bge-base-en-v1.5 to manu/bge-m3-custom-fr
+Focus: Vector search functionality, document status, cache stats, reindexing
 """
 
 import requests
@@ -17,7 +17,7 @@ BACKEND_URL = "https://embeddings-fr.preview.emergentagent.com/api"
 # Cerebras API key provided in review request
 CEREBRAS_API_KEY = "csk-c2wp6rmd4ed5jxtkydymmw6jp9vyv294fntcet6923dnftnw"
 
-class CebrasMigrationTester:
+class EmbeddingMigrationTester:
     def __init__(self):
         self.base_url = BACKEND_URL
         self.session = requests.Session()
