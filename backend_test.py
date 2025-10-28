@@ -155,12 +155,11 @@ class CebrasMigrationTester:
             self.log_test("Settings GET (Cerebras Field)", False, f"Request error: {str(e)}")
             return False
     
-    def test_settings_post(self):
-        """Test POST /api/settings - save real API key"""
+    def test_settings_post_cerebras(self):
+        """Test POST /api/settings with cerebras_api_key field"""
         try:
-            # Use the real Gemini API key for comprehensive testing
-            real_api_key = "AIzaSyD273RLpkzyDyU59NKxTERC3jm0xVhH7N4"
-            payload = {"gemini_api_key": real_api_key}
+            # Use the Cerebras API key provided in review request
+            payload = {"cerebras_api_key": CEREBRAS_API_KEY}
             
             response = self.session.post(
                 f"{self.base_url}/settings",
@@ -170,17 +169,19 @@ class CebrasMigrationTester:
             
             if response.status_code == 200:
                 data = response.json()
-                if data.get("gemini_api_key") == real_api_key:
-                    self.log_test("Settings POST", True, "Real Gemini API key saved successfully")
+                if data.get("cerebras_api_key") == CEREBRAS_API_KEY:
+                    self.log_test("Settings POST (Cerebras)", True, 
+                                "✅ Cerebras API key saved successfully")
                     return True
                 else:
-                    self.log_test("Settings POST", False, "API key not saved correctly", data)
+                    self.log_test("Settings POST (Cerebras)", False, 
+                                "❌ Cerebras API key not saved correctly", data)
                     return False
             else:
-                self.log_test("Settings POST", False, f"HTTP {response.status_code}", response.text)
+                self.log_test("Settings POST (Cerebras)", False, f"HTTP {response.status_code}", response.text)
                 return False
         except Exception as e:
-            self.log_test("Settings POST", False, f"Request error: {str(e)}")
+            self.log_test("Settings POST (Cerebras)", False, f"Request error: {str(e)}")
             return False
     
     def test_settings_get_after_save(self):
