@@ -102,9 +102,57 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Test the redesigned NeuralStark frontend with professional sidebar system comprehensively including sidebar navigation, chat page with welcome screen and feature cards, new Documents page, redesigned Settings page, header functionality, visual design, and all interactive elements"
+user_problem_statement: "Migrate NeuralStark from Google Gemini to Cerebras AI (gpt-oss-120b model). Replace all LLM integration from Gemini to Cerebras throughout the backend and frontend."
 
 backend:
+  - task: "LLM Migration to Cerebras"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/rag_service.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Migrated from Google Gemini to Cerebras AI. Replaced emergentintegrations/google-generativeai with cerebras_cloud_sdk. Updated model to llama-3.3-70b. Modified chat completion API calls to use Cerebras client. Updated error messages to reference Cerebras Cloud instead of Google AI Studio. Ready for comprehensive testing."
+
+  - task: "Settings API Migration to Cerebras"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Updated Settings model: renamed gemini_api_key to cerebras_api_key. Modified GET /api/settings and POST /api/settings endpoints to use cerebras_api_key field. Updated error messages to reference Cerebras Cloud (https://cloud.cerebras.ai). Ready for testing."
+
+  - task: "Chat API Migration to Cerebras"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Updated Chat API to use cerebras_api_key from settings. Modified error handling to reference Cerebras Cloud. Updated validation messages and API key checks. Ready for testing with real Cerebras API."
+
+  - task: "Backend Dependencies Update"
+    implemented: true
+    working: true
+    file: "/app/backend/requirements.txt, /app/backend/.env"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Successfully installed cerebras_cloud_sdk package. Removed google-generativeai dependency. Added CEREBRAS_API_KEY to .env file with user-provided key (csk-c2wp6rmd4ed5jxtkydymmw6jp9vyv294fntcet6923dnftnw). Backend restarted successfully with no errors."
+
   - task: "Settings API Implementation"
     implemented: true
     working: true
