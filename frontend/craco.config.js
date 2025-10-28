@@ -54,5 +54,11 @@ module.exports = {
     client: {
       webSocketURL: 'auto://0.0.0.0:0/ws',
     },
+    // Use setupMiddlewares instead of deprecated onBeforeSetupMiddleware/onAfterSetupMiddleware
+    setupMiddlewares: (middlewares, devServer) => {
+      // Custom middlewares can be added here if needed
+      // This replaces the deprecated onBeforeSetupMiddleware and onAfterSetupMiddleware
+      return middlewares;
+    },
   },
 };
