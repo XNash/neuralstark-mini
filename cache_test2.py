@@ -7,7 +7,7 @@ import requests
 import json
 import time
 
-BACKEND_URL = "https://knowledge-crud-1.preview.emergentagent.com/api"
+BACKEND_URL = "https://gpt-oss-upgrade.preview.emergentagent.com/api"
 
 def test_incremental_cache():
     """Test that incremental reindex skips cached files"""
