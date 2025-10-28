@@ -346,7 +346,7 @@ function App() {
               onClick={newChat}
               onMouseEnter={() => setShowTooltip('new-chat')}
               onMouseLeave={() => setShowTooltip(null)}
-              title="Démarrer une nouvelle conversation (Ctrl+N)"
+              title="Démarrer une nouvelle conversation"
               aria-label="Nouvelle discussion"
             >
               <span className="btn-icon">✨</span>
@@ -357,7 +357,7 @@ function App() {
             <div className="chat-sessions-section">
               <h3 className="section-title">
                 <span className="section-icon">💬</span>
-                Historique
+                Discussions
               </h3>
               <div className="chat-sessions-list">
                 {chatSessions.length === 0 ? (
@@ -415,17 +415,6 @@ function App() {
 
             {/* Navigation - Principe d'Homogénéité */}
             <nav className="sidebar-nav" role="navigation" aria-label="Navigation principale">
-              <button
-                className={`nav-item ${currentPage === 'chat' ? 'active' : ''}`}
-                onClick={() => setCurrentPage('chat')}
-                aria-current={currentPage === 'chat' ? 'page' : undefined}
-                title="Aller à l'interface de discussion"
-              >
-                <span className="nav-icon">💬</span>
-                <span className="nav-label">Discussion</span>
-                {messages.length > 0 && <span className="nav-badge">{messages.length}</span>}
-              </button>
-              
               <button
                 className={`nav-item ${currentPage === 'documents' ? 'active' : ''}`}
                 onClick={() => setCurrentPage('documents')}
