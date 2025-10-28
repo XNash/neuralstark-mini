@@ -16,8 +16,9 @@ function App() {
   const [sessionId, setSessionId] = useState('');
   const [docStatus, setDocStatus] = useState(null);
   const [documentsList, setDocumentsList] = useState({ documents_by_type: {}, total_count: 0 });
-  const [chatHistory, setChatHistory] = useState([]);
+  const [chatSessions, setChatSessions] = useState([]);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [confirmAction, setConfirmAction] = useState(null);
   const [showTooltip, setShowTooltip] = useState(null);
   const [saveStatus, setSaveStatus] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
