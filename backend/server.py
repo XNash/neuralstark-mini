@@ -533,6 +533,75 @@ async def get_chat_history(session_id: str):
     
     return messages
 
+@api_router.get("/chat/sessions", response_model=List[ChatSession])
+async def get_chat_sessions():
+    """Get list of all chat sessions with summary information"""
+    try:
+        # Aggregate to get session summaries
+        pipeline = [
+            {
+                "$sort": {"timestamp": 1}
+            },
+            {
+                "$group": {
+                    "_id": "$session_id",
+                    "first_message": {"$first": "$content"},
+                    "first_role": {"$first": "$role"},
+                    "last_message_time": {"$last": "$timestamp"},
+                    "created_at": {"$first": "$timestamp"},
+                    "message_count": {"$sum": 1}
+                }
+            },
+            {
+                "$sort": {"last_message_time": -1}
+            },
+            {
+                "$limit": 50  # Limit to 50 most recent sessions
+            }
+        ]
+        
+        sessions_data = await db.chat_messages.aggregate(pipeline).to_list(50)
+        
+        sessions = []
+        for session_data in sessions_data:
+            # Generate title from first user message
+            first_msg = session_data.get('first_message', '')
+            first_role = session_data.get('first_role', 'user')
+            
+            # Use first user message as title, truncate if too long
+            if first_role == 'user' and first_msg:
+                title = first_msg[:50] + '...' if len(first_msg) > 50 else first_msg
+            else:
+                title = 'Conversation'
+            
+            sessions.append(ChatSession(
+                session_id=session_data['_id'],
+                title=title,
+                first_message=first_msg if first_role == 'user' else None,
+                last_message_time=session_data['last_message_time'],
+                message_count=session_data['message_count'],
+                created_at=session_data['created_at']
+            ))
+        
+        return sessions
+    except Exception as e:
+        logger.error(f"Error fetching chat sessions: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to fetch chat sessions: {str(e)}")
+
+@api_router.delete("/chat/session/{session_id}")
+async def delete_chat_session(session_id: str):
+    """Delete a chat session and all its messages"""
+    try:
+        result = await db.chat_messages.delete_many({"session_id": session_id})
+        return {
+            "success": True,
+            "deleted_count": result.deleted_count,
+            "message": f"Session {session_id} deleted successfully"
+        }
+    except Exception as e:
+        logger.error(f"Error deleting chat session {session_id}: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to delete session: {str(e)}")
+
 @api_router.get("/documents/status", response_model=DocumentStatus)
 async def get_document_status():
     """Get document indexing status"""
