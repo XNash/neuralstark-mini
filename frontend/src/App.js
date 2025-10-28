@@ -54,8 +54,8 @@ function App() {
     try {
       const response = await fetch(`${BACKEND_URL}/api/settings`);
       const data = await response.json();
-      if (data.gemini_api_key) {
-        setApiKey(data.gemini_api_key);
+      if (data.cerebras_api_key) {
+        setApiKey(data.cerebras_api_key);
         setApiKeySaved(true);
       }
     } catch (error) {
