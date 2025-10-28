@@ -425,11 +425,11 @@ async def chat(request: ChatRequest):
         
         # Get API key from settings
         settings = await db.settings.find_one({"id": "main"})
-        if not settings or not settings.get('gemini_api_key'):
+        if not settings or not settings.get('cerebras_api_key'):
             raise HTTPException(
                 status_code=400, 
-                detail="Gemini API key not configured. Please add your API key in the Settings page. "
-                       "Get one from: https://aistudio.google.com/app/apikey"
+                detail="Cerebras API key not configured. Please add your API key in the Settings page. "
+                       "Get one from: https://cloud.cerebras.ai"
             )
         
         # Generate session_id if not provided
@@ -456,7 +456,7 @@ async def chat(request: ChatRequest):
             response_text, sources = await rag_service.get_response(
                 query=request.message.strip(),
                 session_id=session_id,
-                api_key=settings['gemini_api_key'],
+                api_key=settings['cerebras_api_key'],
                 chat_history=chat_history
             )
         except Exception as rag_error:
@@ -465,18 +465,18 @@ async def chat(request: ChatRequest):
             logger.error(f"RAG service error for session {session_id}: {error_msg}")
             
             # Check for specific error types and provide helpful messages
-            if "quota" in error_msg.lower() or "exceeded" in error_msg.lower():
+            if "quota" in error_msg.lower() or "exceeded" in error_msg.lower() or "rate" in error_msg.lower():
                 raise HTTPException(
                     status_code=429,
-                    detail="API quota exceeded. The free tier allows 250 requests per day. "
-                           "Please check your API key's billing details at https://aistudio.google.com/app/apikey "
+                    detail="API rate limit exceeded. "
+                           "Please check your API key's billing details at https://cloud.cerebras.ai "
                            "or try again later."
                 )
-            elif "unauthorized" in error_msg.lower() or "invalid" in error_msg.lower():
+            elif "unauthorized" in error_msg.lower() or "invalid" in error_msg.lower() or "authentication" in error_msg.lower():
                 raise HTTPException(
                     status_code=401,
-                    detail="Invalid API key. Please check your Gemini API key in Settings. "
-                           "Get a valid key from: https://aistudio.google.com/app/apikey"
+                    detail="Invalid API key. Please check your Cerebras API key in Settings. "
+                           "Get a valid key from: https://cloud.cerebras.ai"
                 )
             else:
                 raise HTTPException(
