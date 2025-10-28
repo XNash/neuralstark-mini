@@ -309,6 +309,7 @@ function App() {
   };
 
   const handleReindexClick = () => {
+    setConfirmAction(() => () => reindexDocuments(false));
     setShowConfirmDialog(true);
   };
 
@@ -317,26 +318,10 @@ function App() {
     setErrorMessage('');
     const newSessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substring(7);
     setSessionId(newSessionId);
-    
-    // Add new session to history
-    const newSession = {
-      id: newSessionId,
-      title: 'Nouvelle Conversation',
-      timestamp: new Date().toISOString(),
-      messageCount: 0
-    };
-    setChatHistory(prev => [newSession, ...prev]);
+    setCurrentPage('chat');
     
     // Focus input after new chat
     setTimeout(() => inputRef.current?.focus(), 100);
-  };
-
-  const updateChatHistory = () => {
-    setChatHistory(prev => prev.map(session => 
-      session.id === sessionId 
-        ? { ...session, messageCount: messages.length + 2 }
-        : session
-    ));
   };
 
   const toggleSidebar = () => {
