@@ -54,11 +54,11 @@ class Settings(BaseModel):
     model_config = ConfigDict(extra="ignore")
     
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    gemini_api_key: Optional[str] = None
+    cerebras_api_key: Optional[str] = None
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class SettingsUpdate(BaseModel):
-    gemini_api_key: str
+    cerebras_api_key: str
 
 class ChatMessage(BaseModel):
     model_config = ConfigDict(extra="ignore")
