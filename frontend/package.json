@@ -57,9 +57,12 @@
     "zod": "^3.24.4"
   },
   "scripts": {
-    "start": "node -r ./suppress-warnings.js node_modules/.bin/craco start",
+    "start": "cross-env NODE_OPTIONS=--no-deprecation craco start",
+    "start:win": "set NODE_OPTIONS=--no-deprecation && craco start",
+    "start:unix": "NODE_OPTIONS=--no-deprecation craco start",
     "build": "craco build",
-    "test": "craco test"
+    "test": "craco test",
+    "postinstall": "node setup-windows.js"
   },
   "browserslist": {
     "production": [
