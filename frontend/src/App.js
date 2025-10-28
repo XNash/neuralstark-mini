@@ -335,7 +335,7 @@ function App() {
         <div className="sidebar-header">
           <div className="brand">
             <span className="brand-icon">🧠</span>
-            {sidebarOpen && <h1 className="brand-title">Neuralstark AI</h1>}
+            {sidebarOpen && <h1 className="brand-title">NeuralStark</h1>}
           </div>
         </div>
 
@@ -347,11 +347,73 @@ function App() {
               onMouseEnter={() => setShowTooltip('new-chat')}
               onMouseLeave={() => setShowTooltip(null)}
               title="Démarrer une nouvelle conversation (Ctrl+N)"
+              aria-label="Nouvelle discussion"
             >
               <span className="btn-icon">✨</span>
               <span>Nouvelle Discussion</span>
             </button>
 
+            {/* Chat Sessions List - Principe de Guidage */}
+            <div className="chat-sessions-section">
+              <h3 className="section-title">
+                <span className="section-icon">💬</span>
+                Historique
+              </h3>
+              <div className="chat-sessions-list">
+                {chatSessions.length === 0 ? (
+                  <div className="empty-state">
+                    <p className="empty-text">Aucune conversation</p>
+                    <p className="empty-hint">Commencez une nouvelle discussion!</p>
+                  </div>
+                ) : (
+                  chatSessions.map((session) => (
+                    <div
+                      key={session.session_id}
+                      className={`session-item ${session.session_id === sessionId ? 'active' : ''}`}
+                      onClick={() => loadSessionMessages(session.session_id)}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Ouvrir la conversation: ${session.title}`}
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter') loadSessionMessages(session.session_id);
+                      }}
+                    >
+                      <div className="session-content">
+                        <div className="session-header">
+                          <span className="session-title" title={session.title}>
+                            {session.title}
+                          </span>
+                          <button
+                            className="session-delete-btn"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              confirmDelete(session.session_id);
+                            }}
+                            title="Supprimer cette conversation"
+                            aria-label="Supprimer"
+                          >
+                            🗑️
+                          </button>
+                        </div>
+                        <div className="session-meta">
+                          <span className="session-count">{session.message_count} messages</span>
+                          <span className="session-time">
+                            {new Date(session.last_message_time).toLocaleDateString('fr-FR', {
+                              day: 'numeric',
+                              month: 'short',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            {/* Navigation - Principe d'Homogénéité */}
             <nav className="sidebar-nav" role="navigation" aria-label="Navigation principale">
               <button
                 className={`nav-item ${currentPage === 'chat' ? 'active' : ''}`}
