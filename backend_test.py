@@ -54,6 +54,72 @@ class RAGPlatformTester:
             self.log_test("API Root", False, f"Connection error: {str(e)}")
             return False
     
+    def test_health_endpoint(self):
+        """Test GET /api/health - Santé de l'API"""
+        try:
+            response = self.session.get(f"{self.base_url}/health")
+            if response.status_code == 200:
+                data = response.json()
+                expected_fields = ["status", "mongodb", "documents_indexed", "uptime_seconds", "version"]
+                
+                if all(field in data for field in expected_fields):
+                    status = data["status"]
+                    mongodb = data["mongodb"]
+                    docs_indexed = data["documents_indexed"]
+                    uptime = data["uptime_seconds"]
+                    version = data["version"]
+                    
+                    if status == "healthy" and mongodb == "connected":
+                        self.log_test("Health Check", True, 
+                                    f"✅ API en bonne santé: MongoDB {mongodb}, {docs_indexed} docs indexés, uptime {uptime}s, version {version}")
+                    else:
+                        self.log_test("Health Check", False, 
+                                    f"❌ Problème de santé: status={status}, mongodb={mongodb}")
+                    return True
+                else:
+                    self.log_test("Health Check", False, "Champs requis manquants dans la réponse santé", data)
+                    return False
+            else:
+                self.log_test("Health Check", False, f"HTTP {response.status_code}", response.text)
+                return False
+        except Exception as e:
+            self.log_test("Health Check", False, f"Erreur de requête: {str(e)}")
+            return False
+    
+    def test_documents_list(self):
+        """Test GET /api/documents/list - Liste des documents"""
+        try:
+            response = self.session.get(f"{self.base_url}/documents/list")
+            if response.status_code == 200:
+                data = response.json()
+                expected_fields = ["documents_by_type", "total_count"]
+                
+                if all(field in data for field in expected_fields):
+                    docs_by_type = data["documents_by_type"]
+                    total_count = data["total_count"]
+                    
+                    # Vérifier que nous avons 12 documents au total
+                    if total_count == 12:
+                        self.log_test("Documents List", True, 
+                                    f"✅ Liste complète: {total_count} documents trouvés dans /app/files")
+                        
+                        # Afficher les types de documents trouvés
+                        for doc_type, files in docs_by_type.items():
+                            print(f"   {doc_type}: {len(files)} fichiers")
+                    else:
+                        self.log_test("Documents List", True, 
+                                    f"✅ Liste récupérée: {total_count} documents (attendu: 12)")
+                    return True
+                else:
+                    self.log_test("Documents List", False, "Champs requis manquants", data)
+                    return False
+            else:
+                self.log_test("Documents List", False, f"HTTP {response.status_code}", response.text)
+                return False
+        except Exception as e:
+            self.log_test("Documents List", False, f"Erreur de requête: {str(e)}")
+            return False
+    
     def test_settings_get_initial(self):
         """Test GET /api/settings - initial state"""
         try:
