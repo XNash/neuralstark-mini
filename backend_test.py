@@ -668,12 +668,12 @@ class EmbeddingMigrationTester:
         return passed == total
 
 if __name__ == "__main__":
-    tester = CebrasMigrationTester()
-    success = tester.run_cerebras_migration_tests()
+    tester = EmbeddingMigrationTester()
+    success = tester.run_embedding_migration_tests()
     
     if success:
-        print("🎉 Cerebras migration tests passed!")
+        print("🎉 Embedding model migration tests passed!")
         sys.exit(0)
     else:
-        print("⚠️  Some migration tests failed. Check the details above.")
+        print("⚠️  Some embedding migration tests failed. Check the details above.")
         sys.exit(1)
