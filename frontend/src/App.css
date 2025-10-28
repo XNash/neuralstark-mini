@@ -1811,8 +1811,11 @@ button:disabled {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  margin-top: 16px;
+  margin-top: 12px;
+  margin-bottom: 12px;
   padding: 0 8px;
+  border-bottom: 1px solid var(--divider-color);
+  padding-bottom: 12px;
 }
 
 .section-title {
