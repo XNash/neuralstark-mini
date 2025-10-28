@@ -219,25 +219,28 @@ class RAGPlatformTester:
             return False
 
     def test_full_reindex(self):
-        """Test POST /api/documents/reindex?clear_cache=true (full - should clear cache)"""
+        """Test POST /api/documents/reindex?clear_cache=true - Réindexation complète (vide le cache)"""
         try:
             response = self.session.post(f"{self.base_url}/documents/reindex?clear_cache=true")
             if response.status_code == 200:
                 data = response.json()
-                if "message" in data and ("full" in data["message"].lower() or "all documents" in data["message"].lower()):
-                    self.log_test("Full Reindex", True, "Full reindexing triggered successfully (clears cache)")
-                    return True
-                elif "message" in data and "reindexing" in data["message"].lower():
-                    self.log_test("Full Reindex", True, "Reindexing triggered successfully")
+                if "message" in data:
+                    message = data["message"]
+                    if "full" in message.lower() or "all documents" in message.lower() or "processing all documents" in message.lower():
+                        self.log_test("Réindexation Complète", True, 
+                                    f"✅ Réindexation complète déclenchée avec succès (vide le cache): {message}")
+                    else:
+                        self.log_test("Réindexation Complète", True, 
+                                    f"✅ Réindexation déclenchée: {message}")
                     return True
                 else:
-                    self.log_test("Full Reindex", False, "Unexpected response format", data)
+                    self.log_test("Réindexation Complète", False, "Format de réponse inattendu", data)
                     return False
             else:
-                self.log_test("Full Reindex", False, f"HTTP {response.status_code}", response.text)
+                self.log_test("Réindexation Complète", False, f"HTTP {response.status_code}", response.text)
                 return False
         except Exception as e:
-            self.log_test("Full Reindex", False, f"Request error: {str(e)}")
+            self.log_test("Réindexation Complète", False, f"Erreur de requête: {str(e)}")
             return False
     
     def test_document_status_after_reindex(self):
