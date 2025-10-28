@@ -77,6 +77,78 @@ function App() {
     }
   };
 
+  const loadChatSessions = async () => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/chat/sessions`);
+      const data = await response.json();
+      setChatSessions(data);
+    } catch (error) {
+      console.error('Error loading chat sessions:', error);
+    }
+  };
+
+  const loadSessionMessages = async (session_id) => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/chat/history/${session_id}`);
+      const data = await response.json();
+      setMessages(data);
+      setSessionId(session_id);
+      setCurrentPage('chat');
+      setErrorMessage('');
+    } catch (error) {
+      console.error('Error loading session messages:', error);
+      setErrorMessage('Impossible de charger l\'historique de cette conversation');
+    }
+  };
+
+  const deleteSession = async (session_id) => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/chat/session/${session_id}`, {
+        method: 'DELETE'
+      });
+      
+      if (response.ok) {
+        // Reload sessions list
+        await loadChatSessions();
+        
+        // If deleted session was active, start new chat
+        if (session_id === sessionId) {
+          newChat();
+        }
+        
+        setSaveStatus('success');
+        setTimeout(() => setSaveStatus(null), 2000);
+      } else {
+        setSaveStatus('error');
+        setErrorMessage('Échec de la suppression de la conversation');
+        setTimeout(() => setSaveStatus(null), 3000);
+      }
+    } catch (error) {
+      console.error('Error deleting session:', error);
+      setSaveStatus('error');
+      setErrorMessage('Erreur lors de la suppression');
+      setTimeout(() => setSaveStatus(null), 3000);
+    }
+  };
+
+  const confirmDelete = (session_id) => {
+    setConfirmAction(() => () => deleteSession(session_id));
+    setShowConfirmDialog(true);
+  };
+
+  const executeConfirmAction = () => {
+    if (confirmAction) {
+      confirmAction();
+    }
+    setShowConfirmDialog(false);
+    setConfirmAction(null);
+  };
+
+  const cancelConfirmAction = () => {
+    setShowConfirmDialog(false);
+    setConfirmAction(null);
+  };
+
   const saveSettings = async () => {
     if (!apiKey || apiKey.trim().length < 10) {
       setErrorMessage('Veuillez entrer une clé API valide (minimum 10 caractères)');
