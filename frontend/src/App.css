@@ -197,15 +197,15 @@ body {
 
 .nav-item {
   width: 100%;
-  padding: 10px 12px;
-  margin: 0;
+  padding: 12px 12px;
+  margin: 2px 0;
   background: transparent;
   border: none;
-  border-radius: 0;
+  border-radius: var(--radius-md);
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   color: var(--text-secondary);
   font-size: 13px;
   font-weight: 500;
