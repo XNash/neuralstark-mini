@@ -435,14 +435,20 @@ frontend:
           comment: "All interactive elements working perfectly - Buttons have proper hover states and click functionality, forms handle input validation correctly, navigation between pages smooth and instant, sidebar toggle responsive, all elements properly sized and positioned across different screen sizes, no visual glitches or overflow issues detected. Excellent user experience confirmed."
 
 metadata:
-  created_by: "testing_agent"
-  version: "1.2"
-  test_sequence: 3
-  run_ui: true
+  created_by: "main_agent"
+  version: "1.3"
+  test_sequence: 4
+  run_ui: false
 
 test_plan:
   current_focus:
-    - "Tests endpoints CRUD NeuralStark (français) terminés avec succès"
+    - "LLM Migration to Cerebras"
+    - "Settings API Migration to Cerebras"
+    - "Chat API Migration to Cerebras"
+    - "Frontend LLM Migration to Cerebras"
+  stuck_tasks: []
+  test_all: true
+  test_priority: "cerebras_migration_testing"
     - "Tous les endpoints CRUD vérifiés fonctionnels: status, list, cache-stats, reindex, health"
     - "Cohérence des données confirmée entre tous les endpoints"
   stuck_tasks: 
