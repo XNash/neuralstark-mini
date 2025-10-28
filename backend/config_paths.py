@@ -4,7 +4,12 @@ Automatically detects project root and sets up cache directories.
 Works on Windows, Linux, and macOS.
 """
 import os
+import warnings
 from pathlib import Path
+
+# Suppress FutureWarning about TRANSFORMERS_CACHE deprecation
+# We use HF_HOME which is the recommended approach for transformers v5+
+warnings.filterwarnings('ignore', category=FutureWarning, module='transformers.utils.hub')
 
 # Get project root (two levels up from this file: backend -> app)
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
