@@ -287,6 +287,18 @@ backend:
 
 
 frontend:
+  - task: "Frontend LLM Migration to Cerebras"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Migrated all UI text from Gemini to Cerebras. Updated API key field name from gemini_api_key to cerebras_api_key in loadSettings and saveSettings functions. Changed feature card text from 'Gemini 2.5 Flash' to 'Cerebras Llama 3.3 70B'. Updated quick tips to reference Cerebras. Modified Settings page labels, descriptions, and links to point to cloud.cerebras.ai. Updated model information display. Ready for frontend testing."
+
   - task: "Sidebar Navigation System"
     implemented: true
     working: true
