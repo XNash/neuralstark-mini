@@ -787,23 +787,38 @@ class RAGPlatformTester:
             print()
         
         # Summary
-        print("=" * 60)
-        print("TEST SUMMARY")
-        print("=" * 60)
-        print(f"Total Tests: {total}")
-        print(f"Passed: {passed}")
-        print(f"Failed: {total - passed}")
-        print(f"Success Rate: {(passed/total)*100:.1f}%")
+        print("=" * 70)
+        print("RÉSUMÉ DES TESTS CRUD NEURALSTARK")
+        print("=" * 70)
+        print(f"Total des tests: {total}")
+        print(f"Réussis: {passed}")
+        print(f"Échoués: {total - passed}")
+        print(f"Taux de réussite: {(passed/total)*100:.1f}%")
+        print()
+        
+        # Tests critiques CRUD
+        crud_tests = [r for r in self.test_results if any(keyword in r["test"].lower() 
+                     for keyword in ["document status", "cache stats", "reindex", "health", "documents list"])]
+        crud_passed = len([t for t in crud_tests if t["success"]])
+        print(f"Tests CRUD critiques: {crud_passed}/{len(crud_tests)} réussis")
         print()
         
         # Failed tests details
         failed_tests = [r for r in self.test_results if not r["success"]]
         if failed_tests:
-            print("FAILED TESTS:")
+            print("TESTS ÉCHOUÉS:")
             for test in failed_tests:
                 print(f"❌ {test['test']}: {test['message']}")
                 if test.get('details'):
-                    print(f"   Details: {test['details']}")
+                    print(f"   Détails: {test['details']}")
+            print()
+        
+        # Tests réussis critiques
+        successful_crud = [r for r in crud_tests if r["success"]]
+        if successful_crud:
+            print("ENDPOINTS CRUD FONCTIONNELS:")
+            for test in successful_crud:
+                print(f"✅ {test['test']}: {test['message']}")
             print()
         
         return passed == total
