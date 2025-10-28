@@ -79,6 +79,17 @@ class ChatResponse(BaseModel):
     session_id: str
     sources: List[Dict]
 
+class ChatSession(BaseModel):
+    """Model for chat session summary"""
+    model_config = ConfigDict(extra="ignore")
+    
+    session_id: str
+    title: str
+    first_message: Optional[str] = None
+    last_message_time: datetime
+    message_count: int
+    created_at: datetime
+
 class DocumentStatus(BaseModel):
     total_documents: int
     indexed_documents: int
