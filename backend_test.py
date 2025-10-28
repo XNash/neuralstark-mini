@@ -588,33 +588,29 @@ class EmbeddingMigrationTester:
             self.log_test("Session ID Creation", False, f"Request error: {str(e)}")
             return False
 
-    def run_cerebras_migration_tests(self):
-        """Run Cerebras migration focused tests"""
-    def run_cerebras_migration_tests(self):
-        """Run Cerebras migration focused tests"""
+    def run_embedding_migration_tests(self):
+        """Run embedding model migration focused tests"""
         print("=" * 80)
-        print("CEREBRAS MIGRATION TESTING FOR NEURALSTARK BACKEND")
-        print("Testing migration from Google Gemini to Cerebras AI")
+        print("EMBEDDING MODEL MIGRATION TESTING FOR NEURALSTARK BACKEND")
+        print("Testing migration from BAAI/bge-base-en-v1.5 to manu/bge-m3-custom-fr")
         print("=" * 80)
         print(f"Backend URL: {self.base_url}")
         print(f"Test Session ID: {self.session_id}")
         print(f"Cerebras API Key: {CEREBRAS_API_KEY[:20]}...")
-        print(f"Expected Model: llama-3.3-70b (Cerebras)")
+        print(f"Expected: 12 documents, 68 indexed chunks")
+        print(f"New Embedding Model: manu/bge-m3-custom-fr (French-optimized multilingual)")
         print()
         
-        # Test sequence focused on Cerebras migration requirements
+        # Test sequence focused on embedding migration requirements
         tests = [
-            ("API Root", self.test_api_root),
             ("Health Check", self.test_health_endpoint),
-            ("Settings GET (Cerebras Field Check)", self.test_settings_get_cerebras_field),
+            ("Document Status (12 docs, 68 chunks)", self.test_document_status),
+            ("Cache Stats (Verify reindexing)", self.test_cache_stats),
+            ("Settings GET (Cerebras Field)", self.test_settings_get_cerebras_field),
             ("Settings POST (Cerebras API Key)", self.test_settings_post_cerebras),
-            ("Settings Persistence (MongoDB)", self.test_settings_persistence_cerebras),
-            ("Document Status API", self.test_document_status),
-            ("Documents List API", self.test_documents_list),
-            ("Document Reindex API", self.test_incremental_reindex),
-            ("Chat API Error Handling", self.test_chat_api_error_handling),
-            ("Chat API (Cerebras Simple Query)", self.test_chat_api_cerebras_simple),
-            ("Session ID Creation", self.test_session_id_creation),
+            ("Vector Search - English Query", self.test_chat_api_cerebras_simple),
+            ("Vector Search - French Query", self.test_chat_api_french_query),
+            ("Reindexing Test", self.test_incremental_reindex),
         ]
         
         passed = 0
@@ -630,7 +626,7 @@ class EmbeddingMigrationTester:
         
         # Summary
         print("=" * 70)
-        print("CEREBRAS MIGRATION TEST SUMMARY")
+        print("EMBEDDING MIGRATION TEST SUMMARY")
         print("=" * 70)
         print(f"Total tests: {total}")
         print(f"Passed: {passed}")
@@ -638,11 +634,11 @@ class EmbeddingMigrationTester:
         print(f"Success rate: {(passed/total)*100:.1f}%")
         print()
         
-        # Migration-specific test analysis
-        migration_tests = [r for r in self.test_results if any(keyword in r["test"].lower() 
-                         for keyword in ["cerebras", "settings", "chat", "error"])]
-        migration_passed = len([t for t in migration_tests if t["success"]])
-        print(f"Migration-critical tests: {migration_passed}/{len(migration_tests)} passed")
+        # Embedding-specific test analysis
+        embedding_tests = [r for r in self.test_results if any(keyword in r["test"].lower() 
+                         for keyword in ["document", "cache", "vector", "french", "english"])]
+        embedding_passed = len([t for t in embedding_tests if t["success"]])
+        print(f"Embedding-critical tests: {embedding_passed}/{len(embedding_tests)} passed")
         print()
         
         # Failed tests details
@@ -655,19 +651,19 @@ class EmbeddingMigrationTester:
                     print(f"   Details: {test['details']}")
             print()
         
-        # Successful migration tests
-        successful_migration = [r for r in migration_tests if r["success"]]
-        if successful_migration:
-            print("SUCCESSFUL MIGRATION TESTS:")
-            for test in successful_migration:
+        # Successful embedding tests
+        successful_embedding = [r for r in embedding_tests if r["success"]]
+        if successful_embedding:
+            print("SUCCESSFUL EMBEDDING MIGRATION TESTS:")
+            for test in successful_embedding:
                 print(f"✅ {test['test']}: {test['message']}")
             print()
         
-        # Document APIs (should still work)
-        doc_tests = [r for r in self.test_results if any(keyword in r["test"].lower() 
-                    for keyword in ["document", "health"])]
-        doc_passed = len([t for t in doc_tests if t["success"]])
-        print(f"Document APIs (should still work): {doc_passed}/{len(doc_tests)} passed")
+        # Vector search functionality
+        vector_tests = [r for r in self.test_results if any(keyword in r["test"].lower() 
+                       for keyword in ["chat", "vector", "french", "english"])]
+        vector_passed = len([t for t in vector_tests if t["success"]])
+        print(f"Vector search functionality: {vector_passed}/{len(vector_tests)} passed")
         
         return passed == total
 
