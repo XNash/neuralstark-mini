@@ -1796,3 +1796,280 @@ button:disabled {
     border: 1px solid var(--divider-color);
   }
 }
+
+
+/* ===================================
+   Chat Sessions List - Principes de Bastien & Scapin
+   - Guidage: Affordances visuelles claires
+   - Charge de travail: Actions accessibles
+   - Homogénéité: Cohérence visuelle
+   - Signifiance: Codes compréhensibles
+   =================================== */
+
+.chat-sessions-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin-top: 16px;
+  padding: 0 8px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-tertiary);
+  padding: 8px 8px;
+  margin: 0;
+}
+
+.section-icon {
+  font-size: 14px;
+}
+
+.chat-sessions-list {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px 0;
+  margin-bottom: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--md-gray-400) transparent;
+}
+
+.chat-sessions-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chat-sessions-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-sessions-list::-webkit-scrollbar-thumb {
+  background: var(--md-gray-400);
+  border-radius: 2px;
+}
+
+.chat-sessions-list::-webkit-scrollbar-thumb:hover {
+  background: var(--md-gray-500);
+}
+
+/* Empty State - Principe de Guidage */
+.empty-state {
+  text-align: center;
+  padding: 24px 16px;
+  color: var(--text-tertiary);
+}
+
+.empty-text {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: var(--text-secondary);
+}
+
+.empty-hint {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* Session Item - Principe d'Affordance */
+.session-item {
+  position: relative;
+  padding: 10px 12px;
+  margin: 2px 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+}
+
+.session-item:hover {
+  background: var(--md-primary-50);
+  border-color: var(--md-primary-100);
+}
+
+.session-item:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: -2px;
+}
+
+.session-item.active {
+  background: var(--md-primary-100);
+  border-color: var(--primary-color);
+}
+
+.session-item.active:hover {
+  background: var(--md-primary-100);
+}
+
+/* Session Content */
+.session-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0; /* Enable text truncation */
+}
+
+.session-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.session-title {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.session-item.active .session-title {
+  color: var(--primary-dark);
+  font-weight: 600;
+}
+
+/* Delete Button - Principe de Contrôle Explicite */
+.session-delete-btn {
+  opacity: 0;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 14px;
+  transition: all var(--transition-fast);
+  color: var(--text-tertiary);
+}
+
+.session-item:hover .session-delete-btn {
+  opacity: 1;
+}
+
+.session-delete-btn:hover {
+  background: var(--md-error);
+  color: white;
+  transform: scale(1.1);
+}
+
+.session-delete-btn:active {
+  transform: scale(0.95);
+}
+
+/* Session Meta - Principe de Signifiance */
+.session-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.session-count {
+  font-weight: 500;
+}
+
+.session-time {
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.session-item.active .session-meta {
+  color: var(--primary-dark);
+  font-weight: 500;
+}
+
+/* Modal Updates - Principe de Gestion des Erreurs */
+.confirm-message {
+  font-size: 14px;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.confirm-hint {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  text-align: center;
+  font-style: italic;
+}
+
+.btn-danger {
+  padding: 10px 20px;
+  background: var(--md-error);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-danger:hover {
+  background: #D32F2F;
+  transform: translateY(-1px);
+  box-shadow: var(--elevation-2);
+}
+
+.btn-danger:active {
+  transform: translateY(0);
+  box-shadow: var(--elevation-1);
+}
+
+/* Responsive Design - Principe d'Adaptabilité */
+@media (max-width: 768px) {
+  .chat-sessions-section {
+    max-height: 200px;
+  }
+  
+  .session-item {
+    padding: 8px 10px;
+  }
+  
+  .session-title {
+    font-size: 12px;
+  }
+  
+  .session-meta {
+    font-size: 10px;
+  }
+}
+
+/* Accessibility - Principe d'Accessibilité */
+@media (prefers-reduced-motion: reduce) {
+  .session-item,
+  .session-delete-btn {
+    transition: none;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .session-item {
+    border: 2px solid var(--border-color);
+  }
+  
+  .session-item.active {
+    border-color: var(--primary-color);
+    border-width: 3px;
+  }
+}
+
