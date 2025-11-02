@@ -5,12 +5,13 @@ import chromadb
 from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
 import config_paths
+from hybrid_retriever import HybridRetriever
 
 logger = logging.getLogger(__name__)
 
 
 class VectorStoreService:
-    """Service for managing vector embeddings with ChromaDB"""
+    """Service for managing vector embeddings with ChromaDB and hybrid retrieval"""
     
     def __init__(self, collection_name: str = "documents"):
         # Initialize ChromaDB with persistent storage using dynamic paths
@@ -25,10 +26,15 @@ class VectorStoreService:
         logger.info("Loading embedding model: manu/bge-m3-custom-fr")
         self.embedding_model = SentenceTransformer('manu/bge-m3-custom-fr')
         
+        # Initialize hybrid retriever for BM25 + dense fusion
+        self.hybrid_retriever = HybridRetriever()
+        
         # Get or create collection
         try:
             self.collection = self.client.get_collection(name=collection_name)
             logger.info(f"Loaded existing collection: {collection_name}")
+            # Re-index existing documents for BM25
+            self._reindex_bm25()
         except Exception:
             self.collection = self.client.create_collection(
                 name=collection_name,
