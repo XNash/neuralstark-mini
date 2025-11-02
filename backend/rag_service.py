@@ -1,27 +1,48 @@
 import logging
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Optional
 import asyncio
 from vector_store import VectorStoreService
 from cerebras.cloud.sdk import Cerebras
+from query_enhancer import QueryEnhancer
+from reranker import Reranker
 
 logger = logging.getLogger(__name__)
 
 
 class RAGService:
-    """RAG service for answering queries using indexed documents with robust error handling"""
+    """Enhanced RAG service with query enhancement, hybrid retrieval, and reranking"""
     
     def __init__(self, vector_service: VectorStoreService, db):
         self.vector_service = vector_service
         self.db = db
         self.api_key = None
+        
+        # Initialize enhanced components
+        self.query_enhancer = QueryEnhancer()
+        self.reranker = Reranker(model_name='cross-encoder/ms-marco-MiniLM-L-6-v2')
+        
         # Configuration for robustness
         self.max_retries = 3
-        self.relevance_threshold = 0.3  # Filter out low-relevance chunks
-        self.max_context_tokens = 8000  # Conservative estimate for context size
+        self.initial_retrieval_count = 20  # Retrieve more candidates for reranking
+        self.final_results_count = 8  # Return top 8 after reranking
+        self.min_reranker_score = -5.0  # Dynamic threshold (will be computed)
+        self.max_context_tokens = 8000
+        
+        logger.info("Enhanced RAG service initialized with query enhancement and reranking")
     
     def update_api_key(self, api_key: str):
         """Update the API key for Cerebras"""
         self.api_key = api_key
+    
+    def _detect_language(self, query: str) -> str:
+        """Simple language detection (English or French)"""
+        # Count French-specific characters and common words
+        french_indicators = ['à', 'é', 'è', 'ê', 'ç', 'ù', 'où', 'quoi', 'quel', 'quelle']
+        text_lower = query.lower()
+        
+        french_count = sum(1 for indicator in french_indicators if indicator in text_lower)
+        
+        return 'fr' if french_count > 0 else 'en'
     
     def _filter_relevant_docs(self, docs: List[str], metadata: List[Dict]) -> Tuple[List[str], List[Dict]]:
         """Filter documents based on relevance threshold"""
