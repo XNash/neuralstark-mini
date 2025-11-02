@@ -105,6 +105,18 @@
 user_problem_statement: "Enhance the RAG system so that it can respond with high accuracy and recognize subtle details in both the user prompt and the file data. Currently, even small spelling mistakes, slight grammatical variations, or questions about very specific details (like finding a needle in a haystack) cause the RAG to return inaccurate answers."
 
 backend:
+  - task: "Comprehensive RAG Accuracy Enhancement"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/query_enhancer.py, /app/backend/hybrid_retriever.py, /app/backend/reranker.py, /app/backend/vector_store.py, /app/backend/rag_service.py, /app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "COMPREHENSIVE RAG ENHANCEMENT COMPLETED - Implemented all 4 phases for maximum accuracy: **Phase 1 - Query Enhancement**: Created query_enhancer.py with spell correction (pyspellchecker for EN/FR), query expansion using WordNet synonyms, abbreviation expansion (CEO->Chief Executive Officer), fuzzy matching with rapidfuzz, technical terms whitelist, normalization. Returns corrected query + variations + 'Did you mean' suggestions. **Phase 2 - Hybrid Retrieval**: Created hybrid_retriever.py with BM25Okapi sparse retrieval for keyword matching, Reciprocal Rank Fusion (RRF) to combine dense semantic + sparse keyword results, corpus re-indexing on startup. Modified vector_store.py to integrate hybrid retrieval with use_hybrid flag, retrieve 3x candidates for reranking, _search_dense method for semantic search, BM25 re-indexing on collection load. **Phase 3 - Reranking**: Created reranker.py with cross-encoder/ms-marco-MiniLM-L-6-v2 model for precise relevance scoring, dynamic threshold computation using percentile-based filtering, confidence-based filtering, original rank tracking. **Phase 4 - Enhanced Context**: Completely rewrote rag_service.py with language detection (EN/FR), multi-query search with variations, duplicate removal with metadata preservation, cross-encoder reranking of 20 candidates -> top 8, dynamic threshold filtering, enhanced context with reranker scores and retrieval method metadata, improved system prompt for detail-oriented responses. Updated server.py ChatResponse model to include spelling_suggestion field for 'Did you mean' UI hints. **Key Features**: Handles typos automatically ('documants'->'documents'), expands queries with synonyms for better coverage, combines semantic + keyword search for accuracy, reranks with cross-encoder for precision, dynamic relevance thresholds, handles both English and French queries, shows spelling suggestions to users. **Dependencies Added**: rank-bm25, pyspellchecker, nltk, textdistance, rapidfuzz. Backend restarted successfully, all services running."
+
   - task: "LLM Migration to Cerebras"
     implemented: true
     working: true
