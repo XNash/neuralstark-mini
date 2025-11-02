@@ -216,57 +216,33 @@ class RAGService:
                 else:
                     logger.error(f"Error in RAG service after {self.max_retries} attempts: {e}")
                     raise Exception(f"Failed to generate response after {self.max_retries} attempts: {str(e)}")
-                
-                # Call Cerebras LLM
-                client = Cerebras(api_key=api_key)
-                
-                # Create chat completion with Cerebras
-                chat_completion = await asyncio.to_thread(
-                    client.chat.completions.create,
-                    messages=[
-                        {"role": "system", "content": system_message},
-                        {"role": "user", "content": query}
-                    ],
-                    model="gpt-oss-120b",
-                    max_completion_tokens=2048,
-                    temperature=0.7,
-                    top_p=1
-                )
-                
-                response = chat_completion.choices[0].message.content
-                
-                logger.info(f"Successfully generated response for session {session_id} (attempt {attempt + 1})")
-                return response, sources
-            
-            except Exception as e:
-                error_str = str(e).lower()
-                
-                # Check if it's a quota/rate limit error
-                if "quota" in error_str or "429" in error_str or "resource_exhausted" in error_str or "rate" in error_str:
-                    logger.error(f"API quota exceeded: {e}")
-                    raise Exception(
-                        "The Cerebras API rate limit has been exceeded. Please try again later or check your API key's billing details at "
-                        "https://cloud.cerebras.ai"
-                    )
-                
-                # Check if it's an authentication error
-                if "unauthorized" in error_str or "401" in error_str or "invalid" in error_str or "authentication" in error_str:
-                    logger.error(f"API authentication failed: {e}")
-                    raise Exception(
-                        "Invalid or unauthorized API key. Please check your Cerebras API key in Settings. "
-                        "Get a valid key from https://cloud.cerebras.ai"
-                    )
-                
-                # For other errors, retry with exponential backoff
-                if attempt < self.max_retries - 1:
-                    wait_time = 2 ** attempt  # Exponential backoff: 1s, 2s, 4s
-                    logger.warning(f"Error on attempt {attempt + 1}, retrying in {wait_time}s: {e}")
-                    await asyncio.sleep(wait_time)
-                else:
-                    logger.error(f"Error in RAG service after {self.max_retries} attempts: {e}")
-                    raise Exception(f"Failed to generate response after {self.max_retries} attempts: {str(e)}")
     
-    def _build_system_prompt(self, context: str) -> str:
+    def _build_optimized_context(self, docs: List[str], metadata: List[Dict]) -> str:
+        """Build optimized context from documents with proper formatting"""
+        if not docs:
+            return "No relevant documents found in the knowledge base."
+        
+        context_parts = []
+        for i, (doc, meta) in enumerate(zip(docs, metadata), 1):
+            source = meta.get('source', 'Unknown')
+            relevance = meta.get('relevance_score', 0)
+            reranker_score = meta.get('reranker_score', 0)
+            method = meta.get('retrieval_method', 'N/A')
+            
+            # Format each document chunk with clear separation and enhanced metadata
+            chunk_text = (
+                f"[Document {i}: {source} | "
+                f"Relevance: {relevance:.2f} | "
+                f"Rerank: {reranker_score:.2f} | "
+                f"Method: {method}]\n"
+                f"{doc.strip()}"
+            )
+            context_parts.append(chunk_text)
+        
+        # Join with clear separators
+        return "\n\n" + "="*80 + "\n\n".join(context_parts)
+    
+    def _build_system_prompt(self, context: str, query: str = "") -> str:
         """Build an enhanced system prompt for better RAG accuracy"""
         return f"""You are an expert AI assistant specialized in answering questions based on provided document context.
 
@@ -277,6 +253,7 @@ CORE PRINCIPLES:
 4. **SOURCE ATTRIBUTION**: Reference specific documents when providing information
 5. **MULTILINGUAL SUPPORT**: Handle both English and French queries naturally
 6. **CLARITY**: Provide clear, concise, and well-structured answers
+7. **DETAIL ORIENTED**: Pay close attention to subtle details, specific numbers, names, and dates in the documents
 
 INDEXED DOCUMENT CONTEXT:
 {context}
@@ -285,7 +262,9 @@ RESPONSE GUIDELINES:
 - Extract and synthesize relevant information from the documents
 - Cite document sources when answering (e.g., "According to [Document Name]...")
 - If multiple documents contain relevant info, integrate them coherently
-- For unclear or ambiguous queries, ask for clarification
+- For queries about specific details (numbers, names, dates), be extra precise
+- If the query contains spelling variations or synonyms, understand the intent
+- For unclear or ambiguous queries, provide the most relevant information available
 - Maintain professional and helpful tone
 - Preserve the language of the query in your response when appropriate
 
