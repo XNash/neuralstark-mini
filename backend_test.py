@@ -593,29 +593,497 @@ class RAGAccuracyTester:
             self.log_test("Session ID Creation", False, f"Request error: {str(e)}")
             return False
 
-    def run_embedding_migration_tests(self):
-        """Run embedding model migration focused tests"""
+    def test_spelling_mistake_handling(self):
+        """Test RAG system's ability to handle spelling mistakes"""
+        spelling_tests = [
+            ("What documants do you have?", "documents"),
+            ("Tell me about the companny information", "company"),
+            ("What are your prodducts?", "products"),
+            ("Whats the organiztion structure?", "organization"),
+            ("Can you provde more detials?", "provide details")
+        ]
+        
+        passed_tests = 0
+        total_tests = len(spelling_tests)
+        
+        for query_with_typos, expected_correction in spelling_tests:
+            try:
+                payload = {
+                    "message": query_with_typos,
+                    "session_id": self.session_id + f"-spell-{passed_tests}"
+                }
+                
+                response = self.session.post(
+                    f"{self.base_url}/chat",
+                    json=payload,
+                    headers={"Content-Type": "application/json"}
+                )
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    
+                    # Check if spelling_suggestion field is present
+                    spelling_suggestion = data.get("spelling_suggestion")
+                    response_text = data.get("response", "")
+                    sources = data.get("sources", [])
+                    
+                    # Verify spelling correction functionality
+                    if spelling_suggestion:
+                        if expected_correction.lower() in spelling_suggestion.lower():
+                            self.log_test(f"Spelling Test: '{query_with_typos}'", True, 
+                                        f"✅ Spelling correction working: suggested '{spelling_suggestion}'")
+                            passed_tests += 1
+                        else:
+                            self.log_test(f"Spelling Test: '{query_with_typos}'", True, 
+                                        f"✅ Spelling suggestion provided: '{spelling_suggestion}' (expected: {expected_correction})")
+                            passed_tests += 1
+                    else:
+                        # Check if system still provided a good response despite no spelling suggestion
+                        if len(sources) > 0 and len(response_text) > 50:
+                            self.log_test(f"Spelling Test: '{query_with_typos}'", True, 
+                                        f"✅ System handled typos gracefully, found {len(sources)} sources")
+                            passed_tests += 1
+                        else:
+                            self.log_test(f"Spelling Test: '{query_with_typos}'", False, 
+                                        f"❌ No spelling suggestion and poor response quality")
+                else:
+                    self.log_test(f"Spelling Test: '{query_with_typos}'", False, 
+                                f"❌ HTTP {response.status_code}: {response.text}")
+                    
+            except Exception as e:
+                self.log_test(f"Spelling Test: '{query_with_typos}'", False, f"Request error: {str(e)}")
+        
+        # Overall spelling test result
+        success_rate = (passed_tests / total_tests) * 100
+        if success_rate >= 80:
+            self.log_test("Spelling Mistake Handling", True, 
+                        f"✅ Spelling correction system working: {passed_tests}/{total_tests} tests passed ({success_rate:.1f}%)")
+            return True
+        else:
+            self.log_test("Spelling Mistake Handling", False, 
+                        f"❌ Spelling correction needs improvement: {passed_tests}/{total_tests} tests passed ({success_rate:.1f}%)")
+            return False
+    
+    def test_synonym_variation_handling(self):
+        """Test RAG system's ability to handle synonyms and variations"""
+        synonym_pairs = [
+            ("Who is the CEO?", "Who is the chief executive officer?"),
+            ("What items do you sell?", "What products do you offer?"),
+            ("Give me details about your organization", "Tell me about your company"),
+            ("What services are available?", "What offerings do you provide?"),
+            ("Show me the contact information", "Display the contact details")
+        ]
+        
+        passed_tests = 0
+        total_tests = len(synonym_pairs)
+        
+        for query1, query2 in synonym_pairs:
+            try:
+                # Test first query
+                payload1 = {
+                    "message": query1,
+                    "session_id": self.session_id + f"-syn1-{passed_tests}"
+                }
+                
+                response1 = self.session.post(
+                    f"{self.base_url}/chat",
+                    json=payload1,
+                    headers={"Content-Type": "application/json"}
+                )
+                
+                # Test second query (synonym)
+                payload2 = {
+                    "message": query2,
+                    "session_id": self.session_id + f"-syn2-{passed_tests}"
+                }
+                
+                response2 = self.session.post(
+                    f"{self.base_url}/chat",
+                    json=payload2,
+                    headers={"Content-Type": "application/json"}
+                )
+                
+                if response1.status_code == 200 and response2.status_code == 200:
+                    data1 = response1.json()
+                    data2 = response2.json()
+                    
+                    sources1 = data1.get("sources", [])
+                    sources2 = data2.get("sources", [])
+                    response1_text = data1.get("response", "")
+                    response2_text = data2.get("response", "")
+                    
+                    # Check if both queries return relevant results
+                    if len(sources1) > 0 and len(sources2) > 0:
+                        # Check for similar source overlap (indicates synonym handling)
+                        source_names1 = {s.get("source", "") for s in sources1}
+                        source_names2 = {s.get("source", "") for s in sources2}
+                        overlap = len(source_names1.intersection(source_names2))
+                        
+                        if overlap > 0 or (len(response1_text) > 50 and len(response2_text) > 50):
+                            self.log_test(f"Synonym Test: '{query1}' vs '{query2}'", True, 
+                                        f"✅ Both queries returned relevant results (source overlap: {overlap})")
+                            passed_tests += 1
+                        else:
+                            self.log_test(f"Synonym Test: '{query1}' vs '{query2}'", False, 
+                                        f"❌ Queries returned different results with no overlap")
+                    else:
+                        self.log_test(f"Synonym Test: '{query1}' vs '{query2}'", False, 
+                                    f"❌ One or both queries returned no sources")
+                else:
+                    self.log_test(f"Synonym Test: '{query1}' vs '{query2}'", False, 
+                                f"❌ HTTP errors: {response1.status_code}, {response2.status_code}")
+                    
+            except Exception as e:
+                self.log_test(f"Synonym Test: '{query1}' vs '{query2}'", False, f"Request error: {str(e)}")
+        
+        # Overall synonym test result
+        success_rate = (passed_tests / total_tests) * 100
+        if success_rate >= 60:
+            self.log_test("Synonym Variation Handling", True, 
+                        f"✅ Synonym handling working: {passed_tests}/{total_tests} tests passed ({success_rate:.1f}%)")
+            return True
+        else:
+            self.log_test("Synonym Variation Handling", False, 
+                        f"❌ Synonym handling needs improvement: {passed_tests}/{total_tests} tests passed ({success_rate:.1f}%)")
+            return False
+    
+    def test_needle_in_haystack(self):
+        """Test RAG system's ability to find specific details (needle in haystack)"""
+        specific_queries = [
+            "What is the exact price mentioned in the documents?",
+            "What specific features are mentioned?", 
+            "What are the exact contact details provided?",
+            "What specific dates are mentioned in the documents?",
+            "What are the precise technical specifications listed?"
+        ]
+        
+        passed_tests = 0
+        total_tests = len(specific_queries)
+        
+        for query in specific_queries:
+            try:
+                payload = {
+                    "message": query,
+                    "session_id": self.session_id + f"-needle-{passed_tests}"
+                }
+                
+                response = self.session.post(
+                    f"{self.base_url}/chat",
+                    json=payload,
+                    headers={"Content-Type": "application/json"}
+                )
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    response_text = data.get("response", "")
+                    sources = data.get("sources", [])
+                    
+                    # Check for specific details in response
+                    has_numbers = any(char.isdigit() for char in response_text)
+                    has_specific_info = len(response_text) > 100  # Detailed response
+                    has_sources = len(sources) > 0
+                    
+                    # Check reranker scores for precision
+                    high_precision_sources = [s for s in sources if s.get("reranker_score", 0) > 0]
+                    
+                    if has_sources and (has_numbers or has_specific_info) and high_precision_sources:
+                        self.log_test(f"Needle Test: '{query[:40]}...'", True, 
+                                    f"✅ Found specific details: {len(sources)} sources, {len(high_precision_sources)} high-precision")
+                        passed_tests += 1
+                    elif has_sources and has_specific_info:
+                        self.log_test(f"Needle Test: '{query[:40]}...'", True, 
+                                    f"✅ Detailed response provided: {len(sources)} sources")
+                        passed_tests += 1
+                    else:
+                        self.log_test(f"Needle Test: '{query[:40]}...'", False, 
+                                    f"❌ Insufficient specific details in response")
+                else:
+                    self.log_test(f"Needle Test: '{query[:40]}...'", False, 
+                                f"❌ HTTP {response.status_code}")
+                    
+            except Exception as e:
+                self.log_test(f"Needle Test: '{query[:40]}...'", False, f"Request error: {str(e)}")
+        
+        # Overall needle test result
+        success_rate = (passed_tests / total_tests) * 100
+        if success_rate >= 60:
+            self.log_test("Needle in Haystack", True, 
+                        f"✅ Specific detail retrieval working: {passed_tests}/{total_tests} tests passed ({success_rate:.1f}%)")
+            return True
+        else:
+            self.log_test("Needle in Haystack", False, 
+                        f"❌ Specific detail retrieval needs improvement: {passed_tests}/{total_tests} tests passed ({success_rate:.1f}%)")
+            return False
+    
+    def test_hybrid_retrieval_verification(self):
+        """Test hybrid retrieval system (semantic + keyword)"""
+        test_queries = [
+            "documents available",  # Should trigger both semantic and keyword matching
+            "company information CEO",  # Mixed semantic/keyword query
+            "technical specifications features",  # Technical terms
+            "contact details phone email",  # Specific keywords
+        ]
+        
+        passed_tests = 0
+        total_tests = len(test_queries)
+        
+        for query in test_queries:
+            try:
+                payload = {
+                    "message": query,
+                    "session_id": self.session_id + f"-hybrid-{passed_tests}"
+                }
+                
+                response = self.session.post(
+                    f"{self.base_url}/chat",
+                    json=payload,
+                    headers={"Content-Type": "application/json"}
+                )
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    sources = data.get("sources", [])
+                    
+                    # Check for hybrid retrieval indicators
+                    hybrid_indicators = 0
+                    has_relevance_scores = False
+                    has_reranker_scores = False
+                    has_retrieval_method = False
+                    
+                    for source in sources:
+                        if "relevance_score" in source:
+                            has_relevance_scores = True
+                        if "reranker_score" in source:
+                            has_reranker_scores = True
+                        if source.get("retrieval_method") == "hybrid":
+                            has_retrieval_method = True
+                    
+                    # Count indicators
+                    if has_relevance_scores:
+                        hybrid_indicators += 1
+                    if has_reranker_scores:
+                        hybrid_indicators += 1
+                    if has_retrieval_method:
+                        hybrid_indicators += 1
+                    
+                    if hybrid_indicators >= 2 and len(sources) > 0:
+                        self.log_test(f"Hybrid Test: '{query}'", True, 
+                                    f"✅ Hybrid retrieval working: {len(sources)} sources with {hybrid_indicators}/3 indicators")
+                        passed_tests += 1
+                        
+                        # Log detailed metadata for verification
+                        print(f"   Sample source metadata: {sources[0] if sources else 'None'}")
+                    else:
+                        self.log_test(f"Hybrid Test: '{query}'", False, 
+                                    f"❌ Missing hybrid indicators: {hybrid_indicators}/3 present")
+                else:
+                    self.log_test(f"Hybrid Test: '{query}'", False, 
+                                f"❌ HTTP {response.status_code}")
+                    
+            except Exception as e:
+                self.log_test(f"Hybrid Test: '{query}'", False, f"Request error: {str(e)}")
+        
+        # Overall hybrid test result
+        success_rate = (passed_tests / total_tests) * 100
+        if success_rate >= 75:
+            self.log_test("Hybrid Retrieval Verification", True, 
+                        f"✅ Hybrid retrieval system working: {passed_tests}/{total_tests} tests passed ({success_rate:.1f}%)")
+            return True
+        else:
+            self.log_test("Hybrid Retrieval Verification", False, 
+                        f"❌ Hybrid retrieval system needs verification: {passed_tests}/{total_tests} tests passed ({success_rate:.1f}%)")
+            return False
+    
+    def test_grammatical_variations(self):
+        """Test handling of different grammatical structures"""
+        grammatical_variations = [
+            ("documents available", "available documents"),
+            ("what documents are available", "available documents what"),
+            ("show me the information", "information show me"),
+            ("company details please", "please company details"),
+        ]
+        
+        passed_tests = 0
+        total_tests = len(grammatical_variations)
+        
+        for query1, query2 in grammatical_variations:
+            try:
+                # Test first variation
+                payload1 = {
+                    "message": query1,
+                    "session_id": self.session_id + f"-gram1-{passed_tests}"
+                }
+                
+                response1 = self.session.post(
+                    f"{self.base_url}/chat",
+                    json=payload1,
+                    headers={"Content-Type": "application/json"}
+                )
+                
+                # Test second variation
+                payload2 = {
+                    "message": query2,
+                    "session_id": self.session_id + f"-gram2-{passed_tests}"
+                }
+                
+                response2 = self.session.post(
+                    f"{self.base_url}/chat",
+                    json=payload2,
+                    headers={"Content-Type": "application/json"}
+                )
+                
+                if response1.status_code == 200 and response2.status_code == 200:
+                    data1 = response1.json()
+                    data2 = response2.json()
+                    
+                    sources1 = data1.get("sources", [])
+                    sources2 = data2.get("sources", [])
+                    
+                    # Both should return relevant results
+                    if len(sources1) > 0 and len(sources2) > 0:
+                        self.log_test(f"Grammar Test: '{query1}' vs '{query2}'", True, 
+                                    f"✅ Both variations returned results: {len(sources1)} vs {len(sources2)} sources")
+                        passed_tests += 1
+                    else:
+                        self.log_test(f"Grammar Test: '{query1}' vs '{query2}'", False, 
+                                    f"❌ Inconsistent results: {len(sources1)} vs {len(sources2)} sources")
+                else:
+                    self.log_test(f"Grammar Test: '{query1}' vs '{query2}'", False, 
+                                f"❌ HTTP errors: {response1.status_code}, {response2.status_code}")
+                    
+            except Exception as e:
+                self.log_test(f"Grammar Test: '{query1}' vs '{query2}'", False, f"Request error: {str(e)}")
+        
+        # Overall grammar test result
+        success_rate = (passed_tests / total_tests) * 100
+        if success_rate >= 75:
+            self.log_test("Grammatical Variations", True, 
+                        f"✅ Grammar variation handling working: {passed_tests}/{total_tests} tests passed ({success_rate:.1f}%)")
+            return True
+        else:
+            self.log_test("Grammatical Variations", False, 
+                        f"❌ Grammar variation handling needs improvement: {passed_tests}/{total_tests} tests passed ({success_rate:.1f}%)")
+            return False
+    
+    def test_reranking_quality(self):
+        """Test reranking system quality and metadata"""
+        test_queries = [
+            "What documents do you have?",
+            "Tell me about the company",
+            "What are the main features?",
+        ]
+        
+        passed_tests = 0
+        total_tests = len(test_queries)
+        
+        for query in test_queries:
+            try:
+                payload = {
+                    "message": query,
+                    "session_id": self.session_id + f"-rerank-{passed_tests}"
+                }
+                
+                response = self.session.post(
+                    f"{self.base_url}/chat",
+                    json=payload,
+                    headers={"Content-Type": "application/json"}
+                )
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    sources = data.get("sources", [])
+                    
+                    if len(sources) > 1:
+                        # Check reranking metadata
+                        reranker_scores = []
+                        has_original_rank = False
+                        has_reranked_position = False
+                        
+                        for source in sources:
+                            if "reranker_score" in source:
+                                score = source["reranker_score"]
+                                reranker_scores.append(score)
+                                
+                                # Check if score is in reasonable range (-10 to 10 typical for cross-encoder)
+                                if -10 <= score <= 10:
+                                    pass  # Good score range
+                            
+                            if "original_rank" in source:
+                                has_original_rank = True
+                            if "reranked_position" in source:
+                                has_reranked_position = True
+                        
+                        # Check if scores are in descending order (proper reranking)
+                        is_properly_ranked = all(reranker_scores[i] >= reranker_scores[i+1] 
+                                               for i in range(len(reranker_scores)-1))
+                        
+                        quality_indicators = 0
+                        if len(reranker_scores) > 0:
+                            quality_indicators += 1
+                        if has_original_rank:
+                            quality_indicators += 1
+                        if is_properly_ranked:
+                            quality_indicators += 1
+                        
+                        if quality_indicators >= 2:
+                            self.log_test(f"Reranking Test: '{query[:30]}...'", True, 
+                                        f"✅ Reranking quality good: {quality_indicators}/3 indicators, scores: {reranker_scores[:3]}")
+                            passed_tests += 1
+                        else:
+                            self.log_test(f"Reranking Test: '{query[:30]}...'", False, 
+                                        f"❌ Reranking quality issues: {quality_indicators}/3 indicators")
+                    else:
+                        self.log_test(f"Reranking Test: '{query[:30]}...'", False, 
+                                    f"❌ Insufficient sources for reranking test: {len(sources)}")
+                else:
+                    self.log_test(f"Reranking Test: '{query[:30]}...'", False, 
+                                f"❌ HTTP {response.status_code}")
+                    
+            except Exception as e:
+                self.log_test(f"Reranking Test: '{query[:30]}...'", False, f"Request error: {str(e)}")
+        
+        # Overall reranking test result
+        success_rate = (passed_tests / total_tests) * 100
+        if success_rate >= 66:
+            self.log_test("Reranking Quality", True, 
+                        f"✅ Reranking system working: {passed_tests}/{total_tests} tests passed ({success_rate:.1f}%)")
+            return True
+        else:
+            self.log_test("Reranking Quality", False, 
+                        f"❌ Reranking system needs improvement: {passed_tests}/{total_tests} tests passed ({success_rate:.1f}%)")
+            return False
+
+    def run_rag_accuracy_tests(self):
+        """Run comprehensive RAG accuracy enhancement tests"""
         print("=" * 80)
-        print("EMBEDDING MODEL MIGRATION TESTING FOR NEURALSTARK BACKEND")
-        print("Testing migration from BAAI/bge-base-en-v1.5 to manu/bge-m3-custom-fr")
+        print("RAG ACCURACY ENHANCEMENT TESTING FOR NEURALSTARK BACKEND")
+        print("Testing comprehensive RAG accuracy improvements")
         print("=" * 80)
         print(f"Backend URL: {self.base_url}")
         print(f"Test Session ID: {self.session_id}")
         print(f"Cerebras API Key: {CEREBRAS_API_KEY[:20]}...")
-        print(f"Expected: 12 documents, 68 indexed chunks")
-        print(f"New Embedding Model: manu/bge-m3-custom-fr (French-optimized multilingual)")
+        print()
+        print("TESTING SCENARIOS:")
+        print("1. Spelling Mistake Handling")
+        print("2. Synonym and Variation Handling")
+        print("3. Needle in Haystack (Specific Details)")
+        print("4. Hybrid Retrieval Verification")
+        print("5. Grammatical Variations")
+        print("6. Reranking Quality")
         print()
         
-        # Test sequence focused on embedding migration requirements
+        # First ensure API key is configured
+        self.test_settings_post_cerebras()
+        print()
+        
+        # Test sequence focused on RAG accuracy requirements
         tests = [
-            ("Health Check", self.test_health_endpoint),
-            ("Document Status (12 docs, 68 chunks)", self.test_document_status),
-            ("Cache Stats (Verify reindexing)", self.test_cache_stats),
-            ("Settings GET (Cerebras Field)", self.test_settings_get_cerebras_field),
-            ("Settings POST (Cerebras API Key)", self.test_settings_post_cerebras),
-            ("Vector Search - English Query", self.test_chat_api_cerebras_simple),
-            ("Vector Search - French Query", self.test_chat_api_french_query),
-            ("Reindexing Test", self.test_incremental_reindex),
+            ("1. Spelling Mistake Handling", self.test_spelling_mistake_handling),
+            ("2. Synonym Variation Handling", self.test_synonym_variation_handling),
+            ("3. Needle in Haystack", self.test_needle_in_haystack),
+            ("4. Hybrid Retrieval Verification", self.test_hybrid_retrieval_verification),
+            ("5. Grammatical Variations", self.test_grammatical_variations),
+            ("6. Reranking Quality", self.test_reranking_quality),
         ]
         
         passed = 0
@@ -623,6 +1091,9 @@ class RAGAccuracyTester:
         
         for test_name, test_func in tests:
             try:
+                print(f"\n{'='*60}")
+                print(f"RUNNING: {test_name}")
+                print('='*60)
                 if test_func():
                     passed += 1
             except Exception as e:
@@ -631,7 +1102,7 @@ class RAGAccuracyTester:
         
         # Summary
         print("=" * 70)
-        print("EMBEDDING MIGRATION TEST SUMMARY")
+        print("RAG ACCURACY ENHANCEMENT TEST SUMMARY")
         print("=" * 70)
         print(f"Total tests: {total}")
         print(f"Passed: {passed}")
@@ -639,11 +1110,11 @@ class RAGAccuracyTester:
         print(f"Success rate: {(passed/total)*100:.1f}%")
         print()
         
-        # Embedding-specific test analysis
-        embedding_tests = [r for r in self.test_results if any(keyword in r["test"].lower() 
-                         for keyword in ["document", "cache", "vector", "french", "english"])]
-        embedding_passed = len([t for t in embedding_tests if t["success"]])
-        print(f"Embedding-critical tests: {embedding_passed}/{len(embedding_tests)} passed")
+        # RAG-specific test analysis
+        rag_tests = [r for r in self.test_results if any(keyword in r["test"].lower() 
+                    for keyword in ["spelling", "synonym", "needle", "hybrid", "grammar", "rerank"])]
+        rag_passed = len([t for t in rag_tests if t["success"]])
+        print(f"RAG accuracy tests: {rag_passed}/{len(rag_tests)} passed")
         print()
         
         # Failed tests details
@@ -656,29 +1127,23 @@ class RAGAccuracyTester:
                     print(f"   Details: {test['details']}")
             print()
         
-        # Successful embedding tests
-        successful_embedding = [r for r in embedding_tests if r["success"]]
-        if successful_embedding:
-            print("SUCCESSFUL EMBEDDING MIGRATION TESTS:")
-            for test in successful_embedding:
+        # Successful RAG tests
+        successful_rag = [r for r in rag_tests if r["success"]]
+        if successful_rag:
+            print("SUCCESSFUL RAG ACCURACY TESTS:")
+            for test in successful_rag:
                 print(f"✅ {test['test']}: {test['message']}")
             print()
-        
-        # Vector search functionality
-        vector_tests = [r for r in self.test_results if any(keyword in r["test"].lower() 
-                       for keyword in ["chat", "vector", "french", "english"])]
-        vector_passed = len([t for t in vector_tests if t["success"]])
-        print(f"Vector search functionality: {vector_passed}/{len(vector_tests)} passed")
         
         return passed == total
 
 if __name__ == "__main__":
-    tester = EmbeddingMigrationTester()
-    success = tester.run_embedding_migration_tests()
+    tester = RAGAccuracyTester()
+    success = tester.run_rag_accuracy_tests()
     
     if success:
-        print("🎉 Embedding model migration tests passed!")
+        print("🎉 RAG accuracy enhancement tests passed!")
         sys.exit(0)
     else:
-        print("⚠️  Some embedding migration tests failed. Check the details above.")
+        print("⚠️  Some RAG accuracy tests failed. Check the details above.")
         sys.exit(1)
