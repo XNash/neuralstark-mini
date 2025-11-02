@@ -86,7 +86,10 @@ class VectorStoreService:
                 ids=ids
             )
             
-            logger.info(f"Added {len(texts)} documents to vector store (IDs: {ids[0]}...{ids[-1] if len(ids) > 1 else ''})")
+            # Also index for BM25 sparse retrieval
+            self.hybrid_retriever.index_documents(texts, metadata)
+            
+            logger.info(f"Added {len(texts)} documents to vector store and BM25 index (IDs: {ids[0]}...{ids[-1] if len(ids) > 1 else ''})")
         
         except Exception as e:
             logger.error(f"Error adding documents to vector store: {e}")
