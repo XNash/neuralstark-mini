@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 """
-Embedding Model Migration Testing for NeuralStark Backend
-Tests migration from BAAI/bge-base-en-v1.5 to manu/bge-m3-custom-fr
-Focus: Vector search functionality, document status, cache stats, reindexing
+RAG Accuracy Enhancement Testing for NeuralStark Backend
+Tests comprehensive RAG accuracy improvements including:
+- Spelling mistake handling
+- Synonym and variation handling  
+- Needle in haystack (specific details)
+- Hybrid retrieval verification
+- Grammatical variations
+- Reranking quality
 """
 
 import requests
@@ -17,7 +22,7 @@ BACKEND_URL = "https://rag-accuracy.preview.emergentagent.com/api"
 # Cerebras API key provided in review request
 CEREBRAS_API_KEY = "csk-c2wp6rmd4ed5jxtkydymmw6jp9vyv294fntcet6923dnftnw"
 
-class EmbeddingMigrationTester:
+class RAGAccuracyTester:
     def __init__(self):
         self.base_url = BACKEND_URL
         self.session = requests.Session()
