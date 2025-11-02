@@ -95,8 +95,18 @@ class VectorStoreService:
             logger.error(f"Error adding documents to vector store: {e}")
             raise
     
-    def search(self, query: str, n_results: int = 5) -> Tuple[List[str], List[Dict]]:
-        """Search for relevant documents with enhanced relevance scoring"""
+    def search(self, query: str, n_results: int = 5, use_hybrid: bool = True) -> Tuple[List[str], List[Dict]]:
+        """
+        Search for relevant documents with enhanced relevance scoring
+        
+        Args:
+            query: Search query
+            n_results: Number of results to return
+            use_hybrid: Whether to use hybrid (dense + sparse) retrieval
+        
+        Returns:
+            Tuple of (documents, metadata)
+        """
         try:
             # Check if collection has documents
             count = self.collection.count()
@@ -104,63 +114,98 @@ class VectorStoreService:
                 logger.warning("Vector store is empty - no documents to search")
                 return [], []
             
-            # Ensure n_results doesn't exceed available documents
-            n_results = min(n_results, count)
+            # Retrieve more candidates for better reranking
+            retrieval_count = min(n_results * 3, count)  # Get 3x candidates for reranking
             
-            # Generate query embedding with normalization
-            query_embedding = self.embedding_model.encode(
-                [query], 
-                show_progress_bar=False,
-                normalize_embeddings=True
-            )[0]
-            
-            # Search in collection
-            results = self.collection.query(
-                query_embeddings=[query_embedding.tolist()],
-                n_results=n_results
-            )
-            
-            # Extract documents and metadata
-            documents = results['documents'][0] if results['documents'] else []
-            metadatas = results['metadatas'][0] if results['metadatas'] else []
-            distances = results['distances'][0] if results['distances'] else []
-            
-            # Enhanced relevance scoring
-            # ChromaDB returns L2 distance - convert to similarity score
-            for i, metadata in enumerate(metadatas):
-                if i < len(distances):
-                    # Convert L2 distance to similarity score (0-1 range)
-                    # Lower distance = higher similarity
-                    distance = distances[i]
-                    # Using exponential decay for better differentiation
-                    relevance_score = max(0.0, min(1.0, 1.0 / (1.0 + distance)))
-                    metadata['relevance_score'] = relevance_score
-                    metadata['distance'] = distance
+            if use_hybrid and self.hybrid_retriever.bm25_index:
+                # HYBRID RETRIEVAL: Combine dense + sparse
+                logger.info(f"Using hybrid retrieval (dense + BM25) for query: '{query[:50]}...'")
+                
+                # Step 1: Dense retrieval (semantic search)
+                dense_docs, dense_metadata = self._search_dense(query, retrieval_count)
+                
+                # Step 2: Sparse retrieval (BM25 keyword search)
+                sparse_docs, sparse_metadata, _ = self.hybrid_retriever.search_sparse(query, retrieval_count)
+                
+                # Step 3: Fusion using Reciprocal Rank Fusion
+                if sparse_docs:
+                    documents, metadatas = self.hybrid_retriever.reciprocal_rank_fusion(
+                        dense_docs, dense_metadata,
+                        sparse_docs, sparse_metadata,
+                        k=60,
+                        n_results=retrieval_count
+                    )
                 else:
-                    metadata['relevance_score'] = 0.0
-                    metadata['distance'] = float('inf')
-            
-            # Sort by relevance score (highest first)
-            sorted_results = sorted(
-                zip(documents, metadatas),
-                key=lambda x: x[1]['relevance_score'],
-                reverse=True
-            )
-            
-            if sorted_results:
-                documents, metadatas = zip(*sorted_results)
-                documents = list(documents)
-                metadatas = list(metadatas)
-            
-            logger.info(f"Found {len(documents)} relevant documents for query (collection size: {count})")
-            if metadatas:
-                logger.info(f"Top relevance score: {metadatas[0]['relevance_score']:.3f}, Lowest: {metadatas[-1]['relevance_score']:.3f}")
+                    # Fallback to dense only if sparse failed
+                    documents, metadatas = dense_docs, dense_metadata
+                
+                logger.info(f"Hybrid search returned {len(documents)} fused results")
+            else:
+                # DENSE ONLY: Semantic search
+                logger.info(f"Using dense-only retrieval for query: '{query[:50]}...'")
+                documents, metadatas = self._search_dense(query, retrieval_count)
             
             return documents, metadatas
         
         except Exception as e:
             logger.error(f"Error searching vector store: {e}")
             return [], []
+    
+    def _search_dense(self, query: str, n_results: int) -> Tuple[List[str], List[Dict]]:
+        """Perform dense (semantic) search using embeddings"""
+        # Ensure n_results doesn't exceed available documents
+        count = self.collection.count()
+        n_results = min(n_results, count)
+        
+        # Generate query embedding with normalization
+        query_embedding = self.embedding_model.encode(
+            [query], 
+            show_progress_bar=False,
+            normalize_embeddings=True
+        )[0]
+        
+        # Search in collection
+        results = self.collection.query(
+            query_embeddings=[query_embedding.tolist()],
+            n_results=n_results
+        )
+        
+        # Extract documents and metadata
+        documents = results['documents'][0] if results['documents'] else []
+        metadatas = results['metadatas'][0] if results['metadatas'] else []
+        distances = results['distances'][0] if results['distances'] else []
+        
+        # Enhanced relevance scoring
+        # ChromaDB returns L2 distance - convert to similarity score
+        for i, metadata in enumerate(metadatas):
+            if i < len(distances):
+                # Convert L2 distance to similarity score (0-1 range)
+                distance = distances[i]
+                # Using exponential decay for better differentiation
+                relevance_score = max(0.0, min(1.0, 1.0 / (1.0 + distance)))
+                metadata['relevance_score'] = relevance_score
+                metadata['distance'] = distance
+            else:
+                metadata['relevance_score'] = 0.0
+                metadata['distance'] = float('inf')
+        
+        # Sort by relevance score (highest first)
+        sorted_results = sorted(
+            zip(documents, metadatas),
+            key=lambda x: x[1]['relevance_score'],
+            reverse=True
+        )
+        
+        if sorted_results:
+            documents, metadatas = zip(*sorted_results)
+            documents = list(documents)
+            metadatas = list(metadatas)
+        
+        logger.info(f"Dense search: found {len(documents)} relevant documents (collection size: {count})")
+        if metadatas:
+            logger.info(f"Top relevance score: {metadatas[0]['relevance_score']:.3f}, Lowest: {metadatas[-1]['relevance_score']:.3f}")
+        
+        return documents, metadatas
     
     def clear_collection(self):
         """Clear all documents from the collection"""
