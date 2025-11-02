@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Migrate NeuralStark from Google Gemini to Cerebras AI (gpt-oss-120b model). Replace all LLM integration from Gemini to Cerebras throughout the backend and frontend."
+user_problem_statement: "Enhance the RAG system so that it can respond with high accuracy and recognize subtle details in both the user prompt and the file data. Currently, even small spelling mistakes, slight grammatical variations, or questions about very specific details (like finding a needle in a haystack) cause the RAG to return inaccurate answers."
 
 backend:
   - task: "LLM Migration to Cerebras"
