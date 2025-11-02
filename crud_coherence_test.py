@@ -9,7 +9,7 @@ import json
 import time
 from datetime import datetime
 
-BACKEND_URL = "https://end-to-end-test.preview.emergentagent.com/api"
+BACKEND_URL = "https://rag-accuracy.preview.emergentagent.com/api"
 
 def test_data_coherence():
     """Test la cohérence des données entre tous les endpoints CRUD"""
