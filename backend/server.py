@@ -78,6 +78,7 @@ class ChatResponse(BaseModel):
     response: str
     session_id: str
     sources: List[Dict]
+    spelling_suggestion: Optional[str] = None  # "Did you mean...?" suggestion
 
 class ChatSession(BaseModel):
     """Model for chat session summary"""
