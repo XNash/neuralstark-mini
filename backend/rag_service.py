@@ -44,80 +44,178 @@ class RAGService:
         
         return 'fr' if french_count > 0 else 'en'
     
-    def _filter_relevant_docs(self, docs: List[str], metadata: List[Dict]) -> Tuple[List[str], List[Dict]]:
-        """Filter documents based on relevance threshold"""
-        filtered_docs = []
-        filtered_metadata = []
-        
-        for doc, meta in zip(docs, metadata):
-            relevance = meta.get('relevance_score', 0)
-            if relevance >= self.relevance_threshold:
-                filtered_docs.append(doc)
-                filtered_metadata.append(meta)
-        
-        logger.info(f"Filtered {len(filtered_docs)}/{len(docs)} documents above relevance threshold {self.relevance_threshold}")
-        return filtered_docs, filtered_metadata
-    
-    def _build_optimized_context(self, docs: List[str], metadata: List[Dict]) -> str:
-        """Build optimized context from documents with proper formatting"""
-        if not docs:
-            return "No relevant documents found in the knowledge base."
-        
-        context_parts = []
-        for i, (doc, meta) in enumerate(zip(docs, metadata), 1):
-            source = meta.get('source', 'Unknown')
-            relevance = meta.get('relevance_score', 0)
-            
-            # Format each document chunk with clear separation
-            chunk_text = f"[Document {i}: {source} | Relevance: {relevance:.2f}]\n{doc.strip()}"
-            context_parts.append(chunk_text)
-        
-        # Join with clear separators
-        return "\n\n" + "="*80 + "\n\n".join(context_parts)
-    
     async def get_response(
         self,
         query: str,
         session_id: str,
         api_key: str,
         chat_history: List[Dict] = None
-    ) -> Tuple[str, List[Dict]]:
-        """Get a response from the RAG agent with robust error handling and retry logic"""
+    ) -> Tuple[str, List[Dict], Optional[str]]:
+        """
+        Get a response from the RAG agent with enhanced accuracy
+        
+        Returns:
+            - response: Generated answer
+            - sources: List of source documents with metadata
+            - spelling_suggestion: "Did you mean...?" suggestion if applicable
+        """
+        
+        # Detect language for better processing
+        language = self._detect_language(query)
+        logger.info(f"Detected language: {language}")
+        
+        # Step 1: QUERY ENHANCEMENT - Spell correction and expansion
+        corrected_query, query_variations, spelling_suggestion = self.query_enhancer.enhance_query(
+            query, detect_language=language
+        )
+        
+        if spelling_suggestion:
+            logger.info(f"Spelling correction applied: '{query}' -> '{spelling_suggestion}'")
         
         # Attempt with exponential backoff
         for attempt in range(self.max_retries):
             try:
-                # Search for relevant documents with increased results
-                relevant_docs, metadata = self.vector_service.search(query, n_results=8)
+                # Step 2: HYBRID RETRIEVAL - Search with multiple query variations
+                all_docs = []
+                all_metadata = []
                 
-                if not relevant_docs:
-                    # No documents found - provide helpful message
+                # Search with original corrected query (most important)
+                docs, meta = self.vector_service.search(
+                    corrected_query, 
+                    n_results=self.initial_retrieval_count,
+                    use_hybrid=True
+                )
+                all_docs.extend(docs)
+                all_metadata.extend(meta)
+                
+                # Also search with top query variations (for better coverage)
+                for variation in query_variations[1:min(3, len(query_variations))]:
+                    if variation.lower() != corrected_query.lower():
+                        docs_var, meta_var = self.vector_service.search(
+                            variation,
+                            n_results=5,  # Fewer results from variations
+                            use_hybrid=True
+                        )
+                        all_docs.extend(docs_var)
+                        all_metadata.extend(meta_var)
+                
+                # Remove duplicates while preserving metadata
+                unique_docs = []
+                unique_metadata = []
+                seen = set()
+                
+                for doc, meta in zip(all_docs, all_metadata):
+                    doc_key = doc[:100]  # Use first 100 chars as key
+                    if doc_key not in seen:
+                        seen.add(doc_key)
+                        unique_docs.append(doc)
+                        unique_metadata.append(meta)
+                
+                logger.info(f"Retrieved {len(unique_docs)} unique documents from hybrid search")
+                
+                if not unique_docs:
+                    # No documents found
                     logger.warning(f"No relevant documents found for query: {query[:50]}...")
-                    return self._handle_no_documents_found(query), []
+                    return self._handle_no_documents_found(query), [], spelling_suggestion
                 
-                # Filter documents by relevance threshold
-                filtered_docs, filtered_metadata = self._filter_relevant_docs(relevant_docs, metadata)
+                # Step 3: RERANKING - Use cross-encoder for precise relevance
+                reranked_docs, reranked_metadata = self.reranker.rerank(
+                    corrected_query,
+                    unique_docs,
+                    unique_metadata,
+                    top_k=self.initial_retrieval_count
+                )
                 
-                if not filtered_docs:
-                    # All documents below relevance threshold
-                    logger.warning(f"All retrieved documents below relevance threshold for query: {query[:50]}...")
-                    return self._handle_low_relevance(query), []
+                # Step 4: DYNAMIC THRESHOLD - Filter by reranker confidence
+                if reranked_metadata:
+                    scores = [meta.get('reranker_score', 0.0) for meta in reranked_metadata]
+                    dynamic_threshold = self.reranker.compute_dynamic_threshold(scores, percentile=30)
+                    
+                    # Apply filter
+                    filtered_docs, filtered_metadata = self.reranker.filter_by_confidence(
+                        reranked_docs,
+                        reranked_metadata,
+                        min_score=max(self.min_reranker_score, dynamic_threshold)
+                    )
+                else:
+                    filtered_docs, filtered_metadata = reranked_docs, reranked_metadata
                 
-                # Build optimized context
-                context = self._build_optimized_context(filtered_docs, filtered_metadata)
+                # Take top N results
+                final_docs = filtered_docs[:self.final_results_count]
+                final_metadata = filtered_metadata[:self.final_results_count]
+                
+                if not final_docs:
+                    # All documents below confidence threshold
+                    logger.warning(f"All retrieved documents below confidence threshold")
+                    return self._handle_low_relevance(query), [], spelling_suggestion
+                
+                logger.info(f"Final result set: {len(final_docs)} documents after reranking and filtering")
+                
+                # Step 5: BUILD CONTEXT
+                context = self._build_optimized_context(final_docs, final_metadata)
                 
                 # Prepare sources for response
                 sources = [
                     {
                         "source": meta.get('source', 'Unknown'),
                         "chunk_index": meta.get('chunk_index', 0),
-                        "relevance_score": round(meta.get('relevance_score', 0), 3)
+                        "relevance_score": round(meta.get('relevance_score', 0), 3),
+                        "reranker_score": round(meta.get('reranker_score', 0), 3),
+                        "retrieval_method": meta.get('retrieval_method', 'dense')
                     }
-                    for meta in filtered_metadata
+                    for meta in final_metadata
                 ]
                 
-                # Build enhanced system message with better instructions
-                system_message = self._build_system_prompt(context)
+                # Step 6: GENERATE RESPONSE
+                system_message = self._build_system_prompt(context, corrected_query)
+                
+                # Call Cerebras LLM
+                client = Cerebras(api_key=api_key)
+                
+                chat_completion = await asyncio.to_thread(
+                    client.chat.completions.create,
+                    messages=[
+                        {"role": "system", "content": system_message},
+                        {"role": "user", "content": corrected_query}
+                    ],
+                    model="llama-3.3-70b",
+                    max_completion_tokens=2048,
+                    temperature=0.7,
+                    top_p=1
+                )
+                
+                response = chat_completion.choices[0].message.content
+                
+                logger.info(f"Successfully generated response for session {session_id} (attempt {attempt + 1})")
+                return response, sources, spelling_suggestion
+            
+            except Exception as e:
+                error_str = str(e).lower()
+                
+                # Check if it's a quota/rate limit error
+                if "quota" in error_str or "429" in error_str or "resource_exhausted" in error_str or "rate" in error_str:
+                    logger.error(f"API quota exceeded: {e}")
+                    raise Exception(
+                        "The Cerebras API rate limit has been exceeded. Please try again later or check your API key's billing details at "
+                        "https://cloud.cerebras.ai"
+                    )
+                
+                # Check if it's an authentication error
+                if "unauthorized" in error_str or "401" in error_str or "invalid" in error_str or "authentication" in error_str:
+                    logger.error(f"API authentication failed: {e}")
+                    raise Exception(
+                        "Invalid or unauthorized API key. Please check your Cerebras API key in Settings. "
+                        "Get a valid key from https://cloud.cerebras.ai"
+                    )
+                
+                # For other errors, retry with exponential backoff
+                if attempt < self.max_retries - 1:
+                    wait_time = 2 ** attempt  # Exponential backoff: 1s, 2s, 4s
+                    logger.warning(f"Error on attempt {attempt + 1}, retrying in {wait_time}s: {e}")
+                    await asyncio.sleep(wait_time)
+                else:
+                    logger.error(f"Error in RAG service after {self.max_retries} attempts: {e}")
+                    raise Exception(f"Failed to generate response after {self.max_retries} attempts: {str(e)}")
                 
                 # Call Cerebras LLM
                 client = Cerebras(api_key=api_key)
