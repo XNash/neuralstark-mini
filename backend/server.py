@@ -512,7 +512,8 @@ async def chat(request: ChatRequest):
         return ChatResponse(
             response=response_text,
             session_id=session_id,
-            sources=sources
+            sources=sources,
+            spelling_suggestion=spelling_suggestion
         )
     except HTTPException:
         raise
