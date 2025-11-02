@@ -216,9 +216,34 @@ class VectorStoreService:
                 name=self.collection.name,
                 metadata={"description": "RAG document embeddings"}
             )
-            logger.info("Cleared vector store collection")
+            # Clear BM25 index
+            self.hybrid_retriever = HybridRetriever()
+            logger.info("Cleared vector store collection and BM25 index")
         except Exception as e:
             logger.error(f"Error clearing collection: {e}")
+    
+    def _reindex_bm25(self):
+        """Re-index existing documents for BM25 (called on initialization)"""
+        try:
+            count = self.collection.count()
+            if count == 0:
+                logger.info("No existing documents to re-index for BM25")
+                return
+            
+            # Get all documents from ChromaDB
+            results = self.collection.get(
+                include=['documents', 'metadatas']
+            )
+            
+            if results and results['documents']:
+                documents = results['documents']
+                metadatas = results['metadatas']
+                
+                # Index for BM25
+                self.hybrid_retriever.index_documents(documents, metadatas)
+                logger.info(f"Re-indexed {len(documents)} existing documents for BM25")
+        except Exception as e:
+            logger.error(f"Error re-indexing BM25: {e}")
     
     def get_collection_count(self) -> int:
         """Get the number of documents in the collection"""
