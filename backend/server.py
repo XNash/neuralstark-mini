@@ -465,7 +465,7 @@ async def chat(request: ChatRequest):
         
         # Get response from RAG service
         try:
-            response_text, sources = await rag_service.get_response(
+            response_text, sources, spelling_suggestion = await rag_service.get_response(
                 query=request.message.strip(),
                 session_id=session_id,
                 api_key=settings['cerebras_api_key'],
