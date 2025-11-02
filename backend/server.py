@@ -40,9 +40,9 @@ app = FastAPI()
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
-# Initialize services with optimized versions
+# Initialize services with RAG-enhanced versions
 doc_processor = OptimizedDocumentProcessor()  # Use optimized processor
-vector_service = OptimizedVectorStoreService()  # Use optimized vector store
+vector_service = VectorStoreService()  # Use RAG-enhanced vector store with hybrid search
 document_cache = DocumentCache(db)  # Initialize cache
 rag_service = RAGService(vector_service, db)
 
