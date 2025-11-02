@@ -463,15 +463,14 @@ metadata:
 
 test_plan:
   current_focus:
-    - "LLM Migration to Cerebras"
-    - "Settings API Migration to Cerebras"
-    - "Chat API Migration to Cerebras"
-    - "Frontend LLM Migration to Cerebras"
+    - "Comprehensive RAG Accuracy Enhancement"
   stuck_tasks: []
-  test_all: true
-  test_priority: "cerebras_migration_testing"
+  test_all: false
+  test_priority: "rag_accuracy_testing"
 
 agent_communication:
+    - agent: "main"
+      message: "RAG ACCURACY ENHANCEMENT COMPLETED (2025-11-02): Implemented comprehensive 4-phase enhancement for maximum accuracy with spelling mistakes, grammatical variations, and needle-in-haystack queries. PHASE 1 - Query Enhancement: Spell correction (EN/FR), synonym expansion, abbreviation expansion, fuzzy matching, 'Did you mean' suggestions. PHASE 2 - Hybrid Retrieval: BM25 sparse + dense semantic search combined with RRF, 3x candidate retrieval. PHASE 3 - Reranking: Cross-encoder ms-marco-MiniLM-L-6-v2 for precise scoring, dynamic thresholds, top 8 selection. PHASE 4 - Enhanced Context: Multi-query search, language detection, enhanced metadata (relevance + reranker + method scores), detail-oriented prompts. New modules: query_enhancer.py, hybrid_retriever.py, reranker.py. Modified: vector_store.py (hybrid search), rag_service.py (complete rewrite), server.py (spelling_suggestion field). Dependencies: rank-bm25, pyspellchecker, nltk, textdistance, rapidfuzz. Backend running successfully. Ready for comprehensive testing with: typo queries, synonym variations, specific detail queries, keyword + semantic mixed queries."
     - agent: "main"
       message: "CEREBRAS MIGRATION COMPLETED (2025-10-28): Successfully migrated NeuralStark from Google Gemini to Cerebras AI. BACKEND: ✅ Installed cerebras_cloud_sdk package, removed google-generativeai. ✅ Updated rag_service.py to use Cerebras client with llama-3.3-70b model. ✅ Modified server.py Settings model: renamed gemini_api_key to cerebras_api_key. ✅ Updated all API endpoints and error messages to reference Cerebras Cloud (https://cloud.cerebras.ai). ✅ Added CEREBRAS_API_KEY to .env with user-provided key. ✅ Backend restarted successfully with no errors. FRONTEND: ✅ Updated App.js to use cerebras_api_key in API calls. ✅ Changed all UI text from 'Gemini 2.5 Flash' to 'Cerebras Llama 3.3 70B'. ✅ Updated Settings page labels, descriptions, and links to cloud.cerebras.ai. ✅ Modified feature cards and quick tips to reference Cerebras. Ready for comprehensive backend and frontend testing with real Cerebras API."
     - agent: "testing"
