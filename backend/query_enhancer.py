@@ -1,5 +1,5 @@
 import logging
-from typing import List, Tuple, Optional, Set
+from typing import List, Tuple, Optional
 import re
 from spellchecker import SpellChecker
 from rapidfuzz import fuzz, process
@@ -99,7 +99,6 @@ class QueryEnhancer:
         query = ' '.join(query.split())
         
         # Preserve question marks and important punctuation
-        # But remove excessive punctuation
         query = re.sub(r'[!]+', '!', query)
         query = re.sub(r'[?]+', '?', query)
         query = re.sub(r'[.]+', '.', query)
@@ -252,30 +251,3 @@ class QueryEnhancer:
         logger.debug(f"Fuzzy matching '{query}': found {len(results)} matches above {threshold}%")
         
         return results
-    
-    def extract_key_phrases(self, query: str) -> List[str]:
-        """Extract important phrases from query (multi-word terms)"""
-        # Simple extraction of quoted phrases and multi-word terms
-        phrases = []
-        
-        # Extract quoted phrases
-        quoted = re.findall(r'"([^"]+)"', query)
-        phrases.extend(quoted)
-        
-        # Extract capitalized multi-word terms (likely entities)
-        # E.g., "Chief Executive Officer", "Product Manager"
-        words = query.split()
-        current_phrase = []
-        
-        for word in words:
-            if word and word[0].isupper():
-                current_phrase.append(word)
-            else:
-                if len(current_phrase) > 1:
-                    phrases.append(' '.join(current_phrase))
-                current_phrase = []
-        
-        if len(current_phrase) > 1:
-            phrases.append(' '.join(current_phrase))
-        
-        return phrases
