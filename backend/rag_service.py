@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class RAGService:
-    """Enhanced RAG service with query enhancement, hybrid retrieval, and reranking"""
+    """Enhanced RAG service with query enhancement, hybrid retrieval, and reranking - FRENCH-FIRST"""
     
     def __init__(self, vector_service: VectorStoreService, db):
         self.vector_service = vector_service
@@ -28,21 +28,26 @@ class RAGService:
         self.min_reranker_score = -5.0  # Dynamic threshold (will be computed)
         self.max_context_tokens = 8000
         
-        logger.info("Enhanced RAG service initialized with query enhancement and reranking")
+        logger.info("Enhanced RAG service initialized with French-first query enhancement and reranking")
     
     def update_api_key(self, api_key: str):
         """Update the API key for Cerebras"""
         self.api_key = api_key
     
     def _detect_language(self, query: str) -> str:
-        """Simple language detection (English or French)"""
+        """
+        Simple language detection (French as default, with English support)
+        French is the PRIMARY language - defaults to 'fr'
+        """
         # Count French-specific characters and common words
-        french_indicators = ['à', 'é', 'è', 'ê', 'ç', 'ù', 'où', 'quoi', 'quel', 'quelle']
+        french_indicators = ['à', 'é', 'è', 'ê', 'ç', 'ù', 'où', 'quoi', 'quel', 'quelle', 'qui', 'dont', 'lequel']
         text_lower = query.lower()
         
         french_count = sum(1 for indicator in french_indicators if indicator in text_lower)
         
-        return 'fr' if french_count > 0 else 'en'
+        # French-first: return 'fr' as default, only 'en' if explicitly English
+        # This ensures the system operates in French by default
+        return 'fr' if french_count > 0 or len(text_lower) < 3 else 'fr'  # Always default to French
     
     async def get_response(
         self,
@@ -52,21 +57,22 @@ class RAGService:
         chat_history: List[Dict] = None
     ) -> Tuple[str, List[Dict], Optional[str]]:
         """
-        Get a response from the RAG agent with enhanced accuracy
+        Get a response from the RAG agent with enhanced accuracy - ALWAYS RESPONDS IN FRENCH
         
         Returns:
-            - response: Generated answer
+            - response: Generated answer (ALWAYS IN FRENCH)
             - sources: List of source documents with metadata
             - spelling_suggestion: "Did you mean...?" suggestion if applicable
         """
         
-        # Detect language for better processing
+        # Detect language for processing (but will always respond in French)
         language = self._detect_language(query)
-        logger.info(f"Detected language: {language}")
+        is_non_french_query = language != 'fr'
+        logger.info(f"Detected language: {language} (will respond in French)")
         
-        # Step 1: QUERY ENHANCEMENT - Spell correction and expansion
+        # Step 1: QUERY ENHANCEMENT - Spell correction and expansion (French-first)
         corrected_query, query_variations, spelling_suggestion = self.query_enhancer.enhance_query(
-            query, detect_language=language
+            query, detect_language='fr'  # Always use French for query enhancement
         )
         
         if spelling_suggestion:
@@ -116,7 +122,10 @@ class RAGService:
                 if not unique_docs:
                     # No documents found
                     logger.warning(f"No relevant documents found for query: {query[:50]}...")
-                    return self._handle_no_documents_found(query), [], spelling_suggestion
+                    response = self._handle_no_documents_found(query)
+                    if is_non_french_query:
+                        response += "\n\n*Note: Ce système répond uniquement en français.*"
+                    return response, [], spelling_suggestion
                 
                 # Step 3: RERANKING - Use cross-encoder for precise relevance
                 reranked_docs, reranked_metadata = self.reranker.rerank(
@@ -147,7 +156,10 @@ class RAGService:
                 if not final_docs:
                     # All documents below confidence threshold
                     logger.warning(f"All retrieved documents below confidence threshold")
-                    return self._handle_low_relevance(query), [], spelling_suggestion
+                    response = self._handle_low_relevance(query)
+                    if is_non_french_query:
+                        response += "\n\n*Note: Ce système répond uniquement en français.*"
+                    return response, [], spelling_suggestion
                 
                 logger.info(f"Final result set: {len(final_docs)} documents after reranking and filtering")
                 
@@ -166,10 +178,10 @@ class RAGService:
                     for meta in final_metadata
                 ]
                 
-                # Step 6: GENERATE RESPONSE
-                system_message = self._build_system_prompt(context, corrected_query)
+                # Step 6: GENERATE RESPONSE (ALWAYS IN FRENCH)
+                system_message = self._build_system_prompt(context, corrected_query, is_non_french_query)
                 
-                # Call Cerebras LLM
+                # Call Cerebras LLM with gpt-oss-120b model
                 client = Cerebras(api_key=api_key)
                 
                 chat_completion = await asyncio.to_thread(
@@ -178,7 +190,7 @@ class RAGService:
                         {"role": "system", "content": system_message},
                         {"role": "user", "content": corrected_query}
                     ],
-                    model="llama-3.3-70b",
+                    model="gpt-oss-120b",  # Changed from llama-3.3-70b to gpt-oss-120b
                     max_completion_tokens=2048,
                     temperature=0.7,
                     top_p=1
@@ -186,7 +198,11 @@ class RAGService:
                 
                 response = chat_completion.choices[0].message.content
                 
-                logger.info(f"Successfully generated response for session {session_id} (attempt {attempt + 1})")
+                # Add French-only note if query was in another language
+                if is_non_french_query:
+                    response += "\n\n*Note: Ce système répond uniquement en français. Si vous avez posé votre question dans une autre langue, veuillez noter que toutes les réponses sont générées en français.*"
+                
+                logger.info(f"Successfully generated French response for session {session_id} (attempt {attempt + 1})")
                 return response, sources, spelling_suggestion
             
             except Exception as e:
@@ -196,7 +212,7 @@ class RAGService:
                 if "quota" in error_str or "429" in error_str or "resource_exhausted" in error_str or "rate" in error_str:
                     logger.error(f"API quota exceeded: {e}")
                     raise Exception(
-                        "The Cerebras API rate limit has been exceeded. Please try again later or check your API key's billing details at "
+                        "La limite de débit de l'API Cerebras a été dépassée. Veuillez réessayer plus tard ou vérifier les détails de facturation de votre clé API sur "
                         "https://cloud.cerebras.ai"
                     )
                 
@@ -204,8 +220,8 @@ class RAGService:
                 if "unauthorized" in error_str or "401" in error_str or "invalid" in error_str or "authentication" in error_str:
                     logger.error(f"API authentication failed: {e}")
                     raise Exception(
-                        "Invalid or unauthorized API key. Please check your Cerebras API key in Settings. "
-                        "Get a valid key from https://cloud.cerebras.ai"
+                        "Clé API invalide ou non autorisée. Veuillez vérifier votre clé API Cerebras dans les Paramètres. "
+                        "Obtenez une clé valide depuis https://cloud.cerebras.ai"
                     )
                 
                 # For other errors, retry with exponential backoff
@@ -215,16 +231,16 @@ class RAGService:
                     await asyncio.sleep(wait_time)
                 else:
                     logger.error(f"Error in RAG service after {self.max_retries} attempts: {e}")
-                    raise Exception(f"Failed to generate response after {self.max_retries} attempts: {str(e)}")
+                    raise Exception(f"Échec de génération de réponse après {self.max_retries} tentatives: {str(e)}")
     
     def _build_optimized_context(self, docs: List[str], metadata: List[Dict]) -> str:
         """Build optimized context from documents with proper formatting"""
         if not docs:
-            return "No relevant documents found in the knowledge base."
+            return "Aucun document pertinent trouvé dans la base de connaissances."
         
         context_parts = []
         for i, (doc, meta) in enumerate(zip(docs, metadata), 1):
-            source = meta.get('source', 'Unknown')
+            source = meta.get('source', 'Inconnu')
             relevance = meta.get('relevance_score', 0)
             reranker_score = meta.get('reranker_score', 0)
             method = meta.get('retrieval_method', 'N/A')
@@ -232,9 +248,9 @@ class RAGService:
             # Format each document chunk with clear separation and enhanced metadata
             chunk_text = (
                 f"[Document {i}: {source} | "
-                f"Relevance: {relevance:.2f} | "
-                f"Rerank: {reranker_score:.2f} | "
-                f"Method: {method}]\n"
+                f"Pertinence: {relevance:.2f} | "
+                f"Reclass.: {reranker_score:.2f} | "
+                f"Méthode: {method}]\n"
                 f"{doc.strip()}"
             )
             context_parts.append(chunk_text)
@@ -242,55 +258,58 @@ class RAGService:
         # Join with clear separators
         return "\n\n" + "="*80 + "\n\n".join(context_parts)
     
-    def _build_system_prompt(self, context: str, query: str = "") -> str:
-        """Build an enhanced system prompt for better RAG accuracy"""
-        return f"""You are an expert AI assistant specialized in answering questions based on provided document context.
+    def _build_system_prompt(self, context: str, query: str = "", is_non_french_query: bool = False) -> str:
+        """Build an enhanced system prompt for better RAG accuracy - ALWAYS RESPOND IN FRENCH"""
+        french_instruction = ""
+        if is_non_french_query:
+            french_instruction = "\n\n**LANGUE DE RÉPONSE OBLIGATOIRE**: Vous DEVEZ répondre UNIQUEMENT en français, quelle que soit la langue de la question. C'est une exigence absolue du système.\n"
+        
+        return f"""Vous êtes un assistant IA expert spécialisé dans la réponse aux questions basées sur le contexte documentaire fourni.
 
-CORE PRINCIPLES:
-1. **STRICT CONTEXT ADHERENCE**: Answer ONLY using information from the provided documents below
-2. **ACCURACY FIRST**: If the context lacks relevant information, explicitly state: "I don't have information about this in the indexed documents."
-3. **NO HALLUCINATION**: Never invent, assume, or use external knowledge not present in the context
-4. **SOURCE ATTRIBUTION**: Reference specific documents when providing information
-5. **MULTILINGUAL SUPPORT**: Handle both English and French queries naturally
-6. **CLARITY**: Provide clear, concise, and well-structured answers
-7. **DETAIL ORIENTED**: Pay close attention to subtle details, specific numbers, names, and dates in the documents
-
-INDEXED DOCUMENT CONTEXT:
+PRINCIPES FONDAMENTAUX:
+1. **ADHÉRENCE STRICTE AU CONTEXTE**: Répondez UNIQUEMENT en utilisant les informations des documents fournis ci-dessous
+2. **PRÉCISION AVANT TOUT**: Si le contexte manque d'informations pertinentes, indiquez explicitement : "Je n'ai pas d'information à ce sujet dans les documents indexés."
+3. **PAS D'HALLUCINATION**: N'inventez jamais, ne supposez jamais et n'utilisez jamais de connaissances externes non présentes dans le contexte
+4. **ATTRIBUTION DES SOURCES**: Référencez les documents spécifiques lors de la fourniture d'informations
+5. **RÉPONSE EN FRANÇAIS UNIQUEMENT**: Vous devez TOUJOURS répondre en français, quelle que soit la langue de la question posée
+6. **CLARTÉ**: Fournissez des réponses claires, concises et bien structurées en français
+7. **ORIENTÉ VERS LES DÉTAILS**: Portez une attention particulière aux détails subtils, aux chiffres spécifiques, aux noms et aux dates dans les documents{french_instruction}
+CONTEXTE DOCUMENTAIRE INDEXÉ:
 {context}
 
-RESPONSE GUIDELINES:
-- Extract and synthesize relevant information from the documents
-- Cite document sources when answering (e.g., "According to [Document Name]...")
-- If multiple documents contain relevant info, integrate them coherently
-- For queries about specific details (numbers, names, dates), be extra precise
-- If the query contains spelling variations or synonyms, understand the intent
-- For unclear or ambiguous queries, provide the most relevant information available
-- Maintain professional and helpful tone
-- Preserve the language of the query in your response when appropriate
+DIRECTIVES DE RÉPONSE:
+- Extrayez et synthétisez les informations pertinentes des documents
+- Citez les sources documentaires lors de votre réponse (par ex., "Selon [Nom du Document]...")
+- Si plusieurs documents contiennent des informations pertinentes, intégrez-les de manière cohérente
+- Pour les questions sur des détails spécifiques (chiffres, noms, dates), soyez extrêmement précis
+- Si la question contient des variations orthographiques ou des synonymes, comprenez l'intention
+- Pour les questions peu claires ou ambiguës, fournissez les informations les plus pertinentes disponibles
+- Maintenez un ton professionnel et utile
+- **IMPORTANT**: Répondez TOUJOURS en français, même si la question est dans une autre langue
 
-Now answer the user's question based solely on the above context."""
+Répondez maintenant à la question de l'utilisateur en vous basant uniquement sur le contexte ci-dessus, EN FRANÇAIS."""
     
     def _handle_no_documents_found(self, query: str) -> str:
-        """Handle case when no documents are found"""
+        """Handle case when no documents are found - FRENCH RESPONSE"""
         return (
-            "I apologize, but I couldn't find any relevant documents in the knowledge base to answer your question. "
-            "This could mean:\n"
-            "1. The information you're looking for hasn't been indexed yet\n"
-            "2. The query might be too specific or use different terminology\n"
-            "3. No documents have been added to the system\n\n"
-            "Please try:\n"
-            "- Rephrasing your question with different keywords\n"
-            "- Adding relevant documents to the files directory\n"
-            "- Using the 'Reindex Documents' button to update the knowledge base"
+            "Je m'excuse, mais je n'ai pas trouvé de documents pertinents dans la base de connaissances pour répondre à votre question. "
+            "Cela pourrait signifier :\n"
+            "1. Les informations que vous recherchez n'ont pas encore été indexées\n"
+            "2. La requête pourrait être trop spécifique ou utiliser une terminologie différente\n"
+            "3. Aucun document n'a été ajouté au système\n\n"
+            "Veuillez essayer :\n"
+            "- Reformuler votre question avec des mots-clés différents\n"
+            "- Ajouter des documents pertinents au répertoire des fichiers\n"
+            "- Utiliser le bouton 'Réindexer les documents' pour mettre à jour la base de connaissances"
         )
     
     def _handle_low_relevance(self, query: str) -> str:
-        """Handle case when all documents have low relevance"""
+        """Handle case when all documents have low relevance - FRENCH RESPONSE"""
         return (
-            "I found some documents, but none of them appear to be sufficiently relevant to your question. "
-            "The indexed documents may not contain information about this specific topic.\n\n"
-            "Please try:\n"
-            "- Rephrasing your question with different keywords\n"
-            "- Being more specific or more general in your query\n"
-            "- Adding more relevant documents to the files directory"
+            "J'ai trouvé quelques documents, mais aucun d'entre eux ne semble suffisamment pertinent pour votre question. "
+            "Les documents indexés ne contiennent peut-être pas d'informations sur ce sujet spécifique.\n\n"
+            "Veuillez essayer :\n"
+            "- Reformuler votre question avec des mots-clés différents\n"
+            "- Être plus spécifique ou plus général dans votre requête\n"
+            "- Ajouter des documents plus pertinents au répertoire des fichiers"
         )
