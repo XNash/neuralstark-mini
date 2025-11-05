@@ -45,9 +45,8 @@ class RAGService:
         
         french_count = sum(1 for indicator in french_indicators if indicator in text_lower)
         
-        # French-first: return 'fr' as default, only 'en' if explicitly English
-        # This ensures the system operates in French by default
-        return 'fr' if french_count > 0 or len(text_lower) < 3 else 'fr'  # Always default to French
+        # Always default to French - system is French-first
+        return 'fr'
     
     async def get_response(
         self,
