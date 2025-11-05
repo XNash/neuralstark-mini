@@ -64,10 +64,16 @@ class RAGService:
             - spelling_suggestion: "Did you mean...?" suggestion if applicable
         """
         
-        # Detect language for processing (but will always respond in French)
-        language = self._detect_language(query)
-        is_non_french_query = language != 'fr'
-        logger.info(f"Detected language: {language} (will respond in French)")
+        # Detect if query is in non-French language (for adding note in response)
+        french_indicators = ['à', 'é', 'è', 'ê', 'ç', 'ù', 'où', 'quoi', 'quel', 'quelle', 'qui', 'dont', 'lequel', 'pourquoi', 'comment']
+        english_indicators = ['the', 'what', 'how', 'why', 'where', 'when', 'who', 'which', 'can', 'could', 'would', 'should']
+        text_lower = query.lower()
+        
+        french_count = sum(1 for indicator in french_indicators if indicator in text_lower)
+        english_count = sum(1 for indicator in english_indicators if ' ' + indicator + ' ' in ' ' + text_lower + ' ')
+        
+        is_non_french_query = (english_count > 0 and french_count == 0)
+        logger.info(f"Query language check: French indicators={french_count}, English indicators={english_count}, Will add French-only note={is_non_french_query}")
         
         # Step 1: QUERY ENHANCEMENT - Spell correction and expansion (French-first)
         corrected_query, query_variations, spelling_suggestion = self.query_enhancer.enhance_query(
