@@ -135,7 +135,7 @@ python server.py
 - 💬 Chat interface with RAG-powered responses
 - 📚 Document management and indexing
 - ⚙️ Settings configuration
-- 🤖 Cerebras AI integration (llama-3.3-70b)
+- 🤖 Cerebras AI integration (gpt-oss-120b)
 - 🌐 Multilingual support (English/French)
 - 📊 Document statistics and cache management
 
