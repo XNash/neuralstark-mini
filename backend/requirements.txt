@@ -80,7 +80,6 @@ textdistance>=4.6.0
 rapidfuzz>=3.6.0
 
 # French NLP Support
-spacy>=3.7.0
-
+spacy>=3.7.0-e 
 # French NLP Support
 spacy>=3.7.0
