@@ -7,7 +7,7 @@ import requests
 import json
 import time
 
-BACKEND_URL = "https://rag-accuracy.preview.emergentagent.com/api"
+BACKEND_URL = "https://french-lang-rag.preview.emergentagent.com/api"
 
 def test_incremental_cache():
     """Test that incremental reindex skips cached files"""
