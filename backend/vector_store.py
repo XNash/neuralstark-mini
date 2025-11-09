@@ -286,3 +286,16 @@ class VectorStoreService:
             return self.collection.count()
         except Exception:
             return 0
+    
+    def get_cache_stats(self) -> Dict:
+        """Get cache performance statistics"""
+        return {
+            'embedding_cache': self.embedding_cache.get_stats(),
+            'query_cache': self.query_cache.get_stats()
+        }
+    
+    def clear_caches(self):
+        """Clear all caches (useful after reindexing)"""
+        self.embedding_cache.clear()
+        self.query_cache.clear()
+        logger.info("All caches cleared")
