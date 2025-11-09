@@ -30,12 +30,14 @@ class RAGService:
             logger.warning(f"Could not load optimized reranker: {e}, falling back to standard")
             self.reranker = Reranker(model_name='cross-encoder/ms-marco-MiniLM-L-6-v2')
         
-        # OPTIMIZED Configuration for speed and precision
+        # ULTRA-OPTIMIZED Configuration for near-instant responses + precision
         self.max_retries = 3
-        self.initial_retrieval_count = 15  # Reduced from 20 for speed (cache helps)
+        self.initial_retrieval_count = 12  # Further reduced for speed (was 15, 20)
+        self.variation_retrieval_count = 3  # Fewer results from variations (was 5)
         self.final_results_count = 8  # Return top 8 after reranking
-        self.min_reranker_score = -3.0  # Stricter threshold for precision
+        self.min_reranker_score = -2.5  # Even stricter for meticulous precision (was -3.0)
         self.max_context_tokens = 8000
+        self.prefilter_threshold = 0.25  # Pre-filter low relevance before reranking
         
         logger.info("OPTIMIZED RAG service initialized with CamemBERT, caching, and exact match boosting")
     
