@@ -8,7 +8,7 @@ import requests
 import json
 
 # Get backend URL from environment
-BACKEND_URL = "https://frag-booster.preview.emergentagent.com/api"
+BACKEND_URL = "https://detail-genius.preview.emergentagent.com/api"
 CEREBRAS_API_KEY = "csk-c2wp6rmd4ed5jxtkydymmw6jp9vyv294fntcet6923dnftnw"
 
 def test_single_chat():

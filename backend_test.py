@@ -17,7 +17,7 @@ import sys
 from datetime import datetime
 
 # Get backend URL from environment
-BACKEND_URL = "https://frag-booster.preview.emergentagent.com/api"
+BACKEND_URL = "https://detail-genius.preview.emergentagent.com/api"
 
 # Cerebras API key provided in review request
 CEREBRAS_API_KEY = "csk-c2wp6rmd4ed5jxtkydymmw6jp9vyv294fntcet6923dnftnw"

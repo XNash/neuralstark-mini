@@ -9,7 +9,7 @@ import json
 import time
 
 # Get backend URL from environment
-BACKEND_URL = "https://frag-booster.preview.emergentagent.com/api"
+BACKEND_URL = "https://detail-genius.preview.emergentagent.com/api"
 
 def test_basic_endpoints():
     """Test basic backend endpoints that don't require LLM"""
