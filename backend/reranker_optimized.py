@@ -18,25 +18,25 @@ class RerankerOptimized:
     - Adjusted thresholds for better precision
     """
     
-    def __init__(self, model_name: str = 'dangvantuan/sentence-camembert-large'):
+    def __init__(self, model_name: str = 'cross-encoder/ms-marco-MiniLM-L-6-v2'):
         """
-        Initialize optimized reranker with CamemBERT
+        Initialize optimized reranker - MEMORY OPTIMIZED
         
-        Model: dangvantuan/sentence-camembert-large
-        - French-optimized cross-encoder
-        - Based on CamemBERT (French BERT)
-        - Excellent for French semantic matching
+        Default: cross-encoder/ms-marco-MiniLM-L-6-v2 (lightweight, 90MB)
+        Optional: dangvantuan/sentence-camembert-large (French, but 1.3GB - heavy)
+        
+        Using lightweight model by default to prevent memory issues
         """
-        logger.info(f"Loading French-optimized cross-encoder model: {model_name}")
+        logger.info(f"Loading cross-encoder model: {model_name}")
         try:
             self.model = CrossEncoder(model_name, max_length=512)
             self.model_name = model_name
-            logger.info(f"CamemBERT reranker model loaded successfully")
+            logger.info(f"Reranker model loaded successfully: {model_name}")
         except Exception as e:
-            logger.error(f"Failed to load CamemBERT reranker model: {e}")
-            logger.warning("Falling back to default model...")
+            logger.error(f"Failed to load reranker model {model_name}: {e}")
+            logger.warning("Falling back to ms-marco-MiniLM...")
             try:
-                # Fallback to ms-marco if CamemBERT unavailable
+                # Fallback to lightweight ms-marco
                 self.model = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2', max_length=512)
                 self.model_name = 'cross-encoder/ms-marco-MiniLM-L-6-v2'
                 logger.info("Fallback model loaded: ms-marco-MiniLM-L-6-v2")
