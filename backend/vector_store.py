@@ -142,7 +142,7 @@ class VectorStoreService:
                 # HYBRID RETRIEVAL: Combine dense + sparse
                 logger.info(f"Using hybrid retrieval (dense + BM25) for query: '{query[:50]}...'")
                 
-                # Step 1: Dense retrieval (semantic search)
+                # Step 1: Dense retrieval (semantic search with cache)
                 dense_docs, dense_metadata = self._search_dense(query, retrieval_count)
                 
                 # Step 2: Sparse retrieval (BM25 keyword search)
@@ -162,9 +162,12 @@ class VectorStoreService:
                 
                 logger.info(f"Hybrid search returned {len(documents)} fused results")
             else:
-                # DENSE ONLY: Semantic search
+                # DENSE ONLY: Semantic search with cache
                 logger.info(f"Using dense-only retrieval for query: '{query[:50]}...'")
                 documents, metadatas = self._search_dense(query, retrieval_count)
+            
+            # Cache the result for future queries
+            self.query_cache.put(query, n_results, use_hybrid, (documents, metadatas))
             
             return documents, metadatas
         
