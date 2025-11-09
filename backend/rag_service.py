@@ -143,7 +143,32 @@ class RAGService:
                         response += "\n\n*Note: Ce système répond uniquement en français.*"
                     return response, [], spelling_suggestion
                 
-                # Step 3: OPTIMIZED RERANKING - CamemBERT + exact match boosting
+                # Step 2.5: INTELLIGENT PRE-FILTERING before expensive reranking
+                # Filter out clearly irrelevant docs to speed up CamemBERT reranking
+                prefiltered_docs = []
+                prefiltered_metadata = []
+                
+                for doc, meta in zip(unique_docs, unique_metadata):
+                    relevance = meta.get('relevance_score', 0)
+                    # Keep docs above threshold OR with high BM25/RRF scores
+                    if (relevance >= self.prefilter_threshold or 
+                        meta.get('bm25_score', 0) > 2.0 or 
+                        meta.get('rrf_score', 0) > 0.02):
+                        prefiltered_docs.append(doc)
+                        prefiltered_metadata.append(meta)
+                
+                # Fallback: if too aggressive filtering, keep top documents
+                if len(prefiltered_docs) < 5 and len(unique_docs) >= 5:
+                    prefiltered_docs = unique_docs[:10]
+                    prefiltered_metadata = unique_metadata[:10]
+                    logger.info(f"Pre-filter too aggressive, keeping top 10 docs")
+                elif prefiltered_docs:
+                    logger.info(f"Pre-filtered {len(unique_docs)} -> {len(prefiltered_docs)} docs (threshold={self.prefilter_threshold})")
+                else:
+                    prefiltered_docs = unique_docs
+                    prefiltered_metadata = unique_metadata
+                
+                # Step 3: OPTIMIZED RERANKING - CamemBERT + exact match boosting (on pre-filtered set)
                 reranked_docs, reranked_metadata = self.reranker.rerank(
                     corrected_query,
                     unique_docs,
