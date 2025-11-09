@@ -111,11 +111,11 @@ class RAGService:
                 all_metadata.extend(meta)
                 
                 # Also search with top query variations (for better coverage)
-                for variation in query_variations[1:min(3, len(query_variations))]:
+                for variation in query_variations[1:min(2, len(query_variations))]:  # Only 2 best variations
                     if variation.lower() != corrected_query.lower():
                         docs_var, meta_var = self.vector_service.search(
                             variation,
-                            n_results=5,  # Fewer results from variations
+                            n_results=self.variation_retrieval_count,  # Reduced to 3 for speed
                             use_hybrid=True
                         )
                         all_docs.extend(docs_var)
