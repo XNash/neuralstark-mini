@@ -14,6 +14,35 @@ class EntityExtractor:
         # LAZY LOADING: Only load spaCy when needed to save memory
         self.nlp = None
         self.enable_ner = enable_ner
+    
+    def _load_ner_model(self):
+        """Lazy load spaCy NER model only when needed"""
+        if self._ner_attempted:
+            return
+        
+        self._ner_attempted = True
+        try:
+            # Try small model first (fr_core_news_sm) - much lighter
+            try:
+                self.nlp = spacy.load('fr_core_news_sm')
+                logger.info("Loaded lightweight French spaCy model: fr_core_news_sm")
+                return
+            except:
+                pass
+            
+            # Fallback to medium model
+            try:
+                self.nlp = spacy.load('fr_core_news_md')
+                logger.info("Loaded French spaCy model: fr_core_news_md")
+                return
+            except:
+                pass
+            
+            logger.warning("No French spaCy model available, NER disabled")
+        except Exception as e:
+            logger.error(f"Failed to load spaCy model: {e}")
+            self.nlp = None
+
         self._ner_attempted = False
         
         if enable_ner:
