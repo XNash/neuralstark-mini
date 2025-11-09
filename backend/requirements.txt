@@ -79,6 +79,6 @@ nltk>=3.8.1
 textdistance>=4.6.0
 rapidfuzz>=3.6.0
 
-# French NLP Support - OPTIMIZED
+# French NLP Support - CPU-OPTIMIZED (small model for speed)
 spacy>=3.7.0
-# Note: Run 'python -m spacy download fr_core_news_lg' after install
+# Note: fr_core_news_sm will be auto-downloaded on first use (15MB, très rapide sur CPU)
