@@ -17,18 +17,26 @@ class RAGService:
         self.db = db
         self.api_key = None
         
-        # Initialize enhanced components
+        # Initialize OPTIMIZED components
         self.query_enhancer = QueryEnhancer()
-        self.reranker = Reranker(model_name='cross-encoder/ms-marco-MiniLM-L-6-v2')
         
-        # Configuration for robustness
+        # Use optimized CamemBERT reranker
+        try:
+            from reranker_optimized import RerankerOptimized
+            self.reranker = RerankerOptimized(model_name='dangvantuan/sentence-camembert-large')
+            logger.info("Using OPTIMIZED CamemBERT reranker for French precision")
+        except Exception as e:
+            logger.warning(f"Could not load optimized reranker: {e}, falling back to standard")
+            self.reranker = Reranker(model_name='cross-encoder/ms-marco-MiniLM-L-6-v2')
+        
+        # OPTIMIZED Configuration for speed and precision
         self.max_retries = 3
-        self.initial_retrieval_count = 20  # Retrieve more candidates for reranking
+        self.initial_retrieval_count = 15  # Reduced from 20 for speed (cache helps)
         self.final_results_count = 8  # Return top 8 after reranking
-        self.min_reranker_score = -5.0  # Dynamic threshold (will be computed)
+        self.min_reranker_score = -3.0  # Stricter threshold for precision
         self.max_context_tokens = 8000
         
-        logger.info("Enhanced RAG service initialized with French-first query enhancement and reranking")
+        logger.info("OPTIMIZED RAG service initialized with CamemBERT, caching, and exact match boosting")
     
     def update_api_key(self, api_key: str):
         """Update the API key for Cerebras"""
