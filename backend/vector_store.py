@@ -1,46 +1,61 @@
 import logging
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Optional
 from pathlib import Path
 import chromadb
 from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
 import config_paths
 from hybrid_retriever import HybridRetriever
+from cache_manager import EmbeddingCache, QueryCache
 
 logger = logging.getLogger(__name__)
 
 
 class VectorStoreService:
-    """Service for managing vector embeddings with ChromaDB and hybrid retrieval"""
+    """OPTIMIZED service with embedding cache and HNSW indexing"""
     
     def __init__(self, collection_name: str = "documents"):
-        # Initialize ChromaDB with persistent storage using dynamic paths
+        # Initialize ChromaDB with HNSW for faster search
         logger.info(f"Using ChromaDB path: {config_paths.CHROMA_DIR_STR}")
         
         self.client = chromadb.PersistentClient(
             path=config_paths.CHROMA_DIR_STR,
-            settings=Settings(anonymized_telemetry=False)
+            settings=Settings(
+                anonymized_telemetry=False,
+                allow_reset=True
+            )
         )
         
-        # Initialize embedding model (manu/bge-m3-custom-fr for French-optimized multilingual support)
+        # Initialize embedding model
         logger.info("Loading embedding model: manu/bge-m3-custom-fr")
         self.embedding_model = SentenceTransformer('manu/bge-m3-custom-fr')
+        self.model_name = 'manu/bge-m3-custom-fr'
         
-        # Initialize hybrid retriever for BM25 + dense fusion
+        # Initialize caches for performance
+        self.embedding_cache = EmbeddingCache(max_size=1000)
+        self.query_cache = QueryCache(max_size=500, ttl_seconds=3600)
+        logger.info("Initialized embedding and query caches")
+        
+        # Initialize hybrid retriever
         self.hybrid_retriever = HybridRetriever()
         
-        # Get or create collection
+        # Get or create collection with HNSW
         try:
             self.collection = self.client.get_collection(name=collection_name)
             logger.info(f"Loaded existing collection: {collection_name}")
-            # Re-index existing documents for BM25
             self._reindex_bm25()
         except Exception:
+            # Create with HNSW metadata for optimized search
             self.collection = self.client.create_collection(
                 name=collection_name,
-                metadata={"description": "RAG document embeddings"}
+                metadata={
+                    "description": "RAG document embeddings",
+                    "hnsw:space": "cosine",  # Cosine similarity for HNSW
+                    "hnsw:construction_ef": 200,  # Higher = better quality
+                    "hnsw:search_ef": 100  # Higher = better recall
+                }
             )
-            logger.info(f"Created new collection: {collection_name}")
+            logger.info(f"Created new collection with HNSW: {collection_name}")
     
     def add_documents(self, texts: List[str], metadata: List[Dict]):
         """Add documents to the vector store with duplicate detection"""
