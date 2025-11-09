@@ -7,7 +7,7 @@ import requests
 import json
 import time
 
-BACKEND_URL = "https://meticulous-french.preview.emergentagent.com/api"
+BACKEND_URL = "https://frag-booster.preview.emergentagent.com/api"
 
 def test_cache_behavior():
     """Test incremental vs full reindex cache behavior"""
