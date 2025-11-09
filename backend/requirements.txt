@@ -81,4 +81,4 @@ rapidfuzz>=3.6.0
 
 # French NLP Support - CPU-OPTIMIZED (small model for speed)
 spacy>=3.7.0
-# Note: fr_core_news_sm will be auto-downloaded on first use (15MB, très rapide sur CPU)
+# Note: fr_core_news_sm will be auto-downloaded on first use (15MB, very fast on CPU)
