@@ -10,21 +10,16 @@ logger = logging.getLogger(__name__)
 class EntityExtractor:
     """Extract and preserve named entities and data patterns for precise RAG"""
     
-    def __init__(self):
-        # Load French spaCy model
-        try:
-            self.nlp = spacy.load('fr_core_news_lg')
-            logger.info("Loaded French spaCy model: fr_core_news_lg")
-        except OSError:
-            logger.warning("French spaCy model not found, attempting to download...")
-            try:
-                import subprocess
-                subprocess.run(['python', '-m', 'spacy', 'download', 'fr_core_news_lg'], check=True)
-                self.nlp = spacy.load('fr_core_news_lg')
-                logger.info("Downloaded and loaded fr_core_news_lg")
-            except Exception as e:
-                logger.error(f"Failed to load spaCy model: {e}")
-                self.nlp = None
+    def __init__(self, enable_ner: bool = False):
+        # LAZY LOADING: Only load spaCy when needed to save memory
+        self.nlp = None
+        self.enable_ner = enable_ner
+        self._ner_attempted = False
+        
+        if enable_ner:
+            self._load_ner_model()
+        else:
+            logger.info("Entity extractor initialized (NER disabled for memory optimization)")
         
         # Data patterns for precise extraction
         self.patterns = {
