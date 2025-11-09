@@ -27,19 +27,29 @@ logger = logging.getLogger(__name__)
 
 
 class OptimizedDocumentProcessor:
-    """High-performance document processor with parallel processing and optimizations"""
+    """ULTRA-OPTIMIZED processor with semantic chunking and entity extraction"""
     
-    def __init__(self, chunk_size: int = 800, chunk_overlap: int = 150, max_workers: int = None):
-        self.chunk_size = chunk_size
-        self.chunk_overlap = chunk_overlap
-        self.min_chunk_size = 100
+    def __init__(self, chunk_size: int = 400, chunk_overlap: int = 200, max_workers: int = None):
+        # OPTIMIZED chunk settings for precision
+        self.chunk_size = chunk_size  # Reduced from 800 for precision
+        self.chunk_overlap = chunk_overlap  # Increased from 150 for context
+        self.min_chunk_size = 50  # Reduced for finer granularity
         
-        # Set max workers for parallel processing (defaults to CPU count)
+        # Parallel processing
         if max_workers is None:
-            max_workers = max(1, multiprocessing.cpu_count() - 1)  # Leave 1 CPU free
+            max_workers = max(1, multiprocessing.cpu_count() - 1)
         self.max_workers = max_workers
         
-        logger.info(f"OptimizedDocumentProcessor initialized with {max_workers} workers")
+        # Entity extractor for precision on names and data
+        try:
+            from entity_extractor import EntityExtractor
+            self.entity_extractor = EntityExtractor()
+            logger.info("Entity extractor loaded successfully")
+        except Exception as e:
+            logger.warning(f"Could not load entity extractor: {e}")
+            self.entity_extractor = None
+        
+        logger.info(f"ULTRA-OPTIMIZED processor: chunk_size={chunk_size}, overlap={chunk_overlap}, workers={max_workers}, entity_extraction=enabled")
     
     def process_document(self, file_path: str) -> List[str]:
         """Process a document and return text chunks (optimized)"""
