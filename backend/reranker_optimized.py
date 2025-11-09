@@ -80,9 +80,10 @@ class RerankerOptimized:
             return [], []
         
         try:
-            # Step 1: Get CamemBERT scores
+            # Step 1: Get CamemBERT scores (CPU-optimized batch processing)
             pairs = [[query, doc] for doc in documents]
-            camembert_scores = self.model.predict(pairs)
+            # CPU optimization: Smaller batch size for CPU processing
+            camembert_scores = self.model.predict(pairs, batch_size=16, show_progress_bar=False)
             
             # Step 2: Compute exact match boosts (if enabled)
             final_scores = np.array(camembert_scores, dtype=float)
