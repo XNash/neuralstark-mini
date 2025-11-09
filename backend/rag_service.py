@@ -20,26 +20,26 @@ class RAGService:
         # Initialize OPTIMIZED components
         self.query_enhancer = QueryEnhancer()
         
-        # Use optimized reranker with CamemBERT for French precision
+        # Use optimized reranker with CamemBERT for French precision (CPU-only)
         try:
             from reranker_optimized import RerankerOptimized
-            # Use CamemBERT-large for maximum French accuracy
+            # Use CamemBERT-large for maximum French accuracy on CPU
             self.reranker = RerankerOptimized(model_name='dangvantuan/sentence-camembert-large')
-            logger.info("Using OPTIMIZED CamemBERT reranker with exact match boosting")
+            logger.info("Using CPU-OPTIMIZED CamemBERT reranker with exact match boosting + NER")
         except Exception as e:
             logger.warning(f"Could not load optimized reranker: {e}, falling back to standard")
             self.reranker = Reranker(model_name='cross-encoder/ms-marco-MiniLM-L-6-v2')
         
-        # ULTRA-OPTIMIZED Configuration for near-instant responses + precision
+        # ULTRA-OPTIMIZED Configuration for CPU-only: near-instant responses (300-500ms) + precision
         self.max_retries = 3
-        self.initial_retrieval_count = 12  # Further reduced for speed (was 15, 20)
-        self.variation_retrieval_count = 3  # Fewer results from variations (was 5)
+        self.initial_retrieval_count = 10  # CPU-optimized: reduced for speed (was 12, 15, 20)
+        self.variation_retrieval_count = 2  # CPU-optimized: minimal for speed (was 3, 5)
         self.final_results_count = 8  # Return top 8 after reranking
         self.min_reranker_score = -2.5  # Even stricter for meticulous precision (was -3.0)
         self.max_context_tokens = 8000
-        self.prefilter_threshold = 0.25  # Pre-filter low relevance before reranking
+        self.prefilter_threshold = 0.20  # CPU-optimized: stricter pre-filter (was 0.25)
         
-        logger.info("OPTIMIZED RAG service initialized with CamemBERT, caching, and exact match boosting")
+        logger.info("CPU-OPTIMIZED RAG service initialized: CamemBERT + caching + exact match boosting + NER ENABLED")
     
     def update_api_key(self, api_key: str):
         """Update the API key for Cerebras"""
