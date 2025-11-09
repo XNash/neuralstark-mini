@@ -176,17 +176,28 @@ class VectorStoreService:
             return [], []
     
     def _search_dense(self, query: str, n_results: int) -> Tuple[List[str], List[Dict]]:
-        """Perform dense (semantic) search using embeddings"""
+        """OPTIMIZED dense search with embedding cache"""
         # Ensure n_results doesn't exceed available documents
         count = self.collection.count()
         n_results = min(n_results, count)
         
-        # Generate query embedding with normalization
-        query_embedding = self.embedding_model.encode(
-            [query], 
-            show_progress_bar=False,
-            normalize_embeddings=True
-        )[0]
+        # Try to get embedding from cache
+        query_embedding = self.embedding_cache.get(query, self.model_name)
+        
+        if query_embedding is None:
+            # Cache miss - generate embedding
+            query_embedding = self.embedding_model.encode(
+                [query], 
+                show_progress_bar=False,
+                normalize_embeddings=True,
+                batch_size=1
+            )[0]
+            
+            # Store in cache
+            self.embedding_cache.put(query, query_embedding, self.model_name)
+            logger.debug("Generated and cached new embedding")
+        else:
+            logger.debug("Using cached embedding")
         
         # Search in collection
         results = self.collection.query(
