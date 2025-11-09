@@ -7,7 +7,7 @@ import requests
 import json
 import time
 
-BACKEND_URL = "https://french-lang-rag.preview.emergentagent.com/api"
+BACKEND_URL = "https://meticulous-french.preview.emergentagent.com/api"
 
 def test_optimized_features():
     """Test all optimized NeuralStark features"""
