@@ -45,14 +45,15 @@ class VectorStoreService:
             logger.info(f"Loaded existing collection: {collection_name}")
             self._reindex_bm25()
         except Exception:
-            # Create with HNSW metadata for optimized search
+            # Create with HNSW metadata for MAXIMUM search speed
             self.collection = self.client.create_collection(
                 name=collection_name,
                 metadata={
                     "description": "RAG document embeddings",
                     "hnsw:space": "cosine",  # Cosine similarity for HNSW
-                    "hnsw:construction_ef": 200,  # Higher = better quality
-                    "hnsw:search_ef": 100  # Higher = better recall
+                    "hnsw:construction_ef": 300,  # Increased for better index quality (was 200)
+                    "hnsw:search_ef": 150,  # Increased for better recall (was 100)
+                    "hnsw:M": 48,  # More connections = faster search (default 16)
                 }
             )
             logger.info(f"Created new collection with HNSW: {collection_name}")
