@@ -140,24 +140,27 @@ class RAGService:
                         response += "\n\n*Note: Ce système répond uniquement en français.*"
                     return response, [], spelling_suggestion
                 
-                # Step 3: RERANKING - Use cross-encoder for precise relevance
+                # Step 3: OPTIMIZED RERANKING - CamemBERT + exact match boosting
                 reranked_docs, reranked_metadata = self.reranker.rerank(
                     corrected_query,
                     unique_docs,
                     unique_metadata,
-                    top_k=self.initial_retrieval_count
+                    top_k=self.initial_retrieval_count,
+                    enable_exact_match_boost=True  # Boost for names and data
                 )
                 
-                # Step 4: DYNAMIC THRESHOLD - Filter by reranker confidence
+                # Step 4: STRICTER DYNAMIC THRESHOLD - Better precision (20th percentile)
                 if reranked_metadata:
                     scores = [meta.get('reranker_score', 0.0) for meta in reranked_metadata]
-                    dynamic_threshold = self.reranker.compute_dynamic_threshold(scores, percentile=30)
+                    # Use 20th percentile (stricter) for better precision on details
+                    dynamic_threshold = self.reranker.compute_dynamic_threshold(scores, percentile=20)
                     
-                    # Apply filter
+                    # Apply filter with dynamic threshold
                     filtered_docs, filtered_metadata = self.reranker.filter_by_confidence(
                         reranked_docs,
                         reranked_metadata,
-                        min_score=max(self.min_reranker_score, dynamic_threshold)
+                        min_score=max(self.min_reranker_score, dynamic_threshold),
+                        use_dynamic_threshold=True
                     )
                 else:
                     filtered_docs, filtered_metadata = reranked_docs, reranked_metadata
