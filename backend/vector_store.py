@@ -112,7 +112,7 @@ class VectorStoreService:
     
     def search(self, query: str, n_results: int = 5, use_hybrid: bool = True) -> Tuple[List[str], List[Dict]]:
         """
-        Search for relevant documents with enhanced relevance scoring
+        OPTIMIZED search with caching and HNSW
         
         Args:
             query: Search query
@@ -123,14 +123,20 @@ class VectorStoreService:
             Tuple of (documents, metadata)
         """
         try:
+            # Check query cache first (massive speedup for repeated queries)
+            cached_result = self.query_cache.get(query, n_results, use_hybrid)
+            if cached_result is not None:
+                logger.info(f"Query cache HIT - returning cached results")
+                return cached_result
+            
             # Check if collection has documents
             count = self.collection.count()
             if count == 0:
                 logger.warning("Vector store is empty - no documents to search")
                 return [], []
             
-            # Retrieve more candidates for better reranking
-            retrieval_count = min(n_results * 3, count)  # Get 3x candidates for reranking
+            # Retrieve more candidates for better reranking (2x instead of 3x for speed)
+            retrieval_count = min(n_results * 2, count)
             
             if use_hybrid and self.hybrid_retriever.bm25_index:
                 # HYBRID RETRIEVAL: Combine dense + sparse
