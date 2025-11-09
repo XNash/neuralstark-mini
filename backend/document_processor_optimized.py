@@ -40,16 +40,16 @@ class OptimizedDocumentProcessor:
             max_workers = max(1, multiprocessing.cpu_count() - 1)
         self.max_workers = max_workers
         
-        # Entity extractor for precision on names and data
+        # Entity extractor (disabled by default for memory - patterns still work)
         try:
             from entity_extractor import EntityExtractor
-            self.entity_extractor = EntityExtractor()
-            logger.info("Entity extractor loaded successfully")
+            self.entity_extractor = EntityExtractor(enable_ner=False)  # Regex only, no NER
+            logger.info("Entity extractor loaded (regex mode, NER disabled for memory)")
         except Exception as e:
             logger.warning(f"Could not load entity extractor: {e}")
             self.entity_extractor = None
         
-        logger.info(f"ULTRA-OPTIMIZED processor: chunk_size={chunk_size}, overlap={chunk_overlap}, workers={max_workers}, entity_extraction=enabled")
+        logger.info(f"ULTRA-OPTIMIZED processor: chunk_size={chunk_size}, overlap={chunk_overlap}, workers={max_workers}")
     
     def process_document(self, file_path: str) -> List[str]:
         """Process a document and return text chunks (optimized)"""
