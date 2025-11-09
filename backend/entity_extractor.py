@@ -10,39 +10,11 @@ logger = logging.getLogger(__name__)
 class EntityExtractor:
     """Extract and preserve named entities and data patterns for precise RAG"""
     
-    def __init__(self, enable_ner: bool = False):
+    def __init__(self, enable_ner: bool = True):
+        """Initialize with NER ENABLED for maximum precision on French text"""
         # LAZY LOADING: Only load spaCy when needed to save memory
         self.nlp = None
         self.enable_ner = enable_ner
-    
-    def _load_ner_model(self):
-        """Lazy load spaCy NER model only when needed"""
-        if self._ner_attempted:
-            return
-        
-        self._ner_attempted = True
-        try:
-            # Try small model first (fr_core_news_sm) - much lighter
-            try:
-                self.nlp = spacy.load('fr_core_news_sm')
-                logger.info("Loaded lightweight French spaCy model: fr_core_news_sm")
-                return
-            except:
-                pass
-            
-            # Fallback to medium model
-            try:
-                self.nlp = spacy.load('fr_core_news_md')
-                logger.info("Loaded French spaCy model: fr_core_news_md")
-                return
-            except:
-                pass
-            
-            logger.warning("No French spaCy model available, NER disabled")
-        except Exception as e:
-            logger.error(f"Failed to load spaCy model: {e}")
-            self.nlp = None
-
         self._ner_attempted = False
         
         if enable_ner:
@@ -50,7 +22,7 @@ class EntityExtractor:
         else:
             logger.info("Entity extractor initialized (NER disabled for memory optimization)")
         
-        # Data patterns for precise extraction
+        # Data patterns for precise extraction (French-optimized)
         self.patterns = {
             'email': re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'),
             'phone': re.compile(r'(?:\+33|0)[1-9](?:[\s.-]?\d{2}){4}'),
@@ -63,26 +35,67 @@ class EntityExtractor:
             'date_fr': re.compile(r'\b\d{1,2}[/-]\d{1,2}[/-]\d{2,4}\b'),
             'amount': re.compile(r'\b\d+(?:[.,]\d{1,2})?\s?(?:€|EUR|euros?)\b', re.IGNORECASE),
             'percentage': re.compile(r'\b\d+(?:[.,]\d{1,2})?\s?%\b'),
+            # Additional French patterns for better precision
+            'tva': re.compile(r'\bFR\s?\d{11}\b', re.IGNORECASE),  # French VAT number
+            'iban': re.compile(r'\bFR\d{2}\s?\d{4}\s?\d{4}\s?\d{4}\s?\d{4}\s?\d{4}\s?\d{3}\b', re.IGNORECASE),
+            'number': re.compile(r'\b\d+(?:[.,]\d+)?\b'),  # General numbers for exact matching
         }
         
-        logger.info("Entity extractor initialized with French NER and data patterns")
+        logger.info(f"Entity extractor initialized with French patterns (NER enabled={enable_ner})")
+    
+    def _load_ner_model(self):
+        """Lazy load spaCy NER model - CPU-OPTIMIZED (small model for speed)"""
+        if self._ner_attempted:
+            return
+        
+        self._ner_attempted = True
+        try:
+            # Try SMALL model FIRST for CPU performance (15MB, très rapide)
+            try:
+                self.nlp = spacy.load('fr_core_news_sm')
+                # Disable unused pipes for CPU speed
+                self.nlp.disable_pipes('parser')  # Keep only NER and basic processing
+                logger.info("Loaded lightweight French spaCy model: fr_core_news_sm (CPU-optimized)")
+                return
+            except:
+                logger.info("fr_core_news_sm not found, attempting to download...")
+                import subprocess
+                subprocess.run(['python', '-m', 'spacy', 'download', 'fr_core_news_sm'], check=False)
+                try:
+                    self.nlp = spacy.load('fr_core_news_sm')
+                    self.nlp.disable_pipes('parser')
+                    logger.info("Downloaded and loaded fr_core_news_sm (CPU-optimized)")
+                    return
+                except:
+                    pass
+            
+            # Fallback to medium model if small not available
+            try:
+                self.nlp = spacy.load('fr_core_news_md')
+                self.nlp.disable_pipes('parser')
+                logger.info("Loaded French spaCy model: fr_core_news_md")
+                return
+            except:
+                pass
+            
+            logger.warning("No French spaCy model available, NER disabled (regex patterns still active)")
+        except Exception as e:
+            logger.error(f"Failed to load spaCy model: {e}")
+            self.nlp = None
     
     def extract_entities(self, text: str) -> Dict[str, List[str]]:
-        """
-        Extract named entities and data patterns from text
-        
-        Returns:
-            Dictionary with entity types as keys and lists of entities as values
-        """
+        """Extract named entities and data patterns from text (CPU-optimized)"""
         entities = defaultdict(list)
         
         if not text or not text.strip():
             return dict(entities)
         
-        # Extract using spaCy NER
-        if self.nlp:
+        # Extract using spaCy NER (CPU-optimized with text truncation)
+        if self.nlp and self.enable_ner:
             try:
-                doc = self.nlp(text[:50000])  # Limit text length for performance
+                # CPU optimization: Limit text length for fast processing
+                max_length = 20000  # Reduced from 50000 for CPU speed
+                doc = self.nlp(text[:max_length])
                 
                 for ent in doc.ents:
                     entity_type = ent.label_
@@ -104,7 +117,7 @@ class EntityExtractor:
             except Exception as e:
                 logger.error(f"Error in spaCy NER: {e}")
         
-        # Extract using regex patterns
+        # Extract using regex patterns (always active, very fast)
         for pattern_name, pattern in self.patterns.items():
             matches = pattern.findall(text)
             if matches:
@@ -117,12 +130,7 @@ class EntityExtractor:
         return dict(entities)
     
     def find_exact_matches(self, query: str, text: str) -> List[Tuple[str, int]]:
-        """
-        Find exact matches of query entities in text
-        
-        Returns:
-            List of (entity, position) tuples for exact matches
-        """
+        """Find exact matches of query entities in text - CRITICAL for detail precision"""
         exact_matches = []
         
         # Extract entities from query
@@ -137,14 +145,12 @@ class EntityExtractor:
                 pos = text_lower.find(entity_lower)
                 if pos != -1:
                     exact_matches.append((entity, pos))
+                    logger.debug(f"Exact match found: '{entity}' (type: {entity_type}) at position {pos}")
         
         return exact_matches
     
     def compute_entity_overlap(self, query: str, text: str) -> float:
-        """
-        Compute entity overlap score between query and text (0-1)
-        Higher score = more query entities found in text
-        """
+        """Compute entity overlap score (0-1) - Higher = more precision on details"""
         query_entities = self.extract_entities(query)
         
         # Flatten all query entities
@@ -165,40 +171,42 @@ class EntityExtractor:
         
         # Return overlap ratio
         overlap_score = matches / len(all_query_entities)
+        
+        if overlap_score > 0:
+            logger.debug(f"Entity overlap: {matches}/{len(all_query_entities)} = {overlap_score:.2f}")
+        
         return overlap_score
     
     def enhance_chunk_metadata(self, text: str, metadata: Dict) -> Dict:
-        """
-        Enhance chunk metadata with extracted entities for better retrieval
-        """
+        """Enhance chunk metadata with extracted entities for better retrieval"""
         entities = self.extract_entities(text)
         
         # Add entity counts
         metadata['entity_counts'] = {k: len(v) for k, v in entities.items()}
         metadata['total_entities'] = sum(metadata['entity_counts'].values())
         
-        # Store important entities
-        metadata['persons'] = entities.get('person', [])[:5]  # Top 5
+        # Store important entities (top 5 of each type)
+        metadata['persons'] = entities.get('person', [])[:5]
         metadata['organizations'] = entities.get('organization', [])[:5]
         metadata['locations'] = entities.get('location', [])[:5]
         metadata['emails'] = entities.get('email', [])
         metadata['phones'] = entities.get('phone', [])
         metadata['references'] = entities.get('reference', [])
+        metadata['amounts'] = entities.get('amount', [])
+        metadata['dates'] = entities.get('date_fr', [])
         
         return metadata
     
     def extract_keyphrases(self, text: str, max_phrases: int = 10) -> List[str]:
-        """
-        Extract key phrases from text for indexing
-        Uses noun phrases and named entities
-        """
+        """Extract key phrases from text for indexing (CPU-optimized)"""
         keyphrases = []
         
         if not self.nlp or not text:
             return keyphrases
         
         try:
-            doc = self.nlp(text[:10000])  # Limit for performance
+            # CPU optimization: Limit text length
+            doc = self.nlp(text[:5000])  # Reduced from 10000 for CPU
             
             # Extract noun phrases
             for chunk in doc.noun_chunks:
