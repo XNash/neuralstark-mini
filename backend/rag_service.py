@@ -20,12 +20,12 @@ class RAGService:
         # Initialize OPTIMIZED components
         self.query_enhancer = QueryEnhancer()
         
-        # Use optimized reranker with exact match boosting (lightweight model)
+        # Use optimized reranker with CamemBERT for French precision
         try:
             from reranker_optimized import RerankerOptimized
-            # Use lightweight model by default to prevent memory issues
-            self.reranker = RerankerOptimized(model_name='cross-encoder/ms-marco-MiniLM-L-6-v2')
-            logger.info("Using OPTIMIZED reranker with exact match boosting")
+            # Use CamemBERT-large for maximum French accuracy
+            self.reranker = RerankerOptimized(model_name='dangvantuan/sentence-camembert-large')
+            logger.info("Using OPTIMIZED CamemBERT reranker with exact match boosting")
         except Exception as e:
             logger.warning(f"Could not load optimized reranker: {e}, falling back to standard")
             self.reranker = Reranker(model_name='cross-encoder/ms-marco-MiniLM-L-6-v2')
