@@ -20,35 +20,36 @@ class RerankerOptimized:
     
     def __init__(self, model_name: str = 'dangvantuan/sentence-camembert-large'):
         """
-        Initialize optimized reranker - FRENCH OPTIMIZED
+        Initialize optimized reranker - FRENCH OPTIMIZED for CPU-only
         
         Default: dangvantuan/sentence-camembert-large (French specialist, 1.3GB)
         Fallback: cross-encoder/ms-marco-MiniLM-L-6-v2 (lightweight, 90MB)
         
         CamemBERT provides SUPERIOR accuracy for French language RAG (+30-40%)
         """
-        logger.info(f"Loading cross-encoder model: {model_name}")
+        logger.info(f"Loading cross-encoder model (CPU-only): {model_name}")
         try:
-            self.model = CrossEncoder(model_name, max_length=512)
+            # Force CPU device for cross-encoder
+            self.model = CrossEncoder(model_name, max_length=512, device='cpu')
             self.model_name = model_name
-            logger.info(f"Reranker model loaded successfully: {model_name}")
+            logger.info(f"Reranker model loaded successfully on CPU: {model_name}")
         except Exception as e:
             logger.error(f"Failed to load reranker model {model_name}: {e}")
             logger.warning("Falling back to ms-marco-MiniLM...")
             try:
                 # Fallback to lightweight ms-marco
-                self.model = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2', max_length=512)
+                self.model = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2', max_length=512, device='cpu')
                 self.model_name = 'cross-encoder/ms-marco-MiniLM-L-6-v2'
-                logger.info("Fallback model loaded: ms-marco-MiniLM-L-6-v2")
+                logger.info("Fallback model loaded on CPU: ms-marco-MiniLM-L-6-v2")
             except Exception as e2:
                 logger.error(f"Failed to load fallback model: {e2}")
                 self.model = None
                 self.model_name = None
         
-        # Initialize entity extractor for exact match detection
-        self.entity_extractor = EntityExtractor()
+        # Initialize entity extractor with NER ENABLED for maximum precision
+        self.entity_extractor = EntityExtractor(enable_ner=True)
         
-        logger.info("Optimized reranker initialized with entity-aware scoring")
+        logger.info("Optimized reranker initialized with CPU-only + entity-aware scoring + NER ENABLED")
     
     def rerank(
         self,
