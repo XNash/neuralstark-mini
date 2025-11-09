@@ -171,9 +171,9 @@ class RAGService:
                 # Step 3: OPTIMIZED RERANKING - CamemBERT + exact match boosting (on pre-filtered set)
                 reranked_docs, reranked_metadata = self.reranker.rerank(
                     corrected_query,
-                    unique_docs,
-                    unique_metadata,
-                    top_k=self.initial_retrieval_count,
+                    prefiltered_docs,  # Use pre-filtered docs for faster reranking
+                    prefiltered_metadata,
+                    top_k=min(self.initial_retrieval_count, len(prefiltered_docs)),
                     enable_exact_match_boost=True  # Boost for names and data
                 )
                 
