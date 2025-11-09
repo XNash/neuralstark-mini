@@ -184,7 +184,7 @@ class VectorStoreService:
             return [], []
     
     def _search_dense(self, query: str, n_results: int) -> Tuple[List[str], List[Dict]]:
-        """OPTIMIZED dense search with embedding cache"""
+        """OPTIMIZED dense search with embedding cache and fast encoding"""
         # Ensure n_results doesn't exceed available documents
         count = self.collection.count()
         n_results = min(n_results, count)
@@ -193,12 +193,17 @@ class VectorStoreService:
         query_embedding = self.embedding_cache.get(query, self.model_name)
         
         if query_embedding is None:
-            # Cache miss - generate embedding
+            # Cache miss - generate embedding with optimized settings
+            import torch
+            device = 'cuda' if torch.cuda.is_available() else 'cpu'
+            
             query_embedding = self.embedding_model.encode(
                 [query], 
                 show_progress_bar=False,
                 normalize_embeddings=True,
-                batch_size=1
+                batch_size=1,
+                device=device,
+                convert_to_numpy=True
             )[0]
             
             # Store in cache
