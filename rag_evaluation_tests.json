@@ -1,0 +1,273 @@
+{
+  "evaluation_metadata": {
+    "test_suite_name": "RAG Precision and Accuracy Evaluation",
+    "test_date": "2025-11-15",
+    "description": "Comprehensive evaluation of RAG system focusing on precision with small details in large dataset",
+    "total_tests": 30
+  },
+  "test_categories": [
+    {
+      "category": "NEEDLE_IN_HAYSTACK",
+      "description": "Finding specific details in large dataset",
+      "tests": [
+        {
+          "test_id": "NH001",
+          "query": "What is the exact phone number of TechCorp?",
+          "expected_answer": "+1-555-0123",
+          "difficulty": "medium",
+          "source_file": "company_info.md"
+        },
+        {
+          "test_id": "NH002",
+          "query": "What is the exact address of TechCorp office?",
+          "expected_answer": "123 Tech Street, San Francisco, CA 94102",
+          "difficulty": "medium",
+          "source_file": "company_info.md"
+        },
+        {
+          "test_id": "NH003",
+          "query": "What was the exact amount paid for the transaction with invoice number INV-2024-10007?",
+          "expected_answer": "11362.50 EUR",
+          "difficulty": "hard",
+          "source_file": "financial_report_q4_2024.csv"
+        },
+        {
+          "test_id": "NH004",
+          "query": "What is the SKU number for DataVault Pro 5000?",
+          "expected_answer": "DV-P5000-ENT",
+          "difficulty": "hard",
+          "source_file": "financial_report_q4_2024.csv"
+        },
+        {
+          "test_id": "NH005",
+          "query": "How many employees received salaries in November 2024 according to the financial report?",
+          "expected_answer": "89 employees",
+          "difficulty": "hard",
+          "source_file": "financial_report_q4_2024.csv"
+        },
+        {
+          "test_id": "NH006",
+          "query": "What is the exact monthly rent for TechCorp's Paris office?",
+          "expected_answer": "18500.00 EUR",
+          "difficulty": "hard",
+          "source_file": "financial_report_q4_2024.csv"
+        },
+        {
+          "test_id": "NH007",
+          "query": "What client ID placed an order for Norwegian research institute?",
+          "expected_answer": "CLI-NO-00234",
+          "difficulty": "very_hard",
+          "source_file": "financial_report_q4_2024.csv"
+        }
+      ]
+    },
+    {
+      "category": "SPELLING_VARIATIONS",
+      "description": "Testing robustness against spelling mistakes",
+      "tests": [
+        {
+          "test_id": "SP001",
+          "query": "What is TekCorp's refund polisy?",
+          "expected_correction": "TechCorp's refund policy",
+          "expected_answer": "30-day money-back guarantee",
+          "difficulty": "medium",
+          "source_file": "faq.json"
+        },
+        {
+          "test_id": "SP002",
+          "query": "What services does the companie offer?",
+          "expected_correction": "company",
+          "expected_answer": "AI Consulting, Machine Learning Development, Data Analytics",
+          "difficulty": "easy",
+          "source_file": "company_info.md"
+        },
+        {
+          "test_id": "SP003",
+          "query": "What is the price of AI Assistent Pro?",
+          "expected_correction": "Assistant",
+          "expected_answer": "$999/month",
+          "difficulty": "easy",
+          "source_file": "products.txt"
+        },
+        {
+          "test_id": "SP004",
+          "query": "Tell me about mashine learning services",
+          "expected_correction": "machine learning",
+          "expected_answer": "Machine Learning Development - Custom ML models",
+          "difficulty": "easy",
+          "source_file": "company_info.md"
+        }
+      ]
+    },
+    {
+      "category": "GRAMMATICAL_VARIATIONS",
+      "description": "Testing variations in grammar and phrasing",
+      "tests": [
+        {
+          "test_id": "GR001",
+          "query": "What language is supported by TechCorp?",
+          "expected_answer": "English, French, Spanish, German, Italian, Portuguese, Japanese",
+          "difficulty": "easy",
+          "source_file": "faq.json",
+          "note": "Singular 'language' should find plural 'languages'"
+        },
+        {
+          "test_id": "GR002",
+          "query": "When was TechCorp founded?",
+          "expected_answer": "2015",
+          "difficulty": "easy",
+          "source_file": "company_info.md"
+        },
+        {
+          "test_id": "GR003",
+          "query": "How much does DataVision Analytics cost?",
+          "expected_answer": "$1,499/month",
+          "difficulty": "medium",
+          "source_file": "products.txt",
+          "note": "Different phrasing than 'what is the price'"
+        },
+        {
+          "test_id": "GR004",
+          "query": "What are the operating hours on Saturday?",
+          "expected_answer": "10:00 AM - 2:00 PM PST",
+          "difficulty": "medium",
+          "source_file": "company_info.md"
+        }
+      ]
+    },
+    {
+      "category": "NUMERICAL_PRECISION",
+      "description": "Testing accuracy with numbers, dates, and quantities",
+      "tests": [
+        {
+          "test_id": "NUM001",
+          "query": "What is the exact storage capacity included with CloudSync Enterprise?",
+          "expected_answer": "Up to 10TB",
+          "difficulty": "medium",
+          "source_file": "products.txt"
+        },
+        {
+          "test_id": "NUM002",
+          "query": "What discount percentage is offered for annual subscriptions?",
+          "expected_answer": "20%",
+          "difficulty": "medium",
+          "source_file": "products.txt"
+        },
+        {
+          "test_id": "NUM003",
+          "query": "How many days is the free trial period?",
+          "expected_answer": "14 days",
+          "difficulty": "easy",
+          "source_file": "faq.json"
+        },
+        {
+          "test_id": "NUM004",
+          "query": "What was the payroll amount in December 2024?",
+          "expected_answer": "254782.18 EUR",
+          "difficulty": "hard",
+          "source_file": "financial_report_q4_2024.csv"
+        },
+        {
+          "test_id": "NUM005",
+          "query": "How many hours of consulting were provided on October 7th, 2024?",
+          "expected_answer": "80 hours",
+          "difficulty": "very_hard",
+          "source_file": "financial_report_q4_2024.csv"
+        },
+        {
+          "test_id": "NUM006",
+          "query": "What was the hourly rate for the consulting service on December 10, 2024?",
+          "expected_answer": "234 EUR/hour",
+          "difficulty": "very_hard",
+          "source_file": "financial_report_q4_2024.csv"
+        }
+      ]
+    },
+    {
+      "category": "COMPLEX_MULTI_CRITERIA",
+      "description": "Testing complex queries with multiple criteria",
+      "tests": [
+        {
+          "test_id": "MC001",
+          "query": "What transactions in November 2024 were related to Hardware category and had amounts over 20000 EUR?",
+          "expected_answer": "Multiple transactions including Neural Processors (CLI-IT-00445, 21499.95 EUR) and Storage Systems (CLI-FR-00789, 25500.00 EUR)",
+          "difficulty": "very_hard",
+          "source_file": "financial_report_q4_2024.csv"
+        },
+        {
+          "test_id": "MC002",
+          "query": "Which products cost more than $1000 per month and include API features?",
+          "expected_answer": "DataVision Analytics ($1,499/month) and SmartPredict ML ($2,499/month) both mention API",
+          "difficulty": "hard",
+          "source_file": "products.txt"
+        },
+        {
+          "test_id": "MC003",
+          "query": "What AI-related services does TechCorp offer and what is their contact email?",
+          "expected_answer": "AI Consulting, Machine Learning Development, and contact@techcorp.com",
+          "difficulty": "medium",
+          "source_file": "company_info.md"
+        }
+      ]
+    },
+    {
+      "category": "MULTILINGUAL",
+      "description": "Testing multilingual queries",
+      "tests": [
+        {
+          "test_id": "ML001",
+          "query": "Combien d'employés travaillent chez TechCorp?",
+          "expected_answer": "Plus de 200 professionnels",
+          "difficulty": "medium",
+          "source_file": "company_info.md",
+          "language": "French"
+        },
+        {
+          "test_id": "ML002",
+          "query": "Quelles sont les valeurs de TechCorp?",
+          "expected_answer": "Innovation, Excellence, Collaboration, Intégrité",
+          "difficulty": "easy",
+          "source_file": "company_info.md",
+          "language": "French"
+        },
+        {
+          "test_id": "ML003",
+          "query": "What languages are supported by the AI Assistant Pro product?",
+          "expected_answer": "English, French, Spanish, German",
+          "difficulty": "medium",
+          "source_file": "products.txt",
+          "language": "English"
+        }
+      ]
+    },
+    {
+      "category": "ABBREVIATIONS_EXPANSIONS",
+      "description": "Testing handling of abbreviations and technical terms",
+      "tests": [
+        {
+          "test_id": "AB001",
+          "query": "What ML products does TechCorp offer?",
+          "expected_answer": "SmartPredict ML - Machine learning platform for predictive modeling",
+          "difficulty": "easy",
+          "source_file": "products.txt",
+          "note": "ML should expand to Machine Learning"
+        },
+        {
+          "test_id": "AB002",
+          "query": "Does TechCorp provide AI solutions?",
+          "expected_answer": "Yes, AI Consulting and AI Assistant Pro",
+          "difficulty": "easy",
+          "source_file": "company_info.md, products.txt",
+          "note": "AI should match Artificial Intelligence"
+        }
+      ]
+    }
+  ],
+  "scoring_criteria": {
+    "exact_match": "Answer contains exact expected value",
+    "semantic_match": "Answer is semantically correct but phrased differently",
+    "partial_match": "Answer contains some correct information but incomplete",
+    "no_match": "Answer is incorrect or irrelevant",
+    "spelling_correction_detected": "System detected and corrected spelling mistake"
+  }
+}
