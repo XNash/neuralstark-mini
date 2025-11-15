@@ -186,8 +186,7 @@ class RAGService:
                     filtered_docs, filtered_metadata = self.reranker.filter_by_confidence(
                         reranked_docs,
                         reranked_metadata,
-                        min_score=max(self.min_reranker_score, dynamic_threshold),
-                        use_dynamic_threshold=True
+                        min_score=max(self.min_reranker_score, dynamic_threshold)
                     )
                 else:
                     filtered_docs, filtered_metadata = reranked_docs, reranked_metadata
