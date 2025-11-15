@@ -1532,11 +1532,19 @@ class RAGAccuracyTester:
 
 if __name__ == "__main__":
     tester = RAGAccuracyTester()
-    success = tester.run_rag_accuracy_tests()
+    
+    # Run CPU-only RAG optimization tests as requested in review
+    print("🚀 DÉMARRAGE DES TESTS D'OPTIMISATION RAG CPU-ONLY")
+    print("Focus: Vitesse et Précision avec optimisations CPU")
+    print()
+    
+    success = tester.run_cpu_rag_optimization_tests()
     
     if success:
-        print("🎉 RAG accuracy enhancement tests passed!")
+        print("🎉 Tests d'optimisation RAG CPU-only réussis!")
+        print("✅ Toutes les optimisations CPU fonctionnent correctement")
         sys.exit(0)
     else:
-        print("⚠️  Some RAG accuracy tests failed. Check the details above.")
+        print("⚠️  Certains tests d'optimisation RAG ont échoué. Vérifiez les détails ci-dessus.")
+        print("❌ Des optimisations CPU nécessitent une attention")
         sys.exit(1)
