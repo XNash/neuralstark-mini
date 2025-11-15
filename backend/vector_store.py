@@ -117,6 +117,68 @@ class VectorStoreService:
             logger.error(f"Error adding documents to vector store: {e}")
             raise
     
+    def add_documents_batch(self, texts: List[str], metadata: List[Dict], batch_size: int = 100) -> List[str]:
+        """Add documents to vector store in optimized batches
+        
+        Args:
+            texts: List of document texts to add
+            metadata: List of metadata dictionaries for each document
+            batch_size: Number of documents to process in each batch (default: 100)
+        
+        Returns:
+            List of document IDs that were added
+        """
+        if not texts:
+            return []
+        
+        try:
+            all_ids = []
+            total_batches = (len(texts) + batch_size - 1) // batch_size
+            
+            for i in range(0, len(texts), batch_size):
+                batch_texts = texts[i:i + batch_size]
+                batch_metadata = metadata[i:i + batch_size]
+                batch_num = i // batch_size + 1
+                
+                logger.info(f"Processing batch {batch_num}/{total_batches} ({len(batch_texts)} documents)...")
+                
+                # Generate embeddings with CPU MULTI-THREADING
+                embeddings = self.embedding_model.encode(
+                    batch_texts, 
+                    show_progress_bar=False,
+                    batch_size=32,
+                    normalize_embeddings=True,
+                    convert_to_numpy=True,
+                    device='cpu',
+                    num_workers=4
+                )
+                
+                # Generate unique IDs
+                import time
+                timestamp = int(time.time() * 1000)
+                batch_ids = [f"doc_{timestamp}_{i+j}_{abs(hash(text)) % 10**8}" for j, text in enumerate(batch_texts)]
+                
+                # Add to collection
+                self.collection.add(
+                    embeddings=embeddings.tolist(),
+                    documents=batch_texts,
+                    metadatas=batch_metadata,
+                    ids=batch_ids
+                )
+                
+                # Index for BM25
+                self.hybrid_retriever.index_documents(batch_texts, batch_metadata)
+                
+                all_ids.extend(batch_ids)
+                logger.info(f"Batch {batch_num}/{total_batches} added successfully ({len(batch_ids)} documents)")
+            
+            logger.info(f"✓ All batches completed: {len(all_ids)} documents added to vector store")
+            return all_ids
+            
+        except Exception as e:
+            logger.error(f"Error in batch insertion: {e}", exc_info=True)
+            raise
+    
     def search(self, query: str, n_results: int = 5, use_hybrid: bool = True) -> Tuple[List[str], List[Dict]]:
         """
         ULTRA-OPTIMIZED search with caching and HNSW (CPU-focused)
