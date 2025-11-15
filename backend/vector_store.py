@@ -149,8 +149,7 @@ class VectorStoreService:
                     batch_size=32,
                     normalize_embeddings=True,
                     convert_to_numpy=True,
-                    device='cpu',
-                    num_workers=4
+                    device='cpu'
                 )
                 
                 # Generate unique IDs
