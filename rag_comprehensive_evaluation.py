@@ -24,7 +24,7 @@ from typing import Dict, List, Tuple
 BACKEND_URL = "https://rag-analyzer.preview.emergentagent.com/api"
 
 # Cerebras API key provided in review request
-CEREBRAS_API_KEY = "csk-c2wp6rmd4ed5jxtkydymmw6jp9vyv294fntcet6923dnftnw"
+CEREBRAS_API_KEY = "csk-tdtfvf3xtvntkhm2k6enfky2cny9y9x686pxet3dp2h5dcvm"
 
 class RAGComprehensiveEvaluator:
     def __init__(self):
