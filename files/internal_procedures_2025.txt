@@ -1,0 +1,615 @@
+NEURALTECH SOLUTIONS - PROCÉDURES INTERNES 2025
+================================================
+
+Document ID: PROC-INT-2025-v3.2
+Date de publication: 1er janvier 2025
+Classification: CONFIDENTIEL - Usage interne uniquement
+Dernière révision: 15 janvier 2025
+Responsable: Direction des Ressources Humaines
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. PROCÉDURE D'ONBOARDING DES NOUVEAUX EMPLOYÉS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1.1 AVANT LE PREMIER JOUR (J-7 à J-1)
+
+□ J-7: RH envoie le pack d'accueil électronique contenant:
+   - Lettre de bienvenue signée par le CEO
+   - Organigramme de l'entreprise (version mise à jour Q1 2025)
+   - Guide de l'employé (148 pages, PDF interactif)
+   - Formulaires administratifs à compléter (IBAN, mutuelle, contacts urgence)
+   - Code vestimentaire et culture d'entreprise
+   - Plan d'accès au bureau (Paris 8ème, métro ligne 1, 9, 13)
+
+□ J-5: IT prépare le matériel:
+   - Ordinateur portable: MacBook Pro 16" M3 Max 64GB RAM + clavier externe
+   - Écrans: 2x Dell U2723DE 27" 4K USB-C
+   - Périphériques: Souris Logitech MX Master 3S, webcam 4K, casque ANC
+   - Téléphone professionnel: iPhone 15 Pro avec forfait 100 Go 5G
+   - Badge d'accès RFID programmé (zones selon le département)
+   - Compte email créé (prénom.nom@neuraltech-solutions.com)
+   - Accès VPN configuré (Cisco AnyConnect avec authentification 2FA)
+
+□ J-3: Manager prépare:
+   - Plan de formation 90 jours (objectifs, jalons, KPIs)
+   - Attribution d'un buddy (collègue expérimenté du même département)
+   - Réservation salle pour réunion d'accueil (J1, 9h00-10h30)
+   - Planning des formations obligatoires:
+     * Sécurité informatique (3 heures, e-learning)
+     * RGPD et confidentialité (2 heures)
+     * Premiers secours en entreprise (demi-journée)
+     * Utilisation outils collaboratifs (Teams, Jira, Confluence)
+
+□ J-1: Responsable administratif vérifie:
+   - Tous les documents contractuels signés et archivés
+   - Déclaration préalable à l'embauche (DPAE) envoyée à l'URSSAF
+   - Mutuelle d'entreprise activée (Alan, prise en charge 60% employeur)
+   - Tickets restaurant commandés (valeur faciale 10€, participation 50%)
+   - Place de parking attribuée si applicable (ou abonnement Navigo pris en charge à 50%)
+
+
+1.2 PREMIER JOUR (J1)
+
+08h30 - ARRIVÉE ET ACCUEIL
+□ Accueil à la réception par le buddy
+□ Remise du badge d'accès et du matériel informatique
+□ Visite guidée des locaux (3 étages, 4500 m²):
+   - Open spaces par département (R&D, Sales, Marketing, Support)
+   - Salles de réunion (24 salles équipées visio, réservation via Outlook)
+   - Espace détente (cuisine équipée, cafétéria, baby-foot, salle de repos)
+   - Salles de sport (tapis de course, vélos, douches)
+   - Rooftop accessible (pause déjeuner, events)
+□ Présentation des règles de sécurité et issues de secours
+□ Code wifi invité et visiteurs (ne pas partager)
+
+09h00-10h30 - RÉUNION D'INTÉGRATION AVEC LE MANAGER
+□ Présentation de l'équipe (noms, rôles, responsabilités)
+□ Vision et objectifs du département pour 2025
+□ Explication du plan de formation 90 jours:
+   - Semaine 1-2: Découverte et formation produits
+   - Semaine 3-4: Participation aux projets en cours (supervision)
+   - Semaine 5-8: Prise d'autonomie progressive
+   - Semaine 9-12: Projets en autonomie avec points hebdomadaires
+□ Présentation des KPIs individuels et d'équipe
+□ Session Q&A
+
+10h30-12h00 - CONFIGURATION POSTE DE TRAVAIL
+□ Installation guidée avec IT:
+   - Connexion au réseau d'entreprise
+   - Configuration email Outlook + signature standardisée
+   - Installation suite Office 365 (Word, Excel, PowerPoint, Teams)
+   - Accès aux outils métier:
+     * Jira (gestion de projet)
+     * Confluence (wiki interne)
+     * GitHub Enterprise (développeurs)
+     * Salesforce (équipe commerciale)
+     * Zendesk (support client)
+   - Configuration VPN et double authentification (Microsoft Authenticator)
+   - Mot de passe complexe: 16 caractères minimum (MAJ, min, chiffres, symboles)
+   - Changement obligatoire tous les 90 jours
+
+12h00-14h00 - DÉJEUNER D'ÉQUIPE
+□ Déjeuner avec le manager et l'équipe (restaurant partenaire ou cafétéria)
+□ Moment informel pour faire connaissance
+□ Explication de la culture d'entreprise: collaboration, innovation, respect
+
+14h00-16h00 - FORMATIONS OBLIGATOIRES (E-LEARNING)
+□ Module 1: Sécurité informatique et cybersécurité
+   - Politique de mots de passe
+   - Reconnaissance phishing et social engineering
+   - Gestion des données sensibles
+   - Utilisation sécurisée du wifi public (toujours avec VPN)
+   - Procédure en cas d'incident (contact: security@neuraltech-solutions.com)
+   - Quiz final (score minimum 80% requis)
+
+□ Module 2: RGPD et protection des données
+   - Principes du RGPD (finalité, minimisation, durée de conservation)
+   - Droits des personnes (accès, rectification, effacement, portabilité)
+   - Gestion des données clients (classification, chiffrement, sauvegarde)
+   - Notifications de violations (procédure sous 72h)
+   - Contact DPO: dpo@neuraltech-solutions.com
+   - Quiz final (score minimum 80% requis)
+
+16h00-17h00 - SESSION AVEC LE BUDDY
+□ Présentation approfondie des outils quotidiens
+□ Partage de bonnes pratiques et astuces
+□ Réponses aux questions pratiques (pause-café, horaires flexibles, télétravail)
+□ Ajout aux canaux Teams pertinents
+□ Ajout aux mailing lists (all@, dept@, team@)
+
+17h00-17h30 - DÉBRIEFING DE FIN DE JOURNÉE
+□ Point rapide avec le manager
+□ Feedback sur le premier jour
+□ Planning du lendemain
+□ Éventuelles questions ou préoccupations
+
+
+1.3 PREMIÈRE SEMAINE (J2-J5)
+
+□ Participation aux réunions d'équipe (daily standup, sprint planning, retro)
+□ Formation produits et services:
+   - NeuroChip X9000: architecture, spécifications, use cases
+   - DataVault Pro: fonctionnalités, API, intégrations
+   - CloudScale Analytics: dashboards, requêtes, alertes
+□ Shadowing de collègues expérimentés
+□ Lecture de la documentation technique (confluence.neuraltech.com)
+□ Premiers petits projets encadrés
+
+□ Fin de semaine 1: Point de suivi avec le manager (30 minutes)
+   - Ressenti général
+   - Clarifications nécessaires
+   - Ajustements du plan de formation si besoin
+
+
+1.4 PREMIER MOIS (J6-J30)
+
+□ Participation active aux projets en cours
+□ Montée en autonomie progressive
+□ Formation continue selon le rôle:
+   - Développeurs: Architecture microservices, Kubernetes, CI/CD
+   - Sales: Product training avancé, techniques de vente, CRM
+   - Support: Ticketing, escalation, SLAs clients
+□ Réunions hebdomadaires de suivi avec le manager (1 heure)
+□ Feedback 360° à J30:
+   - Auto-évaluation
+   - Évaluation par le manager
+   - Feedback du buddy
+   - Discussion et ajustements
+
+
+1.5 TROIS PREMIERS MOIS (J31-J90)
+
+□ Objectifs clairs avec KPIs mesurables
+□ Autonomie complète sur périmètre défini
+□ Participation aux reviews trimestrielles
+□ Évaluation de fin de période d'essai (J85):
+   - Bilan des réalisations vs objectifs
+   - Évaluation des compétences techniques et soft skills
+   - Décision de validation ou non de la période d'essai
+   - Si validation: discussion plan de carrière et prochains objectifs
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2. PROCÉDURE DE GESTION DES INCIDENTS DE SÉCURITÉ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+2.1 CLASSIFICATION DES INCIDENTS
+
+NIVEAU P1 - CRITIQUE
+- Violation de données personnelles confirmée
+- Ransomware détecté sur le réseau
+- Accès non autorisé aux systèmes de production
+- Perte ou vol d'appareil contenant des données sensibles non chiffrées
+- Temps de réponse: IMMÉDIAT (< 15 minutes)
+- Escalade: CISO + CEO + DPO
+
+NIVEAU P2 - MAJEUR
+- Tentative d'intrusion détectée et bloquée
+- Phishing ciblé visant plusieurs employés
+- Anomalie réseau significative
+- Malware détecté et isolé
+- Temps de réponse: < 1 heure
+- Escalade: CISO + IT Manager
+
+NIVEAU P3 - MINEUR
+- Email de phishing isolé
+- Violation mineure de politique de sécurité
+- Perte de badge d'accès
+- Mot de passe compromis (changé immédiatement)
+- Temps de réponse: < 4 heures
+- Escalade: IT Security Team
+
+
+2.2 PROCÉDURE DE DÉCLARATION
+
+ÉTAPE 1: DÉTECTION ET SIGNALEMENT IMMÉDIAT
+□ Dès détection d'un incident suspect:
+   - NE PAS interagir avec l'élément suspect (email, fichier, lien)
+   - Noter l'heure exacte de détection (format: AAAA-MM-JJ HH:MM:SS)
+   - Prendre des captures d'écran si possible (sans cliquer!)
+   - Déconnecter du réseau SI suspicion d'infection (Ethernet + WiFi)
+
+□ Contact immédiat:
+   - Email: security-incident@neuraltech-solutions.com
+   - Téléphone: +33 (0)1 45 67 89 99 (24/7 hotline)
+   - Teams: Canal #security-incidents (alertes temps réel)
+   - EN PERSONNE si critique: Bureau RSSI, Bâtiment A, 3ème étage
+
+□ Informations à communiquer:
+   - Votre identité (nom, prénom, département, poste)
+   - Nature de l'incident (description détaillée)
+   - Heure de détection
+   - Systèmes/données potentiellement affectés
+   - Actions déjà entreprises
+   - Captures d'écran / logs disponibles
+
+
+ÉTAPE 2: ÉVALUATION ET CLASSIFICATION (ÉQUIPE SÉCURITÉ)
+□ Réception du signalement (< 15 min pour P1)
+□ Classification de la sévérité (P1, P2, P3)
+□ Création du ticket incident dans Jira Security
+□ Attribution à un analyste sécurité
+□ Notification des parties prenantes selon le niveau
+
+
+ÉTAPE 3: INVESTIGATION
+□ Analyse des logs système (SIEM Splunk):
+   - Firewall logs
+   - Antivirus alerts
+   - Authentification attempts
+   - Network traffic anomalies
+□ Identification de la source et du vecteur d'attaque
+□ Évaluation de l'étendue (combien de systèmes affectés)
+□ Collecte de preuves numériques (forensics)
+□ Documentation détaillée de chaque étape
+
+
+ÉTAPE 4: CONTAINMENT (CONFINEMENT)
+□ Isolation des systèmes compromis:
+   - Déconnexion réseau immédiate
+   - Désactivation des comptes utilisateurs concernés
+   - Révocation des tokens d'API et clés d'accès
+   - Blocage IP sources malveillantes au firewall
+□ Sauvegarde de l'état actuel pour analyse forensique
+□ Communication interne (besoin de savoir uniquement)
+
+
+ÉTAPE 5: ÉRADICATION
+□ Suppression de la menace:
+   - Suppression des malwares/backdoors
+   - Correction des vulnérabilités exploitées
+   - Application des patches de sécurité
+   - Réinitialisation des mots de passe compromis
+□ Scan complet de tous les systèmes (antivirus + anti-malware)
+□ Vérification de l'absence de persistance
+
+
+ÉTAPE 6: RÉCUPÉRATION
+□ Restauration des systèmes:
+   - Depuis backups vérifiés sains (< 24h pour P1)
+   - Réinstallation complète si nécessaire
+   - Tests de fonctionnalité
+□ Reconnexion progressive au réseau (environnement contrôlé)
+□ Monitoring renforcé pendant 72 heures
+□ Validation par l'équipe sécurité avant mise en production
+
+
+ÉTAPE 7: POST-INCIDENT
+□ Rapport d'incident détaillé (sous 48h):
+   - Chronologie complète (timeline)
+   - Cause racine (root cause analysis)
+   - Impact réel (données, systèmes, utilisateurs)
+   - Actions correctives entreprises
+   - Leçons apprises
+   - Recommandations de prévention
+□ Notification CNIL si violation RGPD (< 72h légalement)
+□ Communication aux clients affectés si applicable
+□ Mise à jour des procédures de sécurité
+□ Formation/sensibilisation des employés concernés
+□ Réunion post-mortem (équipe élargie)
+
+
+2.3 OBLIGATIONS LÉGALES (RGPD)
+
+En cas de violation de données personnelles:
+
+□ Notification CNIL obligatoire sous 72 heures si risque pour les droits des personnes
+□ Contenu de la notification:
+   - Nature de la violation
+   - Catégories et nombre approximatif de personnes concernées
+   - Catégories et nombre approximatif d'enregistrements concernés
+   - Conséquences probables de la violation
+   - Mesures prises ou envisagées pour remédier
+   - Contact du DPO: Marie Lefèvre, dpo@neuraltech-solutions.com
+
+□ Information des personnes concernées si risque élevé:
+   - Communication claire et compréhensible
+   - Description de la nature de la violation
+   - Coordonnées du DPO
+   - Conséquences probables
+   - Mesures prises et recommandations
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3. PROCÉDURE DE DEMANDE DE CONGÉS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+3.1 TYPES DE CONGÉS
+
+CONGÉS PAYÉS ANNUELS
+- Acquisition: 2.5 jours ouvrés par mois travaillé (30 jours/an)
+- Période de référence: 1er juin N-1 au 31 mai N
+- Ancienneté > 5 ans: +1 jour, > 10 ans: +2 jours, > 15 ans: +3 jours
+- Pose minimale: demi-journée (4 heures)
+- Pose maximale continue: 4 semaines (sauf accord manager)
+- Solde restant visible sur votre portail RH (https://rh.neuraltech.com)
+
+CONGÉS SANS SOLDE
+- Sur demande motivée et accord du manager
+- Durée maximale: 1 mois par an (sauf circonstances exceptionnelles)
+- Pas d'acquisition de congés payés pendant cette période
+- Maintien de l'ancienneté
+
+JOURS DE RTT (Réduction du Temps de Travail)
+- Pour contrats 39h/semaine: 12 jours de RTT par an
+- Acquisition mensuelle: 1 jour par mois
+- Pose par journée complète ou demi-journée
+- Expiration: 31 décembre (pas de report)
+
+CONGÉS EXCEPTIONNELS POUR ÉVÉNEMENTS FAMILIAUX
+- Mariage/PACS de l'employé: 4 jours ouvrés
+- Naissance ou adoption: 3 jours ouvrés + congé paternité légal (28 jours)
+- Décès conjoint ou enfant: 8 jours ouvrés
+- Décès parent, grand-parent, frère, sœur: 3 jours ouvrés
+- Mariage d'un enfant: 1 jour ouvré
+- Déménagement: 1 jour ouvré (justificatif requis)
+
+CONGÉS MALADIE
+- Certificat médical obligatoire si absence > 3 jours
+- Envoi sous 48h à: rh-absences@neuraltech-solutions.com
+- Indemnisation selon convention collective (3 jours de carence)
+- Maintien de salaire: 50% jours 1-30, 66.66% jours 31-90 (après 1 an d'ancienneté)
+
+
+3.2 PROCÉDURE DE DEMANDE
+
+ÉTAPE 1: PLANIFICATION
+□ Consulter le planning d'équipe (Teams Calendar ou Outlook)
+□ Vérifier les périodes de forte charge (éviter si possible)
+□ Anticiper les échéances de projets
+□ S'assurer de la présence d'un binôme pour couverture
+
+ÉTAPE 2: DEMANDE FORMELLE
+□ Soumettre via le portail RH (https://rh.neuraltech.com/conges):
+   - Se connecter avec identifiants SSO
+   - Cliquer sur "Nouvelle demande de congé"
+   - Sélectionner le type de congé
+   - Renseigner dates de début et fin (format: JJ/MM/AAAA)
+   - Préciser: journée entière ou demi-journée (matin/après-midi)
+   - Ajouter un commentaire si nécessaire
+   - Joindre un justificatif si congé exceptionnel
+   - Cliquer sur "Soumettre"
+
+□ Délais de demande:
+   - Congés payés: minimum 4 semaines à l'avance pour > 5 jours
+   - Congés payés: minimum 2 semaines à l'avance pour 1-5 jours
+   - RTT: minimum 1 semaine à l'avance
+   - Congés exceptionnels: dès connaissance de l'événement
+   - Urgence médicale: notification téléphonique + email immédiat
+
+ÉTAPE 3: VALIDATION
+□ Notification automatique au manager (email + Teams)
+□ Délai de réponse du manager: 5 jours ouvrés maximum
+□ Statuts possibles:
+   - APPROUVÉ: congé validé, ajout automatique au calendrier partagé
+   - REFUSÉ: motif explicite fourni (ex: période bloquée, sous-effectif)
+   - EN ATTENTE: informations complémentaires nécessaires
+
+□ Notification de la décision:
+   - Par email (employee@neuraltech-solutions.com)
+   - Notification Teams
+   - Visible sur le portail RH
+
+ÉTAPE 4: PRÉPARATION DU DÉPART
+□ 1 semaine avant le départ:
+   - Mettre à jour le statut Teams: "Absent du [date] au [date]"
+   - Configurer message d'absence Outlook:
+     * Dates d'absence
+     * Contact en cas d'urgence (collègue ou manager)
+     * Date de retour
+   - Transférer les tâches critiques au binôme désigné
+   - Documenter les dossiers en cours (Confluence)
+   - Informer les clients/partenaires si applicable
+
+□ Dernier jour avant le départ:
+   - Terminer les urgences en cours
+   - Point de passation avec le binôme (30-60 minutes)
+   - Vider le bureau des documents confidentiels (archivage sécurisé)
+   - Désactiver les notifications push (repos mérité!)
+
+ÉTAPE 5: RETOUR DE CONGÉS
+□ Réactiver les notifications
+□ Consulter emails/messages (filtrer par importance)
+□ Réunion de debriefing avec le manager (30 minutes)
+□ Mise à jour sur les projets et décisions prises pendant l'absence
+□ Reprise progressive (si absence > 2 semaines)
+
+
+3.3 RÈGLES SPÉCIFIQUES
+
+PÉRIODES DE RESTRICTION
+□ Périodes bloquées (pas de congés sauf exception):
+   - Lancement de produits majeurs (dates communiquées 3 mois avant)
+   - Clôtures trimestrielles (dernière semaine de chaque trimestre)
+   - Black Friday / Cyber Monday (23-27 novembre)
+   - Salons professionnels majeurs (CES, MWC, VivaTech)
+
+□ Périodes encouragées:
+   - Vacances d'été (juillet-août): rotation par équipe
+   - Vacances de Noël (20 déc - 5 janv): bureaux fermés, congés imposés
+   - Ponts fériés: encouragés pour équilibre vie pro/perso
+
+QUOTAS D'ABSENCE PAR ÉQUIPE
+□ Maximum simultané:
+   - 30% de l'équipe en congés en même temps
+   - 50% pendant période estivale (juillet-août)
+□ Gestion par le manager (principe du premier arrivé, premier servi)
+□ Équité sur l'année: alternance des périodes prisées
+
+REPORT ET PERTE DE CONGÉS
+□ Congés payés non pris au 31 mai: PERDUS (sauf accord spécifique)
+□ Alerte automatique si solde > 10 jours au 1er avril
+□ Obligation de poser au moins 10 jours consécutifs par an (repos légal)
+□ RTT non posés au 31 décembre: PERDUS (pas de report)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4. PROCÉDURE D'ESCALADE DES TICKETS SUPPORT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+4.1 NIVEAUX DE SUPPORT
+
+NIVEAU 1 (L1) - SUPPORT TECHNIQUE STANDARD
+- Équipe: 12 techniciens (rotation 24/7)
+- Problèmes traités:
+   * Questions d'utilisation basiques
+   * Réinitialisation de mots de passe
+   * Problèmes de connexion VPN
+   * Bugs mineurs connus (solutions documentées)
+   * Configuration initiale de comptes
+- SLA résolution: 4 heures (P3), 8 heures (P4)
+- Taux de résolution cible: > 70% des tickets
+
+NIVEAU 2 (L2) - SUPPORT AVANCÉ
+- Équipe: 6 ingénieurs spécialisés (horaires bureau étendus 7h-22h)
+- Problèmes traités:
+   * Bugs complexes nécessitant investigation
+   * Problèmes de performance
+   * Erreurs d'intégration API
+   * Configurations avancées
+   * Analyse de logs
+- SLA résolution: 2 heures (P2), 4 heures (P3)
+- Taux de résolution cible: > 85% des tickets escaladés
+
+NIVEAU 3 (L3) - INGÉNIERIE PRODUIT
+- Équipe: Product engineers + Dev team (horaires bureau)
+- Problèmes traités:
+   * Bugs critiques impactant production
+   * Problèmes d'architecture
+   * Développements spécifiques
+   * Optimisations de code
+   * Incidents de sécurité
+- SLA résolution: 15 minutes (P1), 1 heure (P2)
+- Résolution: 100% (ou workaround temporaire + bugfix planifié)
+
+
+4.2 CRITÈRES D'ESCALADE L1 → L2
+
+ESCALADE AUTOMATIQUE SI:
+□ Temps de résolution > SLA (alarme à 75% du SLA)
+□ Ticket réouvert > 2 fois par le client
+□ Impact > 50 utilisateurs
+□ Problème non documenté dans la knowledge base
+□ Client Premium (contrat avec SLA réduits)
+□ Demande explicite du client (après tentative L1)
+
+ESCALADE MANUELLE SI:
+□ Complexité technique hors périmètre L1
+□ Nécessité d'accès base de données / serveurs production
+□ Bug suspecté dans le code applicatif
+□ Problème de performance nécessitant analyse approfondie
+□ Demande de configuration non standard
+
+PROCÉDURE D'ESCALADE L1 → L2:
+1. Compléter le formulaire d'escalade dans Zendesk:
+   - Résumé du problème (2-3 phrases claires)
+   - Actions déjà entreprises par L1 (étapes de troubleshooting)
+   - Logs collectés (joindre fichiers)
+   - Informations client (ID, contrat, tier support)
+   - Niveau d'urgence (P1/P2/P3)
+   - Impact business (nombre d'utilisateurs, perte financière estimée)
+
+2. Cliquer sur "Escalade to L2" dans Zendesk
+
+3. Notification automatique:
+   - Email à l'équipe L2 (support-l2@neuraltech-solutions.com)
+   - Message Teams dans le canal #support-escalations
+   - Mise à jour du statut ticket: "Escalated to L2"
+
+4. Prise en charge L2:
+   - Acknowledgement sous 15 minutes (P1/P2), 30 minutes (P3)
+   - Assignation à un ingénieur L2 disponible
+   - Début de l'investigation
+
+5. Suivi par L1:
+   - Surveillance du ticket (notifications automatiques)
+   - Communication avec le client sur l'avancement
+   - Pas d'intervention technique (laisser L2 travailler)
+
+
+4.3 CRITÈRES D'ESCALADE L2 → L3
+
+ESCALADE OBLIGATOIRE SI:
+□ Incident P1 (critique) non résolu sous 1 heure
+□ Bug confirmé dans le code source nécessitant un hotfix
+□ Problème d'architecture ou de design
+□ Faille de sécurité détectée
+□ Performance dégradée > 50% sans cause identifiée
+□ Demande de feature nécessitant développement
+
+PROCÉDURE D'ESCALADE L2 → L3:
+1. Préparer un dossier complet:
+   - Description technique détaillée du problème
+   - Reproduction steps (si bug)
+   - Environnement affecté (production, staging, version logicielle)
+   - Logs complets (application, système, réseau)
+   - Captures d'écran / vidéos
+   - Analyse des métriques (CPU, mémoire, I/O, réseau)
+   - Hypothèses de cause racine
+   - Solutions tentées (et résultats)
+
+2. Notification équipe développement:
+   - Email à: engineering-oncall@neuraltech-solutions.com
+   - Slack: #engineering-critical-issues
+   - Téléphone si P1: +33 (0)1 45 67 89 88 (hotline tech)
+
+3. Réunion de war room si P1:
+   - Visio Teams immédiate
+   - Participants: L2 lead, Dev lead, Product Manager, CISO si sécurité
+   - Objectif: résolution ou workaround sous 2 heures
+
+4. Suivi et résolution:
+   - L3 prend le lead technique
+   - L2 reste point de contact client
+   - Communication toutes les 30 minutes au client (incidents P1)
+   - Post-mortem obligatoire dans les 48h (incidents P1/P2)
+
+
+4.4 COMMUNICATION AVEC LE CLIENT
+
+METTRE À JOUR LE CLIENT:
+□ Fréquence selon priorité:
+   - P1 (Critique): Toutes les 30 minutes minimum
+   - P2 (Majeur): Toutes les 2 heures
+   - P3 (Mineur): Une fois par jour (fin de journée)
+   - P4 (Cosmétique): Lors de la résolution
+
+□ Contenu des updates:
+   - État actuel de l'investigation
+   - Prochaines étapes planifiées
+   - ETA de résolution (si connu)
+   - Workaround temporaire (si disponible)
+   - Impacts identifiés
+   - Tone: professionnel, rassurant, transparent
+
+□ Canaux de communication:
+   - Email (copie automatique depuis Zendesk)
+   - Téléphone si P1/P2 et demandé par le client
+   - Status page publique (status.cloudscale-analytics.com) si incident généralisé
+
+CLÔTURE DU TICKET:
+□ Validation de la résolution avec le client:
+   - Email récapitulatif de la solution appliquée
+   - Demande de confirmation que le problème est résolu
+   - Invitation à rouvrir le ticket sous 7 jours si problème persiste
+
+□ Enquête de satisfaction (NPS):
+   - Envoi automatique 24h après clôture
+   - 3 questions: Note globale (0-10), Rapidité, Qualité technique
+   - Commentaire libre optionnel
+   - Objectif: NPS > 50, Satisfaction > 4.5/5
+
+□ Documentation:
+   - Ajout de la solution à la knowledge base (si nouveau cas)
+   - Tag appropriés pour recherche future
+   - Mise à jour de la FAQ si question récurrente
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FIN DU DOCUMENT - VERSION 3.2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Pour toute question sur ces procédures:
+Email: internal-procedures@neuraltech-solutions.com
+Téléphone: +33 (0)1 45 67 89 12 (ext. 401)
+Responsable: Sophie Martin, Directrice des Ressources Humaines

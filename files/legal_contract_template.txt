@@ -1,0 +1,219 @@
+CONTRAT DE LICENCE LOGICIELLE ENTREPRISE
+=========================================
+
+Contrat No: EULA-2025-FR-00847
+Date d'effet: 15 janvier 2025
+Durée: 36 mois (renouvellement tacite)
+
+ENTRE LES SOUSSIGNÉS:
+
+1. CONCÉDANT:
+NeuralTech Solutions SAS
+Capital social: 500,000 EUR
+Siège social: 123 Avenue des Champs-Élysées, 75008 Paris, France
+SIRET: 123 456 789 00012
+RCS Paris: 123 456 789
+Représentée par: M. Jean Dupont, Président
+Ci-après dénommée "le Concédant" ou "NeuralTech"
+
+2. LICENCIÉ:
+[Nom de l'entreprise cliente]
+[Adresse complète]
+[SIRET / Numéro d'immatriculation]
+Représentée par: [Nom et fonction du signataire]
+Ci-après dénommée "le Licencié" ou "le Client"
+
+IL A ÉTÉ CONVENU ET ARRÊTÉ CE QUI SUIT:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ARTICLE 1 - OBJET DU CONTRAT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1.1. Le présent contrat a pour objet de définir les conditions dans lesquelles le Concédant concède au Licencié un droit d'utilisation non exclusif et non transférable des logiciels suivants (ci-après "les Logiciels"):
+
+- CloudScale Analytics Platform v4.7.2 (Code: CSAP-2025-ENT)
+- DataVault Pro 5000 v8.3.1 (Code: DV-P5000-ENT)
+- Module d'Intelligence Artificielle Advanced ML Suite v2.1.0 (Code: AML-2025-PRO)
+
+1.2. La présente licence inclut:
+   a) Le droit d'installer et d'utiliser les Logiciels sur un maximum de 250 postes de travail et 15 serveurs physiques ou virtuels
+   b) L'accès à la documentation technique complète (manuels d'utilisation, guides d'administration, API reference)
+   c) Les mises à jour mineures (patches de sécurité, corrections de bugs) pendant toute la durée du contrat
+   d) Le support technique de niveau 2 (8h-18h, jours ouvrés) avec un temps de réponse maximum de 4 heures
+
+1.3. Sont expressément exclus de cette licence:
+   - Le code source des Logiciels (sauf accord spécifique écrit)
+   - Les modules complémentaires non listés à l'article 1.1
+   - Le support pour environnements non validés par le Concédant
+   - La personnalisation ou le développement spécifique (faire l'objet de devis séparés)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ARTICLE 2 - CONDITIONS FINANCIÈRES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+2.1. REDEVANCE ANNUELLE:
+Le montant de la redevance annuelle pour l'utilisation des Logiciels s'élève à:
+
+- Licence CloudScale Analytics (Tier 2): 38,400.00 EUR HT
+- Licence DataVault Pro 5000: 12,750.00 EUR HT
+- Licence Advanced ML Suite: 24,600.00 EUR HT
+- Support technique Premium (inclus): 11,362.50 EUR HT
+
+TOTAL ANNUEL: 87,112.50 EUR HT
+TVA (20%): 17,422.50 EUR
+TOTAL TTC: 104,535.00 EUR TTC
+
+2.2. MODALITÉS DE PAIEMENT:
+Le paiement s'effectue par virement bancaire en trois (3) versements:
+- Premier versement (40%): 34,845.00 EUR à la signature du contrat
+- Deuxième versement (30%): 26,133.75 EUR à 6 mois
+- Troisième versement (30%): 26,133.75 EUR à 12 mois
+
+Délai de paiement: 30 jours à compter de la date d'émission de la facture.
+
+2.3. PÉNALITÉS DE RETARD:
+En cas de retard de paiement, des pénalités seront automatiquement appliquées au taux de 3 fois le taux d'intérêt légal en vigueur (soit 10.50% au 1er janvier 2025). Une indemnité forfaitaire de 40 EUR sera également due pour frais de recouvrement.
+
+2.4. RÉVISION DES TARIFS:
+Les tarifs sont révisables annuellement selon l'indice INSEE des prix à la consommation (IPC), avec un plafond de variation de +/- 7% maximum. La révision prend effet au 1er janvier de chaque année.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ARTICLE 3 - OBLIGATIONS DU LICENCIÉ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+3.1. USAGE AUTORISÉ:
+Le Licencié s'engage à utiliser les Logiciels exclusivement pour ses besoins internes et dans le cadre de ses activités commerciales légitimes. Toute utilisation à des fins de revente, de location, de prêt ou de sous-licence est strictement interdite.
+
+3.2. SÉCURITÉ ET CONFIDENTIALITÉ:
+Le Licencié s'engage à:
+   a) Mettre en œuvre des mesures de sécurité appropriées (pare-feu, antivirus, chiffrement) pour protéger les Logiciels contre tout accès non autorisé
+   b) Ne pas tenter de décompiler, désassembler ou procéder à l'ingénierie inverse des Logiciels
+   c) Conserver la confidentialité des clés de licence et des identifiants d'accès
+   d) Informer immédiatement le Concédant de toute compromission de sécurité
+
+3.3. CONFORMITÉ LÉGALE:
+Le Licencié garantit que l'utilisation des Logiciels sera conforme à:
+   - La législation française et européenne en vigueur
+   - Le Règlement Général sur la Protection des Données (RGPD)
+   - Les politiques internes de sécurité de l'information du Licencié
+   - Toutes les certifications sectorielles applicables (ISO 27001, HDS, etc.)
+
+3.4. AUDIT:
+Le Concédant se réserve le droit d'auditer l'utilisation des Logiciels par le Licencié, moyennant un préavis de 15 jours ouvrés. L'audit se déroulera pendant les heures ouvrables et de manière à minimiser les perturbations.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ARTICLE 4 - GARANTIES ET LIMITATIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+4.1. GARANTIES DU CONCÉDANT:
+Le Concédant garantit que:
+   a) Les Logiciels sont exempts de virus, malware ou tout code malveillant connu au moment de la livraison
+   b) Les Logiciels fonctionneront substantiellement conformément à la documentation fournie
+   c) Le Concédant détient tous les droits nécessaires pour concéder la présente licence
+   d) Les Logiciels ne violent aucun droit de propriété intellectuelle de tiers
+
+4.2. DISPONIBILITÉ ET PERFORMANCE:
+Pour les services cloud inclus dans CloudScale Analytics:
+   - Disponibilité garantie: 99.5% sur base mensuelle (soit 3.6 heures de downtime maximum/mois)
+   - Temps de latence: < 200ms (p95) pour les requêtes API en Europe
+   - Débit minimal garanti: 10,000 requêtes/seconde
+
+4.3. LIMITATIONS DE GARANTIE:
+Les garanties ci-dessus ne s'appliquent pas en cas de:
+   - Mauvaise utilisation ou négligence du Licencié
+   - Modifications non autorisées des Logiciels
+   - Utilisation sur matériel ou environnement non conforme aux spécifications
+   - Cas de force majeure (catastrophes naturelles, guerres, cyberattaques massives, etc.)
+
+4.4. LIMITATION DE RESPONSABILITÉ:
+La responsabilité totale du Concédant, toutes causes confondues, ne pourra excéder le montant des redevances payées par le Licencié au cours des 12 derniers mois. Le Concédant ne sera en aucun cas responsable des dommages indirects, pertes de profits, pertes de données ou interruptions d'activité.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ARTICLE 5 - PROPRIÉTÉ INTELLECTUELLE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+5.1. DROITS DU CONCÉDANT:
+Le Concédant conserve l'intégralité des droits de propriété intellectuelle sur les Logiciels, incluant mais non limité à:
+   - Les droits d'auteur (copyright)
+   - Les brevets (notamment le brevet EU-2024-AI-00432 pour l'algorithme de compression adaptative)
+   - Les marques déposées ("CloudScale", "DataVault", "NeuralTech Solutions")
+   - Les secrets commerciaux et le savoir-faire
+
+5.2. DROITS DU LICENCIÉ:
+Le présent contrat ne transfère aucun droit de propriété intellectuelle au Licencié, qui bénéficie uniquement d'un droit d'usage conformément aux termes définis.
+
+5.3. DONNÉES DU LICENCIÉ:
+Le Licencié conserve l'intégralité des droits sur les données qu'il traite via les Logiciels. Le Concédant s'engage à:
+   - Ne pas utiliser ces données à des fins autres que la fourniture des services
+   - Ne pas divulguer ces données à des tiers sans autorisation écrite
+   - Permettre l'exportation complète des données dans un format standard (JSON, CSV, XML) à tout moment
+   - Supprimer définitivement toutes les données dans un délai de 30 jours après la résiliation du contrat
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ARTICLE 6 - DURÉE ET RÉSILIATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+6.1. DURÉE:
+Le présent contrat entre en vigueur le 15 janvier 2025 pour une durée initiale de 36 mois. Il se renouvellera ensuite par tacite reconduction pour des périodes successives de 12 mois, sauf dénonciation par l'une des parties avec un préavis de 90 jours avant la date d'échéance.
+
+6.2. RÉSILIATION POUR MANQUEMENT:
+En cas de manquement grave de l'une des parties à ses obligations, l'autre partie pourra résilier le contrat de plein droit, 30 jours après l'envoi d'une mise en demeure restée sans effet, adressée par lettre recommandée avec accusé de réception.
+
+Sont considérés comme manquements graves notamment:
+   - Non-paiement d'une facture après 60 jours de retard
+   - Violation des droits de propriété intellectuelle
+   - Utilisation frauduleuse ou non autorisée des Logiciels
+   - Violation grave des obligations de confidentialité
+   - Dépassement de 20% des limites d'utilisation convenues sans régularisation sous 15 jours
+
+6.3. CONSÉQUENCES DE LA RÉSILIATION:
+À la résiliation du contrat, quelle qu'en soit la cause:
+   a) Le Licencié devra cesser immédiatement toute utilisation des Logiciels
+   b) Le Licencié devra désinstaller les Logiciels de tous ses systèmes sous 15 jours
+   c) Le Licencié devra détruire toutes les copies des Logiciels et en attester par écrit
+   d) Les sommes déjà versées resteront acquises au Concédant (sauf faute grave du Concédant)
+   e) Le Concédant procédera à l'extraction et à la remise des données du Licencié dans un format exploitable
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ARTICLE 7 - DISPOSITIONS GÉNÉRALES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+7.1. MODIFICATION DU CONTRAT:
+Toute modification du présent contrat devra faire l'objet d'un avenant signé par les deux parties. Aucune modification verbale ne sera considérée comme valide.
+
+7.2. CESSION:
+Le présent contrat ne peut être cédé par le Licencié sans l'accord préalable écrit du Concédant. En cas de fusion, acquisition ou changement de contrôle du Licencié, celui-ci devra en informer le Concédant dans un délai de 30 jours.
+
+7.3. CONFIDENTIALITÉ:
+Chacune des parties s'engage à conserver confidentielles toutes les informations de nature confidentielle de l'autre partie dont elle aurait connaissance dans le cadre de l'exécution du présent contrat, pendant toute sa durée et pendant une période de 5 ans suivant sa résiliation.
+
+7.4. FORCE MAJEURE:
+Aucune des parties ne sera tenue responsable d'un retard ou d'une inexécution de ses obligations résultant d'un cas de force majeure tel que défini par la jurisprudence française. La partie empêchée devra en informer l'autre dans les 48 heures et fournir des justificatifs appropriés.
+
+7.5. INDÉPENDANCE DES CLAUSES:
+Si une disposition du présent contrat est jugée nulle ou inapplicable par une juridiction compétente, les autres dispositions resteront en vigueur dans toute la mesure permise par la loi.
+
+7.6. LOI APPLICABLE ET JURIDICTION:
+Le présent contrat est régi par le droit français. En cas de litige, les parties s'efforceront de trouver une solution amiable. À défaut, le litige sera soumis à la compétence exclusive des tribunaux de Paris, nonobstant pluralité de défendeurs ou appel en garantie.
+
+7.7. NOTIFICATIONS:
+Toutes les notifications prévues au présent contrat devront être effectuées par écrit et envoyées:
+   - Par courrier recommandé avec accusé de réception
+   - Par email avec demande d'accusé de lecture
+   - Par remise en mains propres contre décharge
+
+Adresses de notification:
+- Pour le Concédant: legal@neuraltech-solutions.com
+- Pour le Licencié: [email à compléter]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FAIT À PARIS, LE 15 JANVIER 2025
+EN DEUX EXEMPLAIRES ORIGINAUX
+
+Pour NeuralTech Solutions SAS          Pour le Licencié
+M. Jean Dupont                         [Nom du signataire]
+Président                              [Fonction]
+
+Signature:                             Signature:
+[Signature et cachet]                  [Signature et cachet]
