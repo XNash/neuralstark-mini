@@ -9,7 +9,7 @@ import json
 import time
 
 # Get backend URL from environment
-BACKEND_URL = "https://fullstack-projet.preview.emergentagent.com/api"
+BACKEND_URL = "https://rag-analyzer.preview.emergentagent.com/api"
 
 def test_basic_endpoints():
     """Test basic backend endpoints that don't require LLM"""
