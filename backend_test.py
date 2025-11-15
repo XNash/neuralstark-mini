@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """
-RAG Accuracy Enhancement Testing for NeuralStark Backend
-Tests comprehensive RAG accuracy improvements including:
-- Spelling mistake handling
-- Synonym and variation handling  
-- Needle in haystack (specific details)
-- Hybrid retrieval verification
-- Grammatical variations
-- Reranking quality
+RAG CPU-ONLY OPTIMIZATIONS TESTING for NeuralStark Backend
+Tests CPU-only optimizations including:
+- NER spaCy français (fr_core_news_sm)
+- Cache LRU pour embeddings et queries (gain 70-80% vitesse)
+- HNSW indexing optimisé CPU (M=32, construction_ef=200, search_ef=100)
+- CamemBERT cross-encoder français (antoinelouis/crossencoder-camembert-base-mmarcoFR)
+- Exact match boosting pour chiffres/noms/dates
+- Chunking intelligent (400 chars, 200 overlap)
+- Pre-filtering avant reranking (threshold=0.20)
+- Paramètres optimisés CPU (batch_size=32, num_workers=4)
 """
 
 import requests
