@@ -168,13 +168,12 @@ class RAGService:
                     prefiltered_docs = unique_docs
                     prefiltered_metadata = unique_metadata
                 
-                # Step 3: OPTIMIZED RERANKING - CamemBERT + exact match boosting (on pre-filtered set)
+                # Step 3: OPTIMIZED RERANKING - Cross-encoder reranking (on pre-filtered set)
                 reranked_docs, reranked_metadata = self.reranker.rerank(
                     corrected_query,
                     prefiltered_docs,  # Use pre-filtered docs for faster reranking
                     prefiltered_metadata,
-                    top_k=min(self.initial_retrieval_count, len(prefiltered_docs)),
-                    enable_exact_match_boost=True  # Boost for names and data
+                    top_k=min(self.initial_retrieval_count, len(prefiltered_docs))
                 )
                 
                 # Step 4: STRICTER DYNAMIC THRESHOLD - Better precision (20th percentile)
