@@ -18,7 +18,7 @@ class RerankerOptimized:
     - Adjusted thresholds for better precision
     """
     
-    def __init__(self, model_name: str = 'dangvantuan/sentence-camembert-large'):
+    def __init__(self, model_name: str = 'antoinelouis/crossencoder-camembert-base-mmarcoFR'):
         """
         Initialize optimized reranker - FRENCH OPTIMIZED for CPU-only
         
