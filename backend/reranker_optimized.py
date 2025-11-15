@@ -22,10 +22,10 @@ class RerankerOptimized:
         """
         Initialize optimized reranker - FRENCH OPTIMIZED for CPU-only
         
-        Default: dangvantuan/sentence-camembert-large (French specialist, 1.3GB)
+        Default: antoinelouis/crossencoder-camembert-base-mmarcoFR (French specialist, 440MB)
         Fallback: cross-encoder/ms-marco-MiniLM-L-6-v2 (lightweight, 90MB)
         
-        CamemBERT provides SUPERIOR accuracy for French language RAG (+30-40%)
+        CamemBERT cross-encoder provides SUPERIOR accuracy for French language RAG (+30-40%)
         """
         logger.info(f"Loading cross-encoder model (CPU-only): {model_name}")
         try:
