@@ -23,9 +23,9 @@ class RAGService:
         # Use optimized reranker with CamemBERT for French precision (CPU-only)
         try:
             from reranker_optimized import RerankerOptimized
-            # Use CamemBERT-large for maximum French accuracy on CPU
-            self.reranker = RerankerOptimized(model_name='dangvantuan/sentence-camembert-large')
-            logger.info("Using CPU-OPTIMIZED CamemBERT reranker with exact match boosting + NER")
+            # Use CamemBERT cross-encoder for maximum French accuracy on CPU
+            self.reranker = RerankerOptimized(model_name='antoinelouis/crossencoder-camembert-base-mmarcoFR')
+            logger.info("Using CPU-OPTIMIZED CamemBERT cross-encoder reranker with exact match boosting + NER")
         except Exception as e:
             logger.warning(f"Could not load optimized reranker: {e}, falling back to standard")
             self.reranker = Reranker(model_name='cross-encoder/ms-marco-MiniLM-L-6-v2')
