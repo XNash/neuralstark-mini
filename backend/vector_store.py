@@ -65,7 +65,7 @@ class VectorStoreService:
             return
         
         try:
-            # Generate embeddings with CPU MULTI-THREADING (4 workers)
+            # Generate embeddings with CPU MULTI-THREADING
             # NO GPU checks - pure CPU optimization
             embeddings = self.embedding_model.encode(
                 texts, 
@@ -73,9 +73,7 @@ class VectorStoreService:
                 batch_size=32,  # CPU-optimized batch (64 was too large for CPU)
                 normalize_embeddings=True,
                 convert_to_numpy=True,
-                device='cpu',  # FORCE CPU (no GPU)
-                # Multi-process encoding for CPU speed boost (30-50% faster)
-                num_workers=4  # 4 parallel workers for CPU
+                device='cpu'  # FORCE CPU (no GPU)
             )
             
             # Generate unique IDs with timestamp for better uniqueness
