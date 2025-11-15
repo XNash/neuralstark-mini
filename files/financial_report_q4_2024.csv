@@ -1,0 +1,55 @@
+Date,Transaction_Type,Category,Subcategory,Amount_EUR,Currency,Payment_Method,Client_ID,Product_SKU,Quantity,Unit_Price,Discount_Percent,Tax_Rate,Invoice_Number,Status,Notes
+2024-10-01,Revenue,Hardware,Neural_Processors,8599.98,EUR,Bank_Transfer,CLI-FR-00432,NC-X9000-2025,2,4299.99,10,20,INV-2024-10001,Paid,Enterprise client - quarterly bulk order
+2024-10-03,Revenue,Software,Annual_License,87112.50,EUR,Credit_Card,CLI-DE-00198,CSAP-2025-ENT,1,87112.50,0,20,INV-2024-10002,Paid,3-year contract signed
+2024-10-05,Expense,Operations,Cloud_Infrastructure,12847.32,EUR,Direct_Debit,VEN-AWS-001,AWS-EC2-COMPUTE,1,12847.32,0,20,BILL-AWS-OCT-001,Paid,EC2 instances + S3 storage October
+2024-10-07,Revenue,Services,Consulting,15600.00,EUR,Bank_Transfer,CLI-FR-00089,SVC-CONSULT-2024,80,195.00,0,20,INV-2024-10003,Paid,On-site training and implementation - 80 hours @ 195 EUR/h
+2024-10-08,Expense,HR,Payroll,247893.45,EUR,Bank_Transfer,EMP-PAYROLL-OCT,PAYROLL-OCT-2024,1,247893.45,0,0,PAY-2024-10,Paid,Monthly salaries for 87 employees
+2024-10-10,Revenue,Hardware,IoT_Sensors,3794.85,EUR,Credit_Card,CLI-BE-00567,SS-T300-IND,20,189.99,5,21,INV-2024-10004,Paid,SmartSensor temperature - 20 packs of 10
+2024-10-12,Expense,Marketing,Digital_Advertising,8942.67,EUR,Credit_Card,VEN-GOOGLE-ADS,GOOGLE-ADS-OCT,1,8942.67,0,20,BILL-GADS-OCT-001,Paid,Google Ads campaign October - 125K impressions
+2024-10-14,Revenue,Software,Monthly_Subscription,3200.00,EUR,Direct_Debit,CLI-CH-00234,CSAP-2025-ENT,1,3200.00,0,20,INV-2024-10005,Paid,Tier 2 monthly billing
+2024-10-15,Expense,Operations,Office_Rent,18500.00,EUR,Bank_Transfer,VEN-IMMO-PARIS,RENT-PARIS-8EME,1,18500.00,0,0,RENT-OCT-2024,Paid,4500 sqm office space Avenue des Champs-Elysees
+2024-10-17,Revenue,Hardware,Storage_Systems,12750.00,EUR,Bank_Transfer,CLI-NL-00345,DV-P5000-ENT,1,12750.00,0,21,INV-2024-10006,Paid,DataVault Pro 5000 annual license
+2024-10-18,Expense,IT,Software_Licenses,4832.18,EUR,Credit_Card,VEN-MICROSOFT-001,MSFT-O365-E5,87,55.54,0,20,BILL-MSFT-OCT-001,Paid,Office 365 E5 licenses - 87 users
+2024-10-20,Revenue,Services,Support_Premium,11362.50,EUR,Bank_Transfer,CLI-FR-00432,SVC-PREMIUM-2025,1,11362.50,0,20,INV-2024-10007,Paid,Premium support contract - 24/7 coverage
+2024-10-22,Expense,Operations,Utilities,3247.89,EUR,Direct_Debit,VEN-EDF-001,ELECTRICITY-OCT,1,3247.89,0,20,BILL-EDF-OCT-2024,Paid,Electricity + water + heating October
+2024-10-23,Revenue,Hardware,IoT_Sensors,4310.00,EUR,Credit_Card,CLI-ES-00678,SS-H450-AGR,20,215.50,0,21,INV-2024-10008,Paid,SmartSensor humidity - 20 packs of 10
+2024-10-25,Expense,Marketing,Events,24750.00,EUR,Bank_Transfer,VEN-VIVA-TECH,VIVATECH-2025-BOOTH,1,24750.00,0,20,INV-VIVA-2025-001,Pending,VivaTech 2025 booth reservation - 50 sqm premium
+2024-10-27,Revenue,Software,API_Usage,1847.32,EUR,Credit_Card,CLI-UK-00892,CSAP-API-USAGE,1,1847.32,0,20,INV-2024-10009,Paid,Overage charges - 2.3M additional API calls
+2024-10-28,Expense,HR,Recruitment,8900.00,EUR,Bank_Transfer,VEN-RECRUITECH,RECRUITMENT-FEES,2,4450.00,0,20,INV-REC-OCT-001,Paid,2 senior developers placed - 20% of annual salary
+2024-10-30,Revenue,Services,Custom_Development,32400.00,EUR,Bank_Transfer,CLI-LU-00123,SVC-CUSTOM-DEV,180,180.00,0,17,INV-2024-10010,Paid,Custom connector development - 180 hours @ 180 EUR/h
+2024-11-01,Revenue,Hardware,Neural_Processors,21499.95,EUR,Bank_Transfer,CLI-IT-00445,NC-X9000-2025,5,4299.99,0,22,INV-2024-11001,Paid,Italian university research lab order
+2024-11-02,Expense,Operations,Cloud_Infrastructure,14293.47,EUR,Direct_Debit,VEN-AWS-001,AWS-EC2-COMPUTE,1,14293.47,0,20,BILL-AWS-NOV-001,Paid,EC2 instances + S3 storage + RDS November
+2024-11-04,Revenue,Software,Annual_License,38400.00,EUR,Credit_Card,CLI-AT-00567,CSAP-2025-ENT,1,38400.00,12,20,INV-2024-11002,Paid,Tier 2 annual prepayment - 12% discount applied
+2024-11-05,Expense,HR,Payroll,251847.92,EUR,Bank_Transfer,EMP-PAYROLL-NOV,PAYROLL-NOV-2024,1,251847.92,0,0,PAY-2024-11,Paid,Monthly salaries for 89 employees (2 new hires)
+2024-11-07,Revenue,Hardware,Storage_Systems,25500.00,EUR,Bank_Transfer,CLI-FR-00789,DV-P5000-ENT,2,12750.00,0,20,INV-2024-11003,Paid,DataVault Pro 5000 - 2 licenses for multi-site setup
+2024-11-08,Expense,Marketing,Content_Creation,7450.00,EUR,Credit_Card,VEN-AGENCY-CREATIVE,CONTENT-PROD-NOV,1,7450.00,0,20,INV-CREATIVE-NOV-001,Paid,Video production + blog articles + infographics
+2024-11-10,Revenue,Services,Training,5670.00,EUR,Bank_Transfer,CLI-BE-00234,SVC-TRAINING-CERT,3,1890.00,0,21,INV-2024-11004,Paid,3-day certification training - 3 participants @ 1890 EUR each
+2024-11-12,Expense,IT,Hardware_Refresh,34782.50,EUR,Bank_Transfer,VEN-APPLE-FR,MACBOOK-PRO-M3,25,1391.30,20,20,ORDER-APPLE-NOV-001,Pending,25x MacBook Pro 16 M3 Max 64GB - 20% corporate discount
+2024-11-13,Revenue,Hardware,IoT_Sensors,11398.95,EUR,Credit_Card,CLI-DK-00456,SS-T300-IND,60,189.99,5,25,INV-2024-11005,Paid,Large agricultural IoT deployment - 60 packs
+2024-11-15,Expense,Operations,Insurance,4892.33,EUR,Direct_Debit,VEN-AXA-001,INSURANCE-PROF,1,4892.33,0,0,PREMIUM-Q4-2024,Paid,Professional liability insurance Q4 2024
+2024-11-17,Revenue,Software,Monthly_Subscription,3200.00,EUR,Direct_Debit,CLI-CH-00234,CSAP-2025-ENT,1,3200.00,0,20,INV-2024-11006,Paid,Tier 2 monthly billing
+2024-11-18,Expense,Marketing,Digital_Advertising,9847.25,EUR,Credit_Card,VEN-GOOGLE-ADS,GOOGLE-ADS-NOV,1,9847.25,0,20,BILL-GADS-NOV-001,Paid,Google Ads campaign November - 142K impressions
+2024-11-20,Revenue,Services,Support_Premium,6825.00,EUR,Bank_Transfer,CLI-SE-00789,SVC-PREMIUM-2025,1,6825.00,10,25,INV-2024-11007,Paid,Premium support - mid-size company - 10% early bird discount
+2024-11-22,Expense,Operations,Office_Supplies,2184.67,EUR,Credit_Card,VEN-STAPLES-FR,OFFICE-SUPPLIES-NOV,1,2184.67,0,20,INV-STAPLES-NOV-001,Paid,Paper, pens, whiteboards, coffee, cleaning supplies
+2024-11-25,Revenue,Hardware,Neural_Processors,17199.96,EUR,Bank_Transfer,CLI-NO-00234,NC-X9000-2025,4,4299.99,0,25,INV-2024-11008,Paid,Norwegian research institute - Arctic data center
+2024-11-27,Expense,IT,Cybersecurity,18900.00,EUR,Bank_Transfer,VEN-CROWDSTRIKE,CROWDSTRIKE-ENT,100,189.00,0,20,INV-CS-ANNUAL-2025,Paid,CrowdStrike Falcon Enterprise - 100 endpoints - annual
+2024-11-28,Revenue,Software,Enterprise_License,124800.00,EUR,Bank_Transfer,CLI-FR-00998,CSAP-2025-ENT,1,124800.00,0,20,INV-2024-11009,Paid,Enterprise tier custom contract - Fortune 500 client
+2024-11-29,Expense,HR,Team_Building,8947.50,EUR,Credit_Card,VEN-EVENT-AGENCY,TEAM-BUILDING-DEC,89,100.53,0,20,INV-TB-DEC-2024,Pending,Annual team building event - Chamonix ski trip Dec 20-22
+2024-12-01,Revenue,Services,Migration_Assistance,12500.00,EUR,Bank_Transfer,CLI-IT-00998,SVC-MIGRATION-2024,5,2500.00,0,22,INV-2024-12001,Paid,Data migration from legacy system - 47 TB transferred
+2024-12-02,Expense,Operations,Cloud_Infrastructure,15847.91,EUR,Direct_Debit,VEN-AWS-001,AWS-EC2-COMPUTE,1,15847.91,0,20,BILL-AWS-DEC-001,Paid,EC2 + S3 + RDS + CloudFront December - peak season scaling
+2024-12-04,Revenue,Hardware,Storage_Systems,51000.00,EUR,Bank_Transfer,CLI-DE-00445,DV-P5000-ENT,4,12750.00,0,19,INV-2024-12002,Paid,DataVault Pro 5000 - 4 licenses for German automotive client
+2024-12-05,Expense,HR,Payroll,254782.18,EUR,Bank_Transfer,EMP-PAYROLL-DEC,PAYROLL-DEC-2024,1,254782.18,0,0,PAY-2024-12,Paid,Monthly salaries for 89 employees + year-end bonuses partial
+2024-12-06,Revenue,Software,API_Usage,2947.83,EUR,Credit_Card,CLI-UK-00892,CSAP-API-USAGE,1,2947.83,0,20,INV-2024-12003,Paid,Overage charges - 3.8M additional API calls - holiday spike
+2024-12-08,Expense,Marketing,PR_Campaign,14500.00,EUR,Bank_Transfer,VEN-PR-AGENCY,PR-CAMPAIGN-Q1-2025,1,14500.00,0,20,INV-PR-Q1-2025,Pending,Q1 2025 PR campaign launch - tech media outreach
+2024-12-10,Revenue,Services,Consulting,28080.00,EUR,Bank_Transfer,CLI-CH-00567,SVC-CONSULT-2024,120,234.00,20,7.7,INV-2024-12004,Paid,Architecture review + optimization - 120 hours @ 234 EUR/h
+2024-12-12,Expense,Operations,Office_Rent,18500.00,EUR,Bank_Transfer,VEN-IMMO-PARIS,RENT-PARIS-8EME,1,18500.00,0,0,RENT-DEC-2024,Paid,Monthly rent December
+2024-12-13,Revenue,Hardware,IoT_Sensors,16184.90,EUR,Credit_Card,CLI-NL-00789,SS-H450-AGR,75,215.50,2,21,INV-2024-12005,Paid,Dutch greenhouse network - 75 packs humidity sensors
+2024-12-15,Expense,IT,Software_Licenses,5247.89,EUR,Credit_Card,VEN-MICROSOFT-001,MSFT-O365-E5,89,58.97,0,20,BILL-MSFT-DEC-001,Paid,Office 365 E5 licenses - 89 users + 2 new licenses
+2024-12-17,Revenue,Software,Monthly_Subscription,12500.00,EUR,Direct_Debit,CLI-FR-00334,CSAP-2025-ENT,1,12500.00,0,20,INV-2024-12006,Paid,Tier 3 monthly billing - high volume client
+2024-12-18,Expense,Legal,Compliance_Audit,22000.00,EUR,Bank_Transfer,VEN-KPMG-FR,ISO-27001-AUDIT,1,22000.00,0,20,INV-KPMG-DEC-001,Paid,ISO 27001 annual compliance audit + certification renewal
+2024-12-20,Revenue,Services,Custom_Development,64800.00,EUR,Bank_Transfer,CLI-UK-00445,SVC-CUSTOM-DEV,360,180.00,0,20,INV-2024-12007,Paid,Bespoke ML model training pipeline - 360 hours @ 180 EUR/h
+2024-12-22,Expense,Marketing,Digital_Advertising,11294.38,EUR,Credit_Card,VEN-GOOGLE-ADS,GOOGLE-ADS-DEC,1,11294.38,0,20,BILL-GADS-DEC-001,Paid,Google Ads December - holiday campaign - 178K impressions
+2024-12-23,Revenue,Hardware,Neural_Processors,42999.90,EUR,Bank_Transfer,CLI-FR-00112,NC-X9000-2025,10,4299.99,0,20,INV-2024-12008,Paid,Government research contract - quantum computing lab
+2024-12-27,Expense,Operations,Utilities,3847.22,EUR,Direct_Debit,VEN-EDF-001,ELECTRICITY-DEC,1,3847.22,0,20,BILL-EDF-DEC-2024,Paid,Electricity + heating December - winter peak
+2024-12-30,Revenue,Services,Year_End_Support,45000.00,EUR,Bank_Transfer,CLI-LU-00789,SVC-DEDICATED-2024,1,45000.00,0,17,INV-2024-12009,Paid,Dedicated engineer for critical year-end operations
+2024-12-31,Expense,HR,Year_End_Bonuses,127400.00,EUR,Bank_Transfer,EMP-BONUSES-2024,BONUS-2024-PERF,89,1431.46,0,0,BONUS-2024-FINAL,Pending,Performance bonuses 2024 - 89 employees - avg 1431.46 EUR

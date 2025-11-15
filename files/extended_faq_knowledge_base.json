@@ -1,0 +1,289 @@
+{
+  "faq_version": "4.2.1",
+  "last_updated": "2025-01-15T10:30:00Z",
+  "total_questions": 67,
+  "categories": [
+    {
+      "category_id": "licensing",
+      "category_name": "Licensing & Pricing",
+      "icon": "💰",
+      "questions": [
+        {
+          "question_id": "LIC-001",
+          "question": "What is the difference between Tier 1, Tier 2, and Tier 3 pricing?",
+          "answer": "Our tiered pricing is based on daily data ingestion volume and query concurrency. **Tier 1** (€890/month) supports up to 100 GB/day with 50 concurrent queries, ideal for small to medium teams. **Tier 2** (€3,200/month) handles up to 1 TB/day with 200 concurrent queries, perfect for growing companies. **Tier 3** (€12,500/month) manages up to 10 TB/day with 1,000 concurrent queries, designed for enterprise-scale operations. All tiers include full API access, standard support, and unlimited users. Premium support (24/7) and dedicated engineering resources are available as add-ons.",
+          "tags": ["pricing", "tiers", "features"],
+          "helpful_count": 342,
+          "related_questions": ["LIC-002", "LIC-005", "SUP-003"]
+        },
+        {
+          "question_id": "LIC-002",
+          "question": "Do you offer educational or non-profit discounts?",
+          "answer": "Yes! We provide a **50% discount** on all software licenses for accredited educational institutions (universities, research labs, K-12 schools) and registered non-profit organizations. Hardware purchases receive a **30% discount**. To qualify, submit your institution's accreditation documents or non-profit registration certificate to edu@neuraltech-solutions.com. Approval typically takes 2-3 business days. The discount applies to new purchases and renewals.",
+          "tags": ["discount", "education", "non-profit"],
+          "helpful_count": 189,
+          "related_questions": ["LIC-001", "LIC-006"]
+        },
+        {
+          "question_id": "LIC-003",
+          "question": "Can I upgrade from Tier 1 to Tier 2 mid-contract?",
+          "answer": "Absolutely! You can upgrade at any time through your account dashboard (https://portal.neuraltech.com/upgrade) or by contacting sales@neuraltech-solutions.com. We'll calculate a pro-rated amount for the remainder of your billing period. For example, if you upgrade halfway through your annual contract, you'll pay 50% of the difference between Tier 1 and Tier 2 annual pricing. The upgrade is immediate, with no service interruption. Downgrades are only permitted at renewal to ensure service consistency.",
+          "tags": ["upgrade", "tier-change", "billing"],
+          "helpful_count": 267,
+          "related_questions": ["LIC-001", "BIL-002"]
+        },
+        {
+          "question_id": "LIC-004",
+          "question": "What happens if I exceed my tier's data ingestion limit?",
+          "answer": "We monitor usage in real-time and provide proactive alerts when you approach 80% and 95% of your limit. If you exceed your tier limit, overage charges apply: **€0.15 per GB** for Tier 1, **€0.12 per GB** for Tier 2, and **€0.08 per GB** for Tier 3. Overages are billed monthly. We recommend upgrading to the next tier if you consistently exceed limits by 20% or more - it's more cost-effective. Our Customer Success team will reach out proactively with optimization recommendations.",
+          "tags": ["limits", "overage", "billing"],
+          "helpful_count": 421,
+          "related_questions": ["LIC-001", "MON-004"]
+        },
+        {
+          "question_id": "LIC-005",
+          "question": "Is there a free trial available?",
+          "answer": "Yes! We offer a **14-day free trial** of our Tier 2 plan with full access to all features, no credit card required. This includes 1 TB/day data ingestion, 200 concurrent queries, all API endpoints, ML features (anomaly detection, forecasting), and email support. Trial data is retained for 30 days after trial end. To extend your trial or discuss custom proof-of-concept projects, contact trials@neuraltech-solutions.com. Enterprise clients can request a 30-day extended trial with dedicated onboarding.",
+          "tags": ["trial", "free", "getting-started"],
+          "helpful_count": 598,
+          "related_questions": ["LIC-001", "GET-001"]
+        },
+        {
+          "question_id": "LIC-006",
+          "question": "Do you offer volume discounts for hardware purchases?",
+          "answer": "Yes, we provide tiered volume discounts on hardware: **5-9 units: 10% off**, **10-24 units: 15% off**, **25-49 units: 20% off**, **50-99 units: 25% off**, **100+ units: custom pricing** (typically 30-35% off). Discounts apply to single product SKUs per order. For mixed product orders over €50,000, contact our Enterprise Sales team at enterprise@neuraltech-solutions.com for a custom quote. Volume discounts can be combined with educational/non-profit discounts for a maximum total discount of 60%.",
+          "tags": ["hardware", "discount", "volume"],
+          "helpful_count": 234,
+          "related_questions": ["LIC-002", "HW-001"]
+        }
+      ]
+    },
+    {
+      "category_id": "technical",
+      "category_name": "Technical & Integration",
+      "icon": "⚙️",
+      "questions": [
+        {
+          "question_id": "TECH-001",
+          "question": "Which programming languages do your SDKs support?",
+          "answer": "We provide official SDKs for **Python** (3.8+), **JavaScript/Node.js** (14+), **Java** (11+), **Go** (1.18+), **Ruby** (2.7+), and **.NET/C#** (6.0+). All SDKs are open-source (MIT license) on GitHub at https://github.com/cloudscale-analytics. They include full API coverage, automatic retry logic, rate limiting, webhooks support, and comprehensive documentation. Community-maintained SDKs exist for PHP, Rust, and Elixir. For languages without official SDKs, use our RESTful API directly - full OpenAPI 3.0 spec available.",
+          "tags": ["sdk", "programming", "api"],
+          "helpful_count": 512,
+          "related_questions": ["TECH-002", "TECH-005", "API-001"]
+        },
+        {
+          "question_id": "TECH-002",
+          "question": "Can I integrate CloudScale with my existing data warehouse (Snowflake, BigQuery, Redshift)?",
+          "answer": "Yes! We offer native connectors for **Snowflake**, **Google BigQuery**, **Amazon Redshift**, **Azure Synapse**, **Databricks**, and **PostgreSQL**. Setup takes 5-10 minutes via our UI - provide credentials and select tables to sync. Data can flow bidirectionally: ingest events from your warehouse for analytics, or export CloudScale results back for ML pipelines. Sync intervals range from real-time (via Change Data Capture) to hourly/daily batches. We support incremental updates to minimize data transfer costs. Configuration guide: https://docs.cloudscale-analytics.com/integrations/warehouses",
+          "tags": ["integration", "data-warehouse", "etl"],
+          "helpful_count": 487,
+          "related_questions": ["TECH-001", "TECH-006", "DATA-003"]
+        },
+        {
+          "question_id": "TECH-003",
+          "question": "What is the API rate limit, and how do I request an increase?",
+          "answer": "Rate limits vary by tier: **Free: 100 req/min**, **Tier 1: 500 req/min**, **Tier 2: 2,000 req/min**, **Tier 3: 10,000 req/min**, **Enterprise: custom** (typically 50,000+). Limits are per API key, enforced with a sliding window. If you hit limits, you'll receive HTTP 429 with a Retry-After header. To request an increase, email api-limits@neuraltech-solutions.com with your use case and expected traffic patterns. Increases are typically approved within 24 hours for existing customers. Implement exponential backoff in your client code - our SDKs handle this automatically.",
+          "tags": ["api", "rate-limit", "performance"],
+          "helpful_count": 398,
+          "related_questions": ["TECH-001", "API-002", "PERF-001"]
+        },
+        {
+          "question_id": "TECH-004",
+          "question": "Do you support real-time streaming with Kafka or Kinesis?",
+          "answer": "Yes! We have native integrations for **Apache Kafka** (self-hosted or Confluent Cloud), **AWS Kinesis**, **Azure Event Hubs**, and **Google Pub/Sub**. Our streaming connector consumes messages in real-time with at-least-once delivery semantics. Configuration via UI or Terraform: specify bootstrap servers, topics, authentication (SASL, SSL, IAM), and schema (JSON, Avro, Protobuf with schema registry support). Latency is typically under 100ms from message arrival to availability in queries. We auto-scale consumers based on topic partition count and lag.",
+          "tags": ["streaming", "kafka", "real-time"],
+          "helpful_count": 354,
+          "related_questions": ["TECH-002", "DATA-001", "ARCH-002"]
+        },
+        {
+          "question_id": "TECH-005",
+          "question": "Is your API compatible with OpenAPI/Swagger for auto-generating client code?",
+          "answer": "Absolutely! Our complete OpenAPI 3.0 specification is available at https://api.cloudscale-analytics.com/v2/openapi.json. Use code generators like Swagger Codegen, OpenAPI Generator, or Postman to create clients in any language. The spec includes all endpoints, request/response schemas, authentication flows, and error codes. We also maintain a Postman collection (https://postman.cloudscale.com) with pre-configured requests and environment variables for quick testing. The spec is versioned alongside our API and updated automatically with each release.",
+          "tags": ["openapi", "swagger", "api"],
+          "helpful_count": 276,
+          "related_questions": ["TECH-001", "DEV-003"]
+        },
+        {
+          "question_id": "TECH-006",
+          "question": "Can I run CloudScale Analytics on-premises instead of using your cloud?",
+          "answer": "Yes, for **Enterprise customers only**. Our on-premises version (CloudScale Enterprise Self-Hosted) runs on your infrastructure (bare metal, VMware, or Kubernetes). Minimum requirements: 16 vCPUs, 64 GB RAM, 2 TB SSD storage per node; 3-node cluster recommended for high availability. We provide Docker/Kubernetes deployment templates, ongoing software updates, and 24/7 support. Pricing starts at €75,000/year for a 3-node cluster. Data never leaves your network. Contact enterprise@neuraltech-solutions.com for architecture review and POC.",
+          "tags": ["on-premises", "self-hosted", "enterprise"],
+          "helpful_count": 412,
+          "related_questions": ["TECH-002", "SEC-001", "ENT-001"]
+        }
+      ]
+    },
+    {
+      "category_id": "security",
+      "category_name": "Security & Compliance",
+      "icon": "🔒",
+      "questions": [
+        {
+          "question_id": "SEC-001",
+          "question": "What security certifications does NeuralTech Solutions hold?",
+          "answer": "We maintain the following certifications: **ISO 27001** (Information Security Management), **ISO 27017** (Cloud Security), **ISO 27018** (Cloud Privacy), **SOC 2 Type II** (annual audit), **GDPR** compliant (EU data protection), **HIPAA** compliant (healthcare data in US), **PCI DSS Level 1** (payment card security). All certificates are publicly available at https://trust.neuraltech.com. We undergo annual third-party audits by KPMG. Our ISO 27001 certificate number is ISO27001-2022-FR-00432. For compliance documentation for your own audits, contact compliance@neuraltech-solutions.com.",
+          "tags": ["security", "compliance", "certifications"],
+          "helpful_count": 523,
+          "related_questions": ["SEC-002", "SEC-005", "PRIV-001"]
+        },
+        {
+          "question_id": "SEC-002",
+          "question": "Where is my data physically stored, and can I choose the region?",
+          "answer": "Yes! We operate data centers in **EU (Frankfurt, Germany)**, **US (N. Virginia, USA)**, **UK (London)**, **Asia-Pacific (Singapore)**, and **Canada (Montreal)**. During signup, select your preferred region - data never leaves that region by default. EU customers' data is stored exclusively on EU servers to comply with GDPR data residency requirements. You can enable multi-region replication for disaster recovery (99.999% availability SLA) at an additional cost. View real-time data center status at https://status.cloudscale-analytics.com. Data is encrypted at rest (AES-256) and in transit (TLS 1.3).",
+          "tags": ["data-residency", "regions", "gdpr"],
+          "helpful_count": 645,
+          "related_questions": ["SEC-001", "PRIV-002", "ARCH-001"]
+        },
+        {
+          "question_id": "SEC-003",
+          "question": "How do you handle data encryption?",
+          "answer": "We implement **encryption at rest** using AES-256-GCM for all data (databases, backups, logs) with keys managed via AWS KMS, Azure Key Vault, or Google Cloud KMS depending on region. **Encryption in transit** uses TLS 1.3 for all API calls, with TLS 1.2 as fallback (TLS 1.0/1.1 disabled). We support **Bring Your Own Key (BYOK)** for Enterprise customers - you maintain control of encryption keys in your own HSM/KMS. Key rotation occurs automatically every 90 days. For highly sensitive data, enable **client-side encryption** - encrypt before sending to our API. Our security whitepaper: https://docs.cloudscale.com/security",
+          "tags": ["encryption", "security", "kms"],
+          "helpful_count": 489,
+          "related_questions": ["SEC-001", "SEC-004", "ENT-002"]
+        },
+        {
+          "question_id": "SEC-004",
+          "question": "Do you support Single Sign-On (SSO) and SAML?",
+          "answer": "Yes! We support **SAML 2.0**, **OAuth 2.0**, and **OpenID Connect** for SSO. Compatible identity providers include **Okta**, **Azure AD**, **Google Workspace**, **Auth0**, **OneLogin**, and any SAML 2.0 compliant IdP. Setup via Settings > Security > SSO in your dashboard - upload IdP metadata XML and configure attribute mappings. We support JIT (Just-In-Time) user provisioning and SCIM 2.0 for automated user lifecycle management. Multi-factor authentication (MFA) is enforced if enabled in your IdP. SSO is available on Tier 2+ plans. Setup guide: https://docs.cloudscale.com/sso",
+          "tags": ["sso", "saml", "authentication"],
+          "helpful_count": 372,
+          "related_questions": ["SEC-001", "ENT-003", "USER-002"]
+        },
+        {
+          "question_id": "SEC-005",
+          "question": "What is your incident response process for security breaches?",
+          "answer": "Our incident response follows ISO 27035 standards: **Detection** (24/7 SOC monitoring with SIEM), **Triage** (severity classification within 15 minutes), **Containment** (isolate affected systems within 30 minutes for P1 incidents), **Investigation** (forensic analysis with preserved logs), **Eradication** (remove threat and patch vulnerabilities), **Recovery** (restore services from verified backups), **Post-Incident** (detailed report within 48 hours, lessons learned). For GDPR-relevant breaches, we notify authorities within 72 hours and affected customers within 24 hours. Contact: security-incident@neuraltech-solutions.com or +33 1 45 67 89 99 (24/7 hotline).",
+          "tags": ["incident-response", "security", "breach"],
+          "helpful_count": 298,
+          "related_questions": ["SEC-001", "SUP-001"]
+        }
+      ]
+    },
+    {
+      "category_id": "hardware",
+      "category_name": "Hardware Products",
+      "icon": "🖥️",
+      "questions": [
+        {
+          "question_id": "HW-001",
+          "question": "What is the warranty on the NeuroChip X9000?",
+          "answer": "The NeuroChip X9000 comes with a **5-year manufacturer warranty** covering defects in materials and workmanship. This includes free replacement or repair (our choice) with advance replacement option (ship new unit before returning defective one). Warranty covers: processing units, memory modules, cooling system, and I/O interfaces. **Not covered**: damage from improper use, unauthorized modifications, liquid damage, or cosmetic wear. Extended warranty options: **+3 years for €645** (total 8 years), **+5 years for €1,075** (total 10 years). Register your product within 30 days at https://warranty.neuraltech.com for warranty activation.",
+          "tags": ["warranty", "neurochip", "hardware"],
+          "helpful_count": 445,
+          "related_questions": ["HW-002", "HW-005", "SUP-004"]
+        },
+        {
+          "question_id": "HW-002",
+          "question": "Can the NeuroChip X9000 run inference for GPT-4 class models?",
+          "answer": "The NeuroChip X9000 is optimized for models up to **70 billion parameters**. For GPT-4 class models (175B+ parameters), you'll need a cluster of 3-4 NeuroChips operating in parallel via our NeuralLink interconnect (sold separately, €499). A single X9000 can run: **GPT-3 (175B) at 12 tokens/sec**, **Llama 2 70B at 28 tokens/sec**, **BERT Large at 450 inferences/sec**, **ResNet-152 at 1,200 images/sec**. For GPT-4 (est. 1.8T parameters), we recommend our upcoming NeuroChip X12000 (Q3 2025) or our cloud-based NeuralInference API. Contact ai-solutions@neuraltech.com for architecture consulting.",
+          "tags": ["neurochip", "ai", "performance"],
+          "helpful_count": 687,
+          "related_questions": ["HW-001", "HW-006", "TECH-007"]
+        },
+        {
+          "question_id": "HW-003",
+          "question": "What is the power consumption and heat output of the SmartSensor SS-T300?",
+          "answer": "The SmartSensor SS-T300 is ultra-low power: **15 µA in sleep mode** (battery standby), **450 µA during measurement** (0.00045 watts). With the included 3.6V 2,400 mAh lithium battery, expect **7+ years of operation** with measurements every 5 minutes. Heat dissipation is negligible: ~0.002 watts during active measurement. The sensor operates in temperatures from **-40°C to +85°C** without external cooling. Battery is replaceable (model: Saft LS14500) and available from our store or authorized distributors. For solar-powered deployments, our SS-T300-SOLAR variant includes a small solar panel and supercapacitor for indefinite operation.",
+          "tags": ["smartsensor", "iot", "power"],
+          "helpful_count": 312,
+          "related_questions": ["HW-004", "IOT-001"]
+        },
+        {
+          "question_id": "HW-004",
+          "question": "Can SmartSensors work without internet connectivity?",
+          "answer": "Yes! SmartSensors use **LoRaWAN** (Long Range Wide Area Network), which doesn't require internet at the sensor level. Sensors communicate with a LoRaWAN gateway (up to 15 km range in open areas, 2-5 km in urban environments). The gateway requires internet (Ethernet or 4G/5G) to forward data to our cloud platform or your on-premises server. In offline scenarios, sensors store up to **10,000 measurements locally** (about 35 days at 5-min intervals) and sync when connectivity is restored. For fully offline deployments, use our **Edge Gateway EG-2000** (€1,299) which runs local analytics and can operate indefinitely without cloud connectivity.",
+          "tags": ["smartsensor", "iot", "connectivity"],
+          "helpful_count": 523,
+          "related_questions": ["HW-003", "IOT-002", "TECH-004"]
+        },
+        {
+          "question_id": "HW-005",
+          "question": "Is the DataVault Pro 5000 compatible with Mac, Windows, and Linux?",
+          "answer": "Yes, **fully cross-platform compatible**! DataVault Pro 5000 uses standard protocols: **NFS** (Network File System for Linux/Unix), **SMB/CIFS** (Windows file sharing), **AFP** (Apple Filing Protocol for Mac), **iSCSI** (block-level storage), and **S3-compatible API** (object storage). Access via: network drive mounting, web interface (any modern browser), desktop apps (Windows 10+, macOS 11+, Ubuntu 20.04+), or mobile apps (iOS 15+, Android 11+). No special drivers required. Setup wizard auto-detects your OS and provides step-by-step instructions. Management is unified via web UI regardless of client OS. RAID configuration and snapshots work identically across all platforms.",
+          "tags": ["datavault", "storage", "compatibility"],
+          "helpful_count": 391,
+          "related_questions": ["HW-006", "DATA-002"]
+        },
+        {
+          "question_id": "HW-006",
+          "question": "Can I expand DataVault Pro 5000 storage beyond 5 PB?",
+          "answer": "Yes! The base unit supports up to **5 PB** (5,000 TB) with expansion chassis. For larger deployments, use **scale-out architecture**: connect multiple DataVault units into a single namespace using our **VaultCluster** software (included with Enterprise license). Scale-out supports up to **16 units = 80 PB total**. Data is distributed with erasure coding for redundancy. Performance scales linearly: 2 units = ~14 GB/s read, 4 units = ~28 GB/s read. For exabyte-scale needs (1,000+ PB), consider our **DataVault ExaScale** solution (contact enterprise-storage@neuraltech.com for custom architecture). Hot-swap expansion while online - no downtime required.",
+          "tags": ["datavault", "storage", "scalability"],
+          "helpful_count": 267,
+          "related_questions": ["HW-005", "ARCH-003", "ENT-004"]
+        }
+      ]
+    },
+    {
+      "category_id": "billing",
+      "category_name": "Billing & Payments",
+      "icon": "💳",
+      "questions": [
+        {
+          "question_id": "BIL-001",
+          "question": "What payment methods do you accept?",
+          "answer": "We accept: **Credit/Debit Cards** (Visa, Mastercard, Amex via Stripe - instant activation), **Bank Transfer/Wire** (SEPA for EU, SWIFT international - 2-5 day processing), **ACH Direct Debit** (US only - 3-5 day processing), **PayPal** (instant for amounts under €10,000), **Purchase Orders** (for Enterprise customers with net 30/60 payment terms after credit approval). For annual/multi-year contracts over €50,000, we offer **leasing options** through our partners (24-60 month terms). Cryptocurrency payments (BTC, ETH, USDT) available for contracts over €25,000 - contact crypto-payments@neuraltech.com.",
+          "tags": ["payment", "billing", "methods"],
+          "helpful_count": 478,
+          "related_questions": ["BIL-002", "BIL-004"]
+        },
+        {
+          "question_id": "BIL-002",
+          "question": "Can I get a refund if I cancel my subscription?",
+          "answer": "**Monthly subscriptions**: Cancel anytime, no refunds for current month (service continues until period end). **Annual subscriptions**: 30-day money-back guarantee (full refund if canceled within 30 days). After 30 days: pro-rated refund for unused months minus a 15% early termination fee. **Multi-year contracts**: Governed by contract terms (typically no refund but can convert to monthly billing for remaining period). **Hardware purchases**: 30-day return policy for unopened items (full refund minus shipping). Opened items: 14-day return with 25% restocking fee if undamaged. To request refund: https://portal.neuraltech.com/billing/refund or email billing@neuraltech-solutions.com.",
+          "tags": ["refund", "cancellation", "billing"],
+          "helpful_count": 534,
+          "related_questions": ["BIL-001", "BIL-005", "LIC-003"]
+        },
+        {
+          "question_id": "BIL-003",
+          "question": "Do you charge for data egress (downloading data from your platform)?",
+          "answer": "**Data egress is FREE** for the first **1 TB per month** (per account, not per dataset). Beyond 1 TB: **€0.09 per GB** for downloads to internet, **€0.05 per GB** for downloads to same cloud provider region (e.g., AWS Frankfurt to our Frankfurt region), **€0.00 per GB** for downloads within our platform (exporting from one product to another). Query results delivered via API are included in your tier's data transfer allowance. For large migrations (>10 TB), request a free **AWS Snowball** or **Azure Data Box** shipment by contacting data-migration@neuraltech.com. Egress usage visible in billing dashboard.",
+          "tags": ["egress", "data-transfer", "billing"],
+          "helpful_count": 412,
+          "related_questions": ["BIL-001", "DATA-004", "LIC-004"]
+        },
+        {
+          "question_id": "BIL-004",
+          "question": "Can I pay in a currency other than EUR?",
+          "answer": "Yes! We support billing in **EUR** (Euro), **USD** (US Dollar), **GBP** (British Pound), **CHF** (Swiss Franc), **CAD** (Canadian Dollar), **AUD** (Australian Dollar), **SGD** (Singapore Dollar), and **JPY** (Japanese Yen). Select your preferred currency during signup or change it in Settings > Billing > Currency (currency changes take effect at next billing cycle). Prices are dynamically converted based on current exchange rates (updated daily) with a small forex fee (1.5% for non-EUR currencies). Invoices and receipts are issued in your selected currency. For other currencies, contact billing@neuraltech-solutions.com.",
+          "tags": ["currency", "billing", "international"],
+          "helpful_count": 289,
+          "related_questions": ["BIL-001", "BIL-002"]
+        },
+        {
+          "question_id": "BIL-005",
+          "question": "How do I update my billing information or change my credit card?",
+          "answer": "Log into your account at https://portal.neuraltech.com, navigate to **Settings > Billing > Payment Methods**. Click **Add Payment Method** to add a new card or bank account (verified instantly via Stripe). Set as default and optionally remove old methods. Changes take effect immediately. For security, we don't display full card numbers - only last 4 digits and expiration. Email notifications are sent for: payment method changes, failed charges (retry 3 times over 7 days), successful charges, and upcoming renewals (7 days prior). For bulk changes (updating multiple accounts), contact our billing team.",
+          "tags": ["billing", "payment-method", "account"],
+          "helpful_count": 367,
+          "related_questions": ["BIL-001", "BIL-002", "USER-003"]
+        }
+      ]
+    }
+  ],
+  "popular_searches": [
+    "API rate limit",
+    "GDPR compliance",
+    "free trial",
+    "neurochip performance",
+    "data encryption",
+    "refund policy",
+    "sso setup",
+    "pricing tiers",
+    "on-premises deployment",
+    "educational discount"
+  ],
+  "contact_info": {
+    "general_inquiries": "contact@neuraltech-solutions.com",
+    "sales": "sales@neuraltech-solutions.com",
+    "support": "support@neuraltech-solutions.com",
+    "billing": "billing@neuraltech-solutions.com",
+    "security": "security@neuraltech-solutions.com",
+    "phone": "+33 (0)1 45 67 89 10",
+    "emergency_hotline": "+33 (0)1 45 67 89 99",
+    "hours": "Monday-Friday 8:00-19:00 CET, Saturday 9:00-13:00 CET",
+    "headquarters": "123 Avenue des Champs-Élysées, 75008 Paris, France"
+  }
+}

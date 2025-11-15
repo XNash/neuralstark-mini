@@ -1,0 +1,199 @@
+{
+  "export_date": "2025-01-15T14:30:00Z",
+  "total_tickets": 247,
+  "date_range": {
+    "start": "2025-01-01",
+    "end": "2025-01-15"
+  },
+  "tickets": [
+    {
+      "ticket_id": "TKT-2025-00143",
+      "created_at": "2025-01-14T09:23:17Z",
+      "updated_at": "2025-01-14T11:47:32Z",
+      "status": "resolved",
+      "priority": "P2",
+      "category": "technical",
+      "subcategory": "api_error",
+      "subject": "HTTP 429 errors when ingesting data - rate limit exceeded",
+      "customer": {
+        "id": "CLI-FR-00432",
+        "name": "TechCorp Solutions SARL",
+        "tier": "tier_2",
+        "contract_value": 38400.00,
+        "account_manager": "Sophie Martin"
+      },
+      "description": "We're consistently hitting rate limits (HTTP 429) when trying to ingest our daily batch of events around 2-3 PM CET. Our current plan is Tier 2 which should support 2,000 req/min but we're seeing throttling at around 1,200 req/min. This is blocking our afternoon analytics reports. Log snippet: 'Rate limit exceeded. Retry after 42 seconds. Current rate: 1,247 req/min, Limit: 2,000 req/min'. Are we being throttled incorrectly?",
+      "resolution": "Investigated and found the customer was using 3 different API keys from the same account, each hitting the limit individually. Rate limits are per-key, not per-account. Consolidated to a single API key and implemented request batching (batch size increased from 10 to 1,000 events per request). This reduced total requests by 99% and eliminated rate limit issues. Customer now ingests same data volume in 2 minutes instead of 45 minutes. Provided documentation on batch ingestion best practices.",
+      "resolution_time_hours": 2.4,
+      "assigned_to": "L2-Eng-Thomas-B",
+      "tags": ["rate-limit", "api", "tier-2", "resolved", "optimization"],
+      "satisfaction_score": 5,
+      "customer_feedback": "Excellent support! Thomas explained the issue clearly and the batching solution is working perfectly. Our ingestion is now 20x faster."
+    },
+    {
+      "ticket_id": "TKT-2025-00156",
+      "created_at": "2025-01-15T03:12:08Z",
+      "updated_at": "2025-01-15T03:47:21Z",
+      "status": "resolved",
+      "priority": "P1",
+      "category": "technical",
+      "subcategory": "outage",
+      "subject": "[CRITICAL] All API endpoints returning 503 Service Unavailable",
+      "customer": {
+        "id": "CLI-US-00892",
+        "name": "GlobalRetail Inc",
+        "tier": "enterprise",
+        "contract_value": 124800.00,
+        "account_manager": "Jean Dupont"
+      },
+      "description": "URGENT: All our API calls have been failing since 02:58 UTC with 503 errors. This is affecting our production e-commerce platform - we're losing transactions. Our SLA requires 99.95% uptime. Error message: 'Service temporarily unavailable. Our team has been notified.' We need immediate assistance. Customer impact: ~15,000 users unable to complete checkouts.",
+      "resolution": "P1 incident declared at 03:13 UTC. Root cause: Database primary node failure in US-East region due to unexpected hardware fault (AWS EBS volume corruption). Automated failover to replica triggered but DNS propagation delayed by 12 minutes due to aggressive TTL caching. War room initiated with 6 engineers. Actions: 1) Manual DNS override applied (03:22 UTC). 2) Scaled read replicas from 3 to 8 to handle traffic surge. 3) Service fully restored 03:47 UTC. Total downtime: 49 minutes. Postmortem report sent. Applied $2,080 service credit (2 days of service) per SLA. Implemented enhanced monitoring and reduced DNS TTL from 300s to 60s to prevent future delays.",
+      "resolution_time_hours": 0.6,
+      "assigned_to": "L3-Dev-Lead-Pierre-L",
+      "tags": ["p1", "outage", "database", "enterprise", "sla-breach", "resolved"],
+      "satisfaction_score": 4,
+      "customer_feedback": "Response was fast and professional but the 49-minute outage did impact our revenue. Appreciate the SLA credit and the detailed postmortem. Hope the monitoring improvements prevent this in the future."
+    },
+    {
+      "ticket_id": "TKT-2025-00089",
+      "created_at": "2025-01-10T14:52:33Z",
+      "updated_at": "2025-01-12T09:18:45Z",
+      "status": "resolved",
+      "priority": "P3",
+      "category": "billing",
+      "subcategory": "invoice_dispute",
+      "subject": "Unexpected overage charges on December invoice - €2,400",
+      "customer": {
+        "id": "CLI-DE-00198",
+        "name": "Innovate GmbH",
+        "tier": "tier_1",
+        "contract_value": 10680.00,
+        "account_manager": "Marie Lefevre"
+      },
+      "description": "Our December invoice shows €2,400 in overage charges for data ingestion. We're on Tier 1 (100 GB/day limit) and don't believe we exceeded this. Our internal monitoring shows average daily ingestion of 87 GB in December. Can you please review and provide a detailed breakdown? This seems like an error. Invoice #INV-2024-12-00198.",
+      "resolution": "Reviewed ingestion logs for December. Customer's assessment was partially correct - their *application-level* monitoring showed 87 GB/day, but this excluded: 1) Failed requests that were retried (30 GB/day average), 2) Duplicate events that our deduplication filtered out (18 GB/day average), 3) Metadata overhead (~5% additional). Actual ingestion at our API level: 142 GB/day average. Explained that billing is based on bytes received at API, not deduplicated bytes stored. However, acknowledged the retry logic was inefficient on their end. Offered: 1) 50% discount on overage (€1,200 credit applied), 2) Free consultation to optimize their client code to reduce retries, 3) Proactive alerting setup to notify at 80% and 95% of daily limit. Customer accepted. Scheduled optimization call for Jan 18.",
+      "resolution_time_hours": 42.4,
+      "assigned_to": "Billing-Specialist-Claire-D",
+      "tags": ["billing", "overage", "dispute", "credit-applied", "resolved"],
+      "satisfaction_score": 4,
+      "customer_feedback": "Appreciate the detailed explanation and the 50% credit. The distinction between API ingestion and stored data wasn't clear to us. Looking forward to the optimization consultation."
+    },
+    {
+      "ticket_id": "TKT-2025-00178",
+      "created_at": "2025-01-15T11:04:29Z",
+      "updated_at": "2025-01-15T11:04:29Z",
+      "status": "open",
+      "priority": "P3",
+      "category": "feature_request",
+      "subcategory": "api_enhancement",
+      "subject": "Add support for GraphQL in addition to REST API",
+      "customer": {
+        "id": "CLI-UK-00445",
+        "name": "DevFlow Ltd",
+        "tier": "tier_2",
+        "contract_value": 38400.00,
+        "account_manager": "Sophie Martin"
+      },
+      "description": "We're currently using your REST API but would greatly benefit from GraphQL support for more flexible data fetching. Our frontend makes multiple REST calls to assemble dashboard data (queries, aggregations, alerts), resulting in over-fetching and increased latency. With GraphQL, we could request exactly what we need in a single query. Are there plans to add GraphQL support? This would be a major improvement for our use case and likely for other customers building custom UIs. Willing to beta test if you're developing this.",
+      "resolution": null,
+      "resolution_time_hours": null,
+      "assigned_to": "Product-Manager-Lucas-M",
+      "tags": ["feature-request", "graphql", "api", "open", "under-review"],
+      "satisfaction_score": null,
+      "customer_feedback": null,
+      "internal_notes": "Valid request - we've had 12 similar requests in Q4 2024. GraphQL support is on our Q2 2025 roadmap (tentative). Will add customer to beta tester list. PM Lucas to follow up with timeline estimate."
+    },
+    {
+      "ticket_id": "TKT-2025-00134",
+      "created_at": "2025-01-13T16:38:52Z",
+      "updated_at": "2025-01-14T10:22:18Z",
+      "status": "resolved",
+      "priority": "P2",
+      "category": "technical",
+      "subcategory": "integration",
+      "subject": "Snowflake connector failing with 'Authentication timeout' error",
+      "customer": {
+        "id": "CLI-CH-00234",
+        "name": "FinanceAnalytics SA",
+        "tier": "tier_3",
+        "contract_value": 150000.00,
+        "account_manager": "Jean Dupont"
+      },
+      "description": "Our Snowflake connector has been failing for the past 3 days with error: 'Authentication timeout after 30 seconds. Check network connectivity and credentials.' We've verified: 1) Credentials are correct (tested with SnowSQL CLI successfully), 2) Our firewall allows outbound HTTPS to Snowflake IPs, 3) Snowflake account is active and not suspended. The connector worked fine until Jan 10. No changes on our end. Is there an issue with the CloudScale <> Snowflake integration? This is blocking our daily financial reports.",
+      "resolution": "Issue confirmed as a regression introduced in our connector v3.8.1 (deployed Jan 10) - timeout value was accidentally reduced from 60s to 30s. Customer's Snowflake account is in AWS ap-southeast-2 (Sydney) region with 45-55ms latency from our EU servers, causing occasional slow authentication handshakes. Hotfix deployed (v3.8.2) restoring 60s timeout and adding exponential backoff retry logic (3 retries with 2s, 4s, 8s delays). Tested successfully with customer's account. Connector now stable. Applied fix to all affected customers (87 total). Added regression test to prevent future timeout issues. No service credit needed as customer's daily sync window was not impacted (runs at 4 AM, issue occurred during manual tests).",
+      "resolution_time_hours": 17.6,
+      "assigned_to": "L2-Eng-Amelie-R",
+      "tags": ["integration", "snowflake", "bug", "hotfix-deployed", "resolved"],
+      "satisfaction_score": 5,
+      "customer_feedback": "Fast resolution! Appreciate the proactive fix rollout and the detailed explanation of the regression. Connector is working perfectly now."
+    },
+    {
+      "ticket_id": "TKT-2025-00201",
+      "created_at": "2025-01-15T13:17:44Z",
+      "updated_at": "2025-01-15T13:17:44Z",
+      "status": "open",
+      "priority": "P4",
+      "category": "general",
+      "subcategory": "question",
+      "subject": "How do I export all my historical data for regulatory compliance?",
+      "customer": {
+        "id": "CLI-FR-00789",
+        "name": "HealthData SAS",
+        "tier": "tier_2",
+        "contract_value": 38400.00,
+        "account_manager": "Marie Lefevre"
+      },
+      "description": "We need to export all our historical data (18 months, approximately 4 TB) for a regulatory audit (HIPAA compliance). What's the best way to do this without hitting API rate limits? We need the data in CSV or JSON format with all original event metadata preserved. Timeline: need to complete export by January 31. Can you assist or provide a bulk export tool?",
+      "resolution": null,
+      "resolution_time_hours": null,
+      "assigned_to": "L1-Support-Antoine-C",
+      "tags": ["export", "compliance", "hipaa", "bulk-export", "open"],
+      "satisfaction_score": null,
+      "customer_feedback": null,
+      "internal_notes": "Standard bulk export request. Will provide S3 bucket credentials for customer to export data directly (bypasses API rate limits). Estimated export time: 6-8 hours for 4 TB. Create export job in admin portal, select date range and format (CSV/JSON/Parquet). Customer will receive email when export is ready for download. Assign to L1 Antoine to guide through process."
+    }
+  ],
+  "summary_stats": {
+    "by_status": {
+      "open": 47,
+      "in_progress": 23,
+      "resolved": 168,
+      "closed": 9
+    },
+    "by_priority": {
+      "P1": 3,
+      "P2": 28,
+      "P3": 142,
+      "P4": 74
+    },
+    "by_category": {
+      "technical": 128,
+      "billing": 34,
+      "feature_request": 41,
+      "general": 44
+    },
+    "average_resolution_time_hours": {
+      "P1": 0.8,
+      "P2": 12.3,
+      "P3": 28.6,
+      "P4": 52.4
+    },
+    "customer_satisfaction": {
+      "average_score": 4.6,
+      "total_responses": 189,
+      "distribution": {
+        "5_stars": 132,
+        "4_stars": 41,
+        "3_stars": 12,
+        "2_stars": 3,
+        "1_star": 1
+      }
+    },
+    "sla_compliance": {
+      "P1_target_1h": {"met": 3, "missed": 0, "compliance_rate": 100.0},
+      "P2_target_4h": {"met": 26, "missed": 2, "compliance_rate": 92.9},
+      "P3_target_24h": {"met": 135, "missed": 7, "compliance_rate": 95.1},
+      "P4_target_72h": {"met": 71, "missed": 3, "compliance_rate": 95.9}
+    }
+  }
+}
